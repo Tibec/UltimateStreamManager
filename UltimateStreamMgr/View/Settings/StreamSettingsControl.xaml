@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="UltimateStreamMgr.View.Settings.StreamSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings.Stream"
+             xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+             xmlns:qc="http://QuickConverter.CodePlex.com/"
+             mc:Ignorable="d" 
+             d:DesignHeight="228.693" d:DesignWidth="404.414">
+    <UserControl.DataContext>
+        <vm:StreamSettingsViewModel />
+    </UserControl.DataContext>
+    <StackPanel Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="5" Text="Plateforme : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <ComboBox Margin="5" x:Name="apiSelector" SelectedIndex="{Binding SelectedApi}" ItemsSource="{Binding ApiList}" Grid.Column="1"/>
+
+            <TextBlock Margin="5" Grid.Row="1" Text="Fonctions supportés : " HorizontalAlignment="Right" />
+        </Grid>
+        <Grid Margin="30,0">
+            <WrapPanel>
+                <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Affichage des infos" />
+                <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Mise à jour des info" />
+                <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Affichage du chat" />
+            </WrapPanel>
+        </Grid>
+        <Separator />
+        <!-- Insert here each api control -->
+        <local:TwitchSettingsControl Visibility="{Binding ElementName=apiSelector, Path=SelectedValue, 
+            Converter={qc:QuickConverter Convert='((string)$P == \'Twitch\') ? Visibility.Visible : Visibility.Collapsed '}, 
+            UpdateSourceTrigger=PropertyChanged}" />
+    </StackPanel>
+</UserControl>

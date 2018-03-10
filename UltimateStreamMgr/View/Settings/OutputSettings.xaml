@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="UltimateStreamMgr.View.Settings.OutputSettings"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:model="clr-namespace:UltimateStreamMgr.Model"
+             xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+             xmlns:qc="http://QuickConverter.CodePlex.com/"
+             mc:Ignorable="d" 
+             d:DesignHeight="246.8" d:DesignWidth="445.6">
+    <UserControl.DataContext>
+        <vm:OutputSettingsViewModel />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="enumValues"
+            MethodName="GetValues" ObjectType="{x:Type System:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="model:OutputFormat"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
+    
+    <StackPanel Margin="5">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.5*"/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="5" Text="Format de sortie : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <ComboBox Margin="5" SelectedValue="{Binding SelectedFormat}" ItemsSource="{Binding Source={StaticResource enumValues}}" Grid.Column="1"/>
+
+            <TextBlock Margin="5" Grid.Row="1" Text="Dossier de sortie : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Margin="5" Text="{Binding OutputFolder}" Grid.Column="1" Grid.Row="1" />
+
+            <TextBlock Visibility="{qc:Binding '$P == OutputFormat.Template ? Visibility.Visible : Visibility.Collapsed', P={Binding SelectedFormat}}" Margin="5" Grid.Row="2" Text="Dossier source : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox   Visibility="{qc:Binding '$P == OutputFormat.Template ? Visibility.Visible : Visibility.Collapsed', P={Binding SelectedFormat}}" Margin="5" Text="{Binding InputFolder}"  Grid.Column="1" Grid.Row="2" />
+        </Grid>
+    </StackPanel>
+</UserControl>
+

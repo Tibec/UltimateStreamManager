@@ -1,0 +1,418 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.props" Condition="Exists('..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.props')" />
+  <Import Project="..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.props" Condition="Exists('..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.props')" />
+  <Import Project="..\packages\cef.redist.x86.3.3239.1723\build\cef.redist.x86.props" Condition="Exists('..\packages\cef.redist.x86.3.3239.1723\build\cef.redist.x86.props')" />
+  <Import Project="..\packages\cef.redist.x64.3.3239.1723\build\cef.redist.x64.props" Condition="Exists('..\packages\cef.redist.x64.3.3239.1723\build\cef.redist.x64.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C42FA81-7B28-4189-B116-FA5FB4761C5A}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>UltimateStreamMgr</RootNamespace>
+    <AssemblyName>UltimateStreamMgr</AssemblyName>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Helpers\BindingProxy.cs" />
+    <Compile Include="Helpers\Utils.cs" />
+    <Compile Include="Model\Api\BracketApi.cs" />
+    <Compile Include="Model\Api\BracketApis\Smashgg.cs" />
+    <Compile Include="Model\Api\StreamApi.cs" />
+    <Compile Include="Model\Api\StreamApis\Twitch.cs" />
+    <Compile Include="Model\Bracket.cs" />
+    <Compile Include="Model\Caster.cs" />
+    <Compile Include="Model\ChannelInfo.cs" />
+    <Compile Include="Model\Configuration.cs" />
+    <Compile Include="Model\Country.cs" />
+    <Compile Include="Model\CustomKey.cs" />
+    <Compile Include="Model\Game.cs" />
+    <Compile Include="Model\OutputData.cs" />
+    <Compile Include="Model\Player.cs" />
+    <Compile Include="Model\Api\WebApi.cs" />
+    <Compile Include="Model\Character.cs" />
+    <Compile Include="Model\Opponent.cs" />
+    <Compile Include="Model\PlayerDatabase.cs" />
+    <Compile Include="Model\Replay.cs" />
+    <Compile Include="Model\Set.cs" />
+    <Compile Include="Model\Team.cs" />
+    <Compile Include="Model\Top8.cs" />
+    <Compile Include="ViewModel\CastersViewModel.cs" />
+    <Compile Include="ViewModel\ChatViewModel.cs" />
+    <Compile Include="ViewModel\CustomKeysViewModel.cs" />
+    <Compile Include="ViewModel\Settings\ReplaySettingsViewModel.cs" />
+    <Compile Include="ViewModel\ReplayViewModel.cs" />
+    <Compile Include="ViewModel\Settings\OutputSettingsViewModel.cs" />
+    <Compile Include="ViewModel\PendingSetsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\StreamSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\BracketSettingsViewModel.cs" />
+    <Compile Include="ViewModel\EditPlayerViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\PlayerDatabaseViewModel.cs" />
+    <Compile Include="ViewModel\RunnningSetViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\TwitchSettingsViewModel.cs" />
+    <Compile Include="ViewModel\Settings\SmashggSettingsViewModel.cs" />
+    <Compile Include="ViewModel\StreamApiIndicatorViewModel.cs" />
+    <Compile Include="View\Casters.xaml.cs">
+      <DependentUpon>Casters.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\NumericUpDown.xaml.cs">
+      <DependentUpon>NumericUpDown.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Controls\PlayerBox.xaml.cs">
+      <DependentUpon>PlayerBox.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\CustomKeys.xaml.cs">
+      <DependentUpon>CustomKeys.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PendingSets.xaml.cs">
+      <DependentUpon>PendingSets.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PlayerDatabase\EditTeamControl.xaml.cs">
+      <DependentUpon>EditTeamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Replay.xaml.cs">
+      <DependentUpon>Replay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\OutputSettings.xaml.cs">
+      <DependentUpon>OutputSettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\ReplaySettings.xaml.cs">
+      <DependentUpon>ReplaySettings.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\Stream\TwitchAuthorizationWindow.xaml.cs">
+      <DependentUpon>TwitchAuthorizationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PlayerDatabase\EditPlayerControl.xaml.cs">
+      <DependentUpon>EditPlayerControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PlayerDatabase\PlayerDatabaseWindow.xaml.cs">
+      <DependentUpon>PlayerDatabaseWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RunningSet.xaml.cs">
+      <DependentUpon>RunningSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\BracketSettingsControl.xaml.cs">
+      <DependentUpon>BracketSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\Bracket\SmashggSettingsControl.xaml.cs">
+      <DependentUpon>SmashggSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\StreamSettingsControl.xaml.cs">
+      <DependentUpon>StreamSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\Stream\TwitchSettingsControl.xaml.cs">
+      <DependentUpon>TwitchSettingsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StreamApiIndicator.xaml.cs">
+      <DependentUpon>StreamApiIndicator.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Chat.xaml.cs">
+      <DependentUpon>Chat.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Resources\IconsNonShared.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Casters.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\NumericUpDown.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Controls\PlayerBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\CustomKeys.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PendingSets.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlayerDatabase\EditTeamControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Replay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\OutputSettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\ReplaySettings.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\Stream\TwitchAuthorizationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlayerDatabase\EditPlayerControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\PlayerDatabase\PlayerDatabaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\RunningSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\BracketSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\Bracket\SmashggSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\StreamSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\Stream\TwitchSettingsControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\StreamApiIndicator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="View\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="View\Chat.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+    <Resource Include="Resources\Entypo.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\smashgg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\twitch.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\WindowsIcons-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Entypo-license.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="CommonServiceLocator">
+      <HintPath>..\packages\CommonServiceLocator.2.0.3\lib\net45\CommonServiceLocator.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ControlzEx">
+      <HintPath>..\packages\ControlzEx.3.0.2.4\lib\net45\ControlzEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Platform">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.1.6.0\lib\net45\MahApps.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MahApps.Metro.IconPacks, Version=2.0.0.31, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.IconPacks.2.0.0\lib\net46\MahApps.Metro.IconPacks.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.4.4.13\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\PresentationCore.dll</HintPath>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\PresentationFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="QuickConverter, Version=1.2.5.0, Culture=neutral, PublicKeyToken=9c892aa7bc2af2cf, processorArchitecture=MSIL">
+      <HintPath>..\packages\QuickConverter.1.2.5\lib\net40\QuickConverter.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.108.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Data.SQLite.Core.1.0.108.0\lib\net46\System.Data.SQLite.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\packages\MvvmLightLibs.5.4.1\lib\net45\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="WindowsBase">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.6\WindowsBase.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.3.3.0\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\cef.redist.x64.3.3239.1723\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x64.3.3239.1723\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('..\packages\cef.redist.x86.3.3239.1723\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\cef.redist.x86.3.3239.1723\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.targets'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.props'))" />
+    <Error Condition="!Exists('..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.targets'))" />
+    <Error Condition="!Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets'))" />
+  </Target>
+  <Import Project="..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.targets" Condition="Exists('..\packages\CefSharp.Common.63.0.2\build\CefSharp.Common.targets')" />
+  <Import Project="..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.targets" Condition="Exists('..\packages\CefSharp.Wpf.63.0.2\build\CefSharp.Wpf.targets')" />
+  <Import Project="..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.108.0\build\net46\System.Data.SQLite.Core.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

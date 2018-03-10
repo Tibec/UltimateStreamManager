@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="UltimateStreamMgr.View.Replay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+             xmlns:qc="http://QuickConverter.CodePlex.com/"
+             xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:local="clr-namespace:UltimateStreamMgr.View"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+	         mc:Ignorable="d" 
+             
+             d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.DataContext>
+        <vm:ReplayViewModel />
+    </UserControl.DataContext>
+    <StackPanel Margin="5">
+		<Grid>
+            <TextBlock Margin="0" FontSize="30" Text="Replay" />
+  
+		</Grid>
+
+        <ListBox 
+            Margin="5" 
+            Height="160"
+            ItemsSource="{Binding Playlist, Mode=TwoWay}">
+			<ListBox.ItemTemplate>
+			    <DataTemplate>
+					<WrapPanel>
+						<CheckBox IsChecked="{Binding Play}" />
+						<TextBlock Text="{Binding Name}" />
+					</WrapPanel>
+                </DataTemplate>
+			</ListBox.ItemTemplate>
+        </ListBox>
+        <Button Command="{Binding ClearPlaylistCommand}" Content="Vider la playlist" Margin="5"/>
+
+        <TextBlock Margin="5" Visibility="{qc:Binding '($P == true) ? Visibility.Collapsed : Visibility.Visible', P={Binding ReplayEnabled}}" Text="Replay désactivé" />
+    </StackPanel>
+</UserControl>

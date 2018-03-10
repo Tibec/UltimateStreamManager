@@ -1,0 +1,145 @@
+﻿<Controls:MetroWindow x:Class="UltimateStreamMgr.View.PlayerDatabase.PlayerDatabaseWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+        xmlns:local="clr-namespace:UltimateStreamMgr.View.PlayerDatabase"
+        xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+        GlowBrush="{DynamicResource AccentColorBrush}"
+        mc:Ignorable="d" x:Name="managePlayer"
+        Title="Gestion des joueurs" Height="348" Width="444">
+    <Controls:MetroWindow.DataContext>
+        <vm:PlayerDatabaseViewModel />
+    </Controls:MetroWindow.DataContext>
+    <Controls:MetroWindow.Flyouts>
+        <Controls:FlyoutsControl x:Name="flyout">
+            <Controls:Flyout              
+                 Controls:ControlsHelper.ContentCharacterCasing="Upper"
+                 IsModal="True"
+                 Theme="Dark"
+                 AreAnimationsEnabled="True"
+                 Header="Détails joueur"
+                 IsOpen="{Binding EditPanelOpen}"
+                 Position="Right">
+                <local:EditPlayerControl />
+            </Controls:Flyout>
+        </Controls:FlyoutsControl>
+    </Controls:MetroWindow.Flyouts>
+    <Grid Margin="5">
+        <TabControl>
+            <TabItem Header="Players">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <TextBox 
+                        Text="{Binding SearchPlayer, UpdateSourceTrigger=PropertyChanged}"
+                        Controls:TextBoxHelper.Watermark="Search"
+                        Controls:TextBoxHelper.UseFloatingWatermark="True"
+                        Controls:TextBoxHelper.ClearTextButton="True" />
+                    <ListBox ItemsSource="{Binding PlayersView}" Grid.Row="1" x:Name="playerList" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Height="30">
+                                    <Button Height="30" Width="30"
+                                            DockPanel.Dock="Right" 
+                                            Command="{Binding DataContext.DeletePlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding }"
+                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                        <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
+                                    </Button>
+                                    <Button Height="30" Width="30" 
+                                            DockPanel.Dock="Right" 
+                                            Command="{Binding DataContext.EditPlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding }"
+                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                        <iconPacks:PackIconModern Height="10" Width="10" Kind="Edit"/>
+                                    </Button>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
+
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <DockPanel Grid.Row="2">
+                        <Separator DockPanel.Dock="Top"/>
+                        <Button DockPanel.Dock="Left" 
+                            ToolTip="Synchronisé avec le bracket" 
+                            Height="40" Width="40" 
+                            Command="{Binding BracketSynchroCommand}"
+                            Style="{DynamicResource MetroCircleButtonStyle}">
+                            <iconPacks:PackIconModern Kind="Refresh"/>
+                        </Button>
+                        <Button
+                            ToolTip="Vider la base de joueurs"
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}">
+                            <iconPacks:PackIconEntypo Kind="Trash"/>
+                        </Button>
+                        <Button 
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}"
+                            ToolTip="Ajouter un joueur"
+                            Command="{Binding AddPlayerCommand}">
+                            <iconPacks:PackIconModern Kind="Add"/>
+                        </Button>
+                    </DockPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Teams">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition />
+                        <RowDefinition Height="50" />
+                    </Grid.RowDefinitions>
+                    <TextBox 
+                        Controls:TextBoxHelper.Watermark="Search"
+                        Controls:TextBoxHelper.UseFloatingWatermark="True"
+                        Controls:TextBoxHelper.ClearTextButton="True" />
+                    <ListBox ItemsSource="{Binding Teams}" Grid.Row="1" >
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <DockPanel Height="30">
+                                    <Button Height="30" Width="30"
+                                            DockPanel.Dock="Right" 
+                                            Command="{Binding DataContext.DeleteTeamCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding }"
+                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                        <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
+                                    </Button>
+                                    <Button Height="30" Width="30" 
+                                            DockPanel.Dock="Right" 
+                                            Command="{Binding DataContext.EditTeamCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
+                                            CommandParameter="{Binding }"
+                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                        <iconPacks:PackIconModern Height="10" Width="10" Kind="Edit"/>
+                                    </Button>
+                                    <TextBlock VerticalAlignment="Center" Text="{Binding ShortName}"/>
+
+                                </DockPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <DockPanel Grid.Row="2">
+                        <Separator DockPanel.Dock="Top"/>
+                        <Button
+                            ToolTip="Supprimer toute les teams"
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}">
+                            <iconPacks:PackIconEntypo Kind="Trash"/>
+                        </Button>
+                        <Button 
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}"
+                            ToolTip="Ajouter une team"
+                            Command="{Binding AddPlayerCommand}">
+                            <iconPacks:PackIconModern Kind="Add"/>
+                        </Button>
+                    </DockPanel>
+
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Controls:MetroWindow>

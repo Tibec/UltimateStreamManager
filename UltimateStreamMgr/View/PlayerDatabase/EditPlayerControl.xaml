@@ -1,0 +1,170 @@
+﻿<UserControl             
+    x:Name="editPlayerControl"
+    x:Class="UltimateStreamMgr.View.PlayerDatabase.EditPlayerControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+    xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+    xmlns:local="clr-namespace:UltimateStreamMgr.View.PlayerDatabase"
+    xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+    mc:Ignorable="d">
+    <UserControl.DataContext>
+        <vm:EditPlayerViewModel/>
+    </UserControl.DataContext>
+    <ScrollViewer>
+        <StackPanel Margin="2" Orientation="Vertical">
+            <Grid Margin="2" Grid.IsSharedSizeScope="True">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="LabelsColumn" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Grid.Column="0"
+                           Margin="2"
+                           VerticalAlignment="Center"
+                           Text="Nom du joueur : " />
+                <TextBox Grid.Row="0"
+                         Text="{Binding Player.Name}"
+                         Grid.Column="1"
+                         Margin="2" />
+
+            </Grid>
+
+            <Controls:MetroAnimatedTabControl 
+                Margin="2"
+                Controls:TabControlHelper.Underlined="TabPanel">
+                <TabItem Header="General">
+                    <Grid Margin="2" Grid.IsSharedSizeScope="True">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelsColumn" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="2"
+                            VerticalAlignment="Center"
+                            Text="Team : " />
+                        <ComboBox 
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            ItemsSource="{Binding TeamList}"
+                            IsEditable="True"
+                            Controls:TextBoxHelper.ClearTextButton="True"
+                            DisplayMemberPath="ShortName"
+                            Text="{Binding NewTeam, UpdateSourceTrigger=LostFocus}"
+                            SelectedItem="{Binding Path=Player.Team}"
+                            Margin="2" />
+
+                        <TextBlock 
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="2"
+                            VerticalAlignment="Center"
+                            Text="Pays : " />
+                        <ComboBox 
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            DisplayMemberPath="FullName"
+                            Controls:TextBoxHelper.ClearTextButton="True"
+                            ItemsSource="{Binding CountryList}"
+                            SelectedItem="{Binding Path=Player.Country}"
+                            Margin="2" />
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Social">
+                    <Grid Margin="2" Grid.IsSharedSizeScope="True">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelsColumn" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="2"
+                            VerticalAlignment="Center"
+                            Text="Twitter : " />
+                        <TextBox 
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Text="{Binding Path=Player.Twitter}"
+                            Margin="2" />
+
+                        <TextBlock 
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Margin="2"
+                            VerticalAlignment="Center"
+                            Text="Twitch : " />
+                        <TextBox 
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="2" 
+                            Text="{Binding Path=Player.Twitch}"/>
+                    </Grid>
+                </TabItem>
+                <TabItem Header="Extras">
+                    <Grid Margin="2" Grid.IsSharedSizeScope="True">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" SharedSizeGroup="LabelsColumn" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <TextBlock 
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Margin="2"
+                            VerticalAlignment="Center"
+                            Text="Smash GG ID : " />
+                        <TextBox 
+                            Grid.Row="0"
+                            IsEnabled="False"
+                            Grid.Column="1"
+                            Text="{Binding Path=Player.SmashggId}"
+                            Margin="2" />
+
+                    </Grid>
+                </TabItem>
+            </Controls:MetroAnimatedTabControl>
+            <StackPanel
+                Orientation="Horizontal"
+                FlowDirection="RightToLeft"
+                Margin="2"
+                >
+                <Button 
+                    Command="{Binding SavePlayerCommand}"
+                    Margin="2"
+                    Width="100"
+                    Content="Sauvegarder"
+                    Controls:ControlsHelper.ContentCharacterCasing="Normal"
+                    Style="{DynamicResource AccentedSquareButtonStyle}" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>

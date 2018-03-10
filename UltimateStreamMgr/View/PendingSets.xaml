@@ -1,0 +1,76 @@
+﻿<UserControl x:Class="UltimateStreamMgr.View.PendingSets"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
+             xmlns:qc="http://QuickConverter.CodePlex.com/"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:local="clr-namespace:UltimateStreamMgr.View"
+             xmlns:helper="clr-namespace:UltimateStreamMgr.Helpers"
+             mc:Ignorable="d"
+             d:DesignHeight="292.869" d:DesignWidth="209.338">
+    <UserControl.DataContext>
+        <vm:PendingSetsViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
+    </UserControl.Resources>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Margin="0" FontSize="30" Text="Pending sets" />
+        <TextBlock DockPanel.Dock="Top" Visibility="{qc:Binding '$P.Count == 0 ? Visibility.Visible : Visibility.Collapsed', P={Binding PendingSets, Mode=TwoWay}}" Text="Aucun set en attente." />
+        <ListBox DockPanel.Dock="Top" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding PendingSets, Mode=TwoWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Grid ClipToBounds="True">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="30"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel ClipToBounds="True" Grid.ColumnSpan="2">
+                            <WrapPanel Visibility="{qc:Binding '$P == true ? Visibility.Collapsed : Visibility.Visible', P={Binding isDouble} }">
+                                <TextBlock FontSize="18" Text="{Binding Opponent1.Name}" />
+                                <TextBlock FontSize="18" Text=" vs "/>
+                                <TextBlock FontSize="18" Text="{Binding Opponent2.Name}" />
+                            </WrapPanel>
+                            <WrapPanel Visibility="{qc:Binding '$P == false ? Visibility.Collapsed : Visibility.Visible', P={Binding isDouble} }">
+		                        <TextBlock FontSize="18" Text="{Binding Opponent1.Name}" />
+                                <TextBlock FontSize="18" Text="/" />
+                                <TextBlock FontSize="18" Text="{Binding Opponent3.Name}" />
+                                <TextBlock FontSize="18" Text=" vs "/>
+                                <TextBlock FontSize="18" Text="{Binding Opponent2.Name}" />
+                                <TextBlock FontSize="18" Text="/" />
+                                <TextBlock FontSize="18" Text="{Binding Opponent4.Name}" />
+							</WrapPanel>
+                            <TextBlock FontSize="14" Text="{Binding RoundName}"/>
+                        </StackPanel>
+
+                        <Button x:Name="startBtn"
+                                Width="30" 
+                                Height="30" 
+                                Command="{Binding Data.StartSetCommand, Source={StaticResource proxy}}"
+                                CommandParameter="{Binding}"
+                                Grid.Column="1">
+                            <Button.Style>
+                                <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MetroCircleButtonStyle}">
+                                    <Setter Property="Visibility" Value="Hidden" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsMouseOver}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type ListBoxItem}},Path=IsSelected}" Value="True">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+                            <Button.Content>
+                                <iconPacks:PackIconModern Height="10" Width="10" Kind="ControlPlay" />
+                            </Button.Content>
+                        </Button>
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+    </DockPanel>
+</UserControl>
