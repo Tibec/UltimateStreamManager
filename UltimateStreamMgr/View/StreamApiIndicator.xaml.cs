@@ -15,13 +15,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UltimateStreamMgr.View.Controls;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace UltimateStreamMgr.View
 {
     /// <summary>
     /// Logique d'interaction pour ApiIndicator.xaml
     /// </summary>
-    public partial class StreamApiIndicator : UserControl
+    public partial class StreamApiIndicator : LayoutAnchorable
     {
         public StreamApiIndicator()
         {
@@ -31,13 +32,13 @@ namespace UltimateStreamMgr.View
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             MetroWindow window = Application.Current.MainWindow as MetroWindow;
-            await window.ShowMetroDialogAsync(Resources["EditChannelDialog"] as CustomDialog, new MetroDialogSettings { ColorScheme = MetroDialogColorScheme.Accented });
+            await window.ShowMetroDialogAsync(container.Resources["EditChannelDialog"] as CustomDialog, new MetroDialogSettings { ColorScheme = MetroDialogColorScheme.Accented });
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             MetroWindow window = Application.Current.MainWindow as MetroWindow;
-            await window.HideMetroDialogAsync(Resources["EditChannelDialog"] as CustomDialog);
+            await window.HideMetroDialogAsync(container.Resources["EditChannelDialog"] as CustomDialog);
         }
     }
 }

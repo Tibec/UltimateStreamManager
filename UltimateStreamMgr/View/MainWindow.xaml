@@ -6,11 +6,18 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:UltimateStreamMgr.View"
-        xmlns:wpfext="http://schemas.xceed.com/wpf/xaml/toolkit"
-        xmlns:dgs="clr-namespace:UltimateStreamMgr.View.Controls"
+        xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+        xmlns:theme="clr-namespace:Xceed.Wpf.AvalonDock.Themes;assembly=Xceed.Wpf.AvalonDock.Themes.Aero"
         mc:Ignorable="d" Background="WhiteSmoke"
         GlowBrush="{DynamicResource AccentColorBrush}"
         Title="Ultimate Stream Manager" Height="650" Width="800">
+    <!--
+        DataContext is set in code behind for reasons.
+    
+    <Controls:MetroWindow.DataContext>
+        <vm:MainViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"></vm:MainViewModel>
+    </Controls:MetroWindow.DataContext>
+    -->
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button Click="Button_Click">
@@ -27,30 +34,53 @@
             </Button>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="200" />
-        </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="1" Grid.RowSpan="2">
-            <DockPanel >
-                <local:StreamApiIndicator DockPanel.Dock="Top" Margin="5"/>
-                <local:RunningSet DockPanel.Dock="Top" Margin="5"/>
-                <local:Casters DockPanel.Dock="Top" Margin="5"  />
-                <local:CustomKeys DockPanel.Dock="Left" Margin="5" />
-            </DockPanel>
-        </StackPanel>
-
-        <Grid Grid.Column="1" Grid.Row="1" Grid.RowSpan="2">
-            <DockPanel>
-                <local:Replay Margin="5" DockPanel.Dock="Bottom" />
-                <local:PendingSets Margin="5" DockPanel.Dock="Bottom"/>
-            </DockPanel>
-        </Grid>
-    </Grid>
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Window">
+                <MenuItem Header="test"/>
+            </MenuItem>
+        </Menu>
+        <TextBox
+            Visibility="Collapsed"
+            x:Name="serializedDock" 
+            DockPanel.Dock="Top"
+            Text="{Binding DockContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+        <xcad:DockingManager 
+            DockPanel.Dock="Top"
+            x:Name="dockMgr"
+            AllowMixedOrientation="True" 
+            LayoutChanged="dockMgr_LayoutChanged"
+            
+            
+            >
+            <xcad:DockingManager.Theme>
+                <theme:AeroTheme />
+            </xcad:DockingManager.Theme>
+            <xcad:LayoutRoot>
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutAnchorablePaneGroup Orientation="Vertical">
+                        <xcad:LayoutAnchorablePane DockHeight="125">
+                            <local:StreamApiIndicator />
+                        </xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorablePane>
+                            <local:RunningSet/>
+                        </xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorablePane DockHeight="125">
+                            <local:Casters  />
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                    <xcad:LayoutAnchorablePaneGroup  DockWidth="250" Orientation="Vertical">
+                        <xcad:LayoutAnchorablePane DockWidth="250" >
+                            <local:PendingSets/>
+                        </xcad:LayoutAnchorablePane>
+                        <xcad:LayoutAnchorablePane>
+                            <local:CustomKeys  />
+                            <!-- <local:Replay Margin="5" DockPanel.Dock="Bottom" /> -->
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                </xcad:LayoutPanel>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+        
+    </DockPanel>
 </Controls:MetroWindow>

@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace UltimateStreamMgr.View
 {
     /// <summary>
     /// Logique d'interaction pour RunningSet.xaml
     /// </summary>
-    public partial class RunningSet : UserControl
+    public partial class RunningSet : LayoutAnchorable
     {
         public RunningSet()
         {

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UltimateStreamMgr.View.Casters"
+﻿<xcad:LayoutAnchorable x:Class="UltimateStreamMgr.View.Casters"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,14 +8,13 @@
              xmlns:local="clr-namespace:UltimateStreamMgr.View"
              xmlns:custom="clr-namespace:UltimateStreamMgr.View.Controls"
              xmlns:wpfext="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:dgs="clr-namespace:UltimateStreamMgr.View.Controls"
-             mc:Ignorable="d" 
-             d:DesignHeight="96.585" d:DesignWidth="428.049">
-    <UserControl.DataContext>
-        <vm:CastersViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
-    </UserControl.DataContext>
+             mc:Ignorable="d" Title="Casters">
     <StackPanel>
-        <TextBlock Text="Casters" FontSize="30"/>
+        <StackPanel.DataContext>
+            <vm:CastersViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
+        </StackPanel.DataContext>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -24,6 +23,7 @@
                 <ColumnDefinition Width="115"/>
             </Grid.ColumnDefinitions>
             <custom:PlayerBox 
+                MinWidth="50"
                 Margin="5"
                 Watermark="Caster 1"
                 Grid.Column="0"
@@ -39,6 +39,7 @@
                 <iconPacks:PackIconModern Kind="ArrowLeftRight" />
             </Button>
             <custom:PlayerBox 
+                MinWidth="50"
                 Margin="5"
                 Watermark="Caster 2"
                 Grid.Column="2"
@@ -54,4 +55,4 @@
 
         </Grid>
     </StackPanel>
-</UserControl>
+</xcad:LayoutAnchorable>

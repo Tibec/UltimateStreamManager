@@ -4,9 +4,11 @@ using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,6 +18,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UltimateStreamMgr.ViewModel;
+using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 namespace UltimateStreamMgr.View
 {
@@ -30,6 +34,13 @@ namespace UltimateStreamMgr.View
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
             MetroDialogOptions.ColorScheme = MetroDialogColorScheme.Accented;
             Messenger.Default.Register<NotificationMessage>(this, HandleMessage);
+            Messenger.Default.Register<string>(this, HandleDockChanged);
+            DataContext = new MainViewModel();
+
+            Timer t = new Timer(1000);
+            t.AutoReset = true;
+            t.Elapsed += dockMgr_LayoutChanged;
+            t.Start();
         }
 
         private void HandleMessage(NotificationMessage obj)
@@ -60,6 +71,35 @@ namespace UltimateStreamMgr.View
             w.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             w.Owner = this;
             w.Show();
+        }
+
+        private void dockMgr_LayoutChanged(object sender, EventArgs e)
+        {
+            if (serializedDock == null)
+                return;
+            Dispatcher.Invoke(() =>
+            {
+                var serializer = new XmlLayoutSerializer(dockMgr);
+                using (StringWriter textWriter = new StringWriter())
+                {
+                    serializer.Serialize(textWriter);
+                    serializedDock.Text = textWriter.ToString();
+                }
+            });
+        }
+
+        private void HandleDockChanged(string obj)
+        {
+            var serializer = new XmlLayoutSerializer(dockMgr);
+            using (TextReader reader = new StringReader(obj))
+            {
+                serializer.Deserialize(reader);
+            }
+        }
+
+        private void test()
+        {
+
         }
     }
 }

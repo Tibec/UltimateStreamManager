@@ -1,54 +1,54 @@
-﻿<UserControl x:Class="UltimateStreamMgr.View.CustomKeys"
+﻿<xcad:LayoutAnchorable  x:Class="UltimateStreamMgr.View.CustomKeys"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:UltimateStreamMgr.View"
+             xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:helper="clr-namespace:UltimateStreamMgr.Helpers"
-             mc:Ignorable="d" 
-             d:DesignHeight="120" d:DesignWidth="427.317">
-    <UserControl.DataContext>
-        <vm:CustomKeysViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
-    </UserControl.DataContext>
-    <UserControl.Resources>
-        <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
-    </UserControl.Resources>
-    <StackPanel >
-        <TextBlock Text="Others" FontSize="30"/>
-        <DataGrid CanUserAddRows="True" ItemsSource="{Binding Path=Keys, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False">
-            <DataGrid.Columns>
-                <DataGridTextColumn  
+                        ScrollViewer.VerticalScrollBarVisibility="Visible"
+             mc:Ignorable="d" Title="Others info">
+    <Grid >
+        <Grid.DataContext>
+            <vm:CustomKeysViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
+        </Grid.DataContext>
+        <Grid.Resources>
+            <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
+        </Grid.Resources>
+            <DataGrid CanUserAddRows="True" ItemsSource="{Binding Path=Keys, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False">
+                <DataGrid.Columns>
+                    <DataGridTextColumn  
                     Binding="{Binding Name, UpdateSourceTrigger=PropertyChanged}" 
                     IsReadOnly="False"
                     Header="Clé"
                     CanUserResize="False" 
                     Width="*"/>
-                <DataGridTextColumn  
+                    <DataGridTextColumn  
                     Binding="{Binding Value, UpdateSourceTrigger=PropertyChanged}" 
                     ClipboardContentBinding="{x:Null}" 
                     Header="Valeur"
                     HeaderStringFormat=""
                     CanUserResize="False" 
                     Width="3*"/>
-                <DataGridTemplateColumn  
+                    <DataGridTemplateColumn  
                     CanUserResize="False" 
                     IsReadOnly="False"
                     Width="30">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Button 
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button 
                                 Height="30" Width="30" 
                                 DockPanel.Dock="Right" 
                                 Command="{Binding Data.DeleteKeyCommand, Source={StaticResource proxy}}"
                                 CommandParameter="{Binding }"
                                 Style="{DynamicResource MetroCircleButtonStyle}">
-                                <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
-                            </Button>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
-    </StackPanel>
-</UserControl>
+                                    <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
+                                </Button>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+    </Grid>
+</xcad:LayoutAnchorable>

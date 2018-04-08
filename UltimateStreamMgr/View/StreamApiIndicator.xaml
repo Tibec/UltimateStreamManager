@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UltimateStreamMgr.View.StreamApiIndicator"
+﻿<xcad:LayoutAnchorable  x:Class="UltimateStreamMgr.View.StreamApiIndicator"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -8,61 +8,61 @@
              xmlns:local="clr-namespace:UltimateStreamMgr.View"
              xmlns:helper="clr-namespace:UltimateStreamMgr.Helpers"
              xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+             xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:qc="http://QuickConverter.CodePlex.com/"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d" 
-             Background="#FF693DA5">
-    <UserControl.DataContext>
-        <vm:StreamApiIndicatorViewModel />
-    </UserControl.DataContext>
-    <UserControl.Resources>
-        <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
-        <Dialogs:CustomDialog 
+             mc:Ignorable="d" Title="Stream status">
+    <Grid Background="#FF693DA5" x:Name="container">
+        <Grid.DataContext>
+            <vm:StreamApiIndicatorViewModel />
+        </Grid.DataContext>
+        <Grid.Resources>
+            <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
+            <Dialogs:CustomDialog 
             x:Key="EditChannelDialog" 
             Title="Edit channel info"
             x:Name="EditChannelDialog">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="2*"/>
-                </Grid.ColumnDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock 
+                    <TextBlock 
                     Margin="3" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center"
                     Text="Titre :" />
-                <TextBlock             
+                    <TextBlock             
                     Margin="3" 
                     Grid.Row="1"
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center"
                     Text="Jeu :" />
 
-                <TextBox 
+                    <TextBox 
                     Margin="3"
                     Grid.Column="1"
                     Text="{Binding Data.EditName, Source={StaticResource proxy}}" />
-                <ComboBox 
+                    <ComboBox 
                     Margin="3"
                     Grid.Row="1"
                     Grid.Column="1" DisplayMemberPath="Name"
                     ItemsSource="{Binding Data.Games, Source={StaticResource proxy}}"
                     SelectedItem="{Binding Data.EditGame, Source={StaticResource proxy}}" />
 
-                <WrapPanel ItemWidth="80" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
-                    <Button Content="Annuler" Click="Button_Click_1" Margin="3"/>
-                    <Button Content="Valider" Click="Button_Click_1" Command="{Binding Data.EditChannelCommand, Source={StaticResource proxy}}" Margin="3"/>
-                </WrapPanel>
-            </Grid>
-        </Dialogs:CustomDialog>
-    </UserControl.Resources>
-    <Grid>
+                    <WrapPanel ItemWidth="80" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
+                        <Button Content="Annuler" Click="Button_Click_1" Margin="3"/>
+                        <Button Content="Valider" Click="Button_Click_1" Command="{Binding Data.EditChannelCommand, Source={StaticResource proxy}}" Margin="3"/>
+                    </WrapPanel>
+                </Grid>
+            </Dialogs:CustomDialog>
+        </Grid.Resources>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="58"/>
             <ColumnDefinition Width="142*"/>
@@ -122,4 +122,4 @@
             </StackPanel>
         </StackPanel>
     </Grid>
-</UserControl>
+</xcad:LayoutAnchorable>

@@ -104,6 +104,8 @@ namespace UltimateStreamMgr.Model
             set { _replay = value; OnStreamSettingsChanged(); }
         }
 
+        public WindowSettings Window { get; set; } = new WindowSettings();
+
         #region Events
 
         private void OnOutputSettingsChanged()
@@ -159,6 +161,13 @@ namespace UltimateStreamMgr.Model
         public string TemplateFolder { get; set; }
 
         public List<CustomKey> SavedKeys;
+    }
+
+    public class WindowSettings
+    {
+        public string DockDisposition { get; set; } 
+        public int AppHeight { get; set; }
+        public int AppWidth { get; set; }
     }
 
     public enum OutputFormat

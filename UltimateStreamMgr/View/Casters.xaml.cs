@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Wpf.AvalonDock.Layout;
 
 namespace UltimateStreamMgr.View
 {
     /// <summary>
     /// Logique d'interaction pour Casters.xaml
     /// </summary>
-    public partial class Casters : UserControl
+    public partial class Casters : LayoutAnchorable
     {
         public Casters()
         {
