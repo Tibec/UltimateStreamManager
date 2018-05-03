@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UltimateStreamMgr.View.Controls;
+using UltimateStreamMgr.ViewModel;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace UltimateStreamMgr.View
@@ -22,7 +23,7 @@ namespace UltimateStreamMgr.View
     /// <summary>
     /// Logique d'interaction pour ApiIndicator.xaml
     /// </summary>
-    public partial class StreamApiIndicator : LayoutAnchorable
+    public partial class StreamApiIndicator : UserControl
     {
         public StreamApiIndicator()
         {

@@ -16,7 +16,7 @@ using UltimateStreamMgr.Model;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class ReplayViewModel : ViewModelBase
+    class ReplayViewModel : DockWindowViewModel
     {
         private string _watchFolder;
         private string _outputFolder;
@@ -24,6 +24,8 @@ namespace UltimateStreamMgr.ViewModel
 
         public ReplayViewModel()
         {
+            Title = "Replay";
+
             ClearPlaylistCommand = new RelayCommand(() => ClearPlaylist());
 
             _timer = new Timer(500);

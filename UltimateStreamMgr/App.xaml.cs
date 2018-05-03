@@ -1,9 +1,13 @@
-﻿using MahApps.Metro;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
+using System.ComponentModel.Composition.Hosting;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Navigation;
@@ -40,6 +44,16 @@ namespace UltimateStreamMgr
             }
 
             MainWindow.Show();
+
+            if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+            {
+                Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
+            }
+            else
+            {
+                (MainWindow.DataContext as MainViewModel).ResetLayout.Execute(null);
+            }
+
         }
 
 

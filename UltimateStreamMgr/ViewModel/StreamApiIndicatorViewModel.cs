@@ -15,13 +15,15 @@ using UltimateStreamMgr.Model.Api;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class StreamApiIndicatorViewModel : ViewModelBase
+    class StreamApiIndicatorViewModel : DockWindowViewModel
     {
         private StreamApi _apiLink;
         private Timer _refreshInfo;
 
-        public StreamApiIndicatorViewModel()
+        public StreamApiIndicatorViewModel() : base ()
         {
+            Title = "Stream Status";
+
             Configuration.Instance.StreamSettingsChanged += RefreshApiLink;
             RefreshApiLink();
 

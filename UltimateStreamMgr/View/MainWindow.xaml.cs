@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
@@ -19,6 +20,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UltimateStreamMgr.ViewModel;
+using Xceed.Wpf.AvalonDock.Layout;
 using Xceed.Wpf.AvalonDock.Layout.Serialization;
 
 namespace UltimateStreamMgr.View
@@ -28,6 +30,7 @@ namespace UltimateStreamMgr.View
     /// </summary>
     public partial class MainWindow : MetroWindow
     {
+
         public MainWindow()
         {
             InitializeComponent();
@@ -91,15 +94,38 @@ namespace UltimateStreamMgr.View
         private void HandleDockChanged(string obj)
         {
             var serializer = new XmlLayoutSerializer(dockMgr);
+            serializer.LayoutSerializationCallback += LayoutDeserialization;
             using (TextReader reader = new StringReader(obj))
             {
                 serializer.Deserialize(reader);
             }
         }
-
-        private void test()
+        
+        private void LayoutDeserialization(object sender, LayoutSerializationCallbackEventArgs args)
         {
-
+            try
+            {
+                Type t = Type.GetType(args.Model.ContentId);
+                DockWindowViewModel vm = null;
+                foreach(var anchorable in dockMgr.AnchorablesSource)
+                {
+                    if (anchorable.GetType() == t)
+                    {
+                        vm = anchorable as DockWindowViewModel;
+                        vm.IsVisible = args.Model.IsEnabled;
+                    }
+                }
+                
+                // found a match - return it
+                if (vm != null)
+                    args.Content = vm;
+                else
+                    args.Cancel = true;
+            }
+            catch (Exception exp)
+            {
+                Console.WriteLine(exp.Message);
+            }
         }
     }
 }

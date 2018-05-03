@@ -11,7 +11,7 @@ using UltimateStreamMgr.Model.Api;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class PendingSetsViewModel : ViewModelBase
+    class PendingSetsViewModel : DockWindowViewModel
     {
         private List<Player> _players;
         private BracketApi _api;
@@ -19,6 +19,8 @@ namespace UltimateStreamMgr.ViewModel
 
         public PendingSetsViewModel()
         {
+            Title = "Pending Set";
+
             Configuration.Instance.BracketSettingsChanged += RefreshApiLink;
             RefreshApiLink();
 

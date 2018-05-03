@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UltimateStreamMgr.ViewModel;
 using Xceed.Wpf.AvalonDock.Layout;
 
 namespace UltimateStreamMgr.View
@@ -19,7 +20,7 @@ namespace UltimateStreamMgr.View
     /// <summary>
     /// Logique d'interaction pour Casters.xaml
     /// </summary>
-    public partial class Casters : LayoutAnchorable
+    public partial class Casters : UserControl
     {
         public Casters()
         {

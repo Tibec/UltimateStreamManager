@@ -1,7 +1,13 @@
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.IO;
+using System.Reflection;
 using UltimateStreamMgr.Model;
 
 namespace UltimateStreamMgr.ViewModel
@@ -10,19 +16,42 @@ namespace UltimateStreamMgr.ViewModel
     {
         public MainViewModel()
         {
-            if(!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+            ResetLayout = new RelayCommand(() => DoResetLayout());
+
+            Windows = new ObservableCollection<DockWindowViewModel>();
+
+            Windows.Add(new StreamApiIndicatorViewModel());
+            Windows.Add(new PendingSetsViewModel());
+            Windows.Add(new RunningSetViewModel());
+            Windows.Add(new CustomKeysViewModel());
+            Windows.Add(new CastersViewModel());
+            /*
+            if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
             {
                 Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
             }
+            */
         }
 
-
-        private List<ViewModelBase> _windows = null;
-        public List<ViewModelBase> Windows
+        public RelayCommand ResetLayout { get; set; } 
+        private void DoResetLayout()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UltimateStreamMgr.Resources.DefaultLayout.xml"))
+            {
+                string xml = new StreamReader(stream).ReadToEnd();
+                Messenger.Default.Send(xml);
+            }
+        }
+        private ObservableCollection<DockWindowViewModel> _windows;
+        public ObservableCollection<DockWindowViewModel> Windows
         {
             get { return _windows; }
-            set { Set("Windows", ref _windows, value); }
+            set
+            {
+                Set("Windows", ref _windows, value);
+            }
         }
+
 
         private string _dockContent;
         public string DockContent

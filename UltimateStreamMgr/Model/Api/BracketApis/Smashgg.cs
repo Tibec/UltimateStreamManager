@@ -117,7 +117,9 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
                         return sets;
                     dynamic data = JsonConvert.DeserializeObject(result);
                     var setlist = data.data.entities.sets;
-                    if (setlist.Type == JTokenType.Array)
+                    if(setlist == null)
+                    { }
+                    else if (setlist.Type == JTokenType.Array)
                     {
                         foreach (dynamic set in setlist)
                         {

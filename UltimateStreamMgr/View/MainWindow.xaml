@@ -9,6 +9,7 @@
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
         xmlns:theme="clr-namespace:Xceed.Wpf.AvalonDock.Themes;assembly=Xceed.Wpf.AvalonDock.Themes.Aero"
         mc:Ignorable="d" Background="WhiteSmoke"
+        xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
         GlowBrush="{DynamicResource AccentColorBrush}"
         Title="Ultimate Stream Manager" Height="650" Width="800">
     <!--
@@ -18,6 +19,9 @@
         <vm:MainViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"></vm:MainViewModel>
     </Controls:MetroWindow.DataContext>
     -->
+    <Controls:MetroWindow.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Button Click="Button_Click">
@@ -35,9 +39,19 @@
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Window">
-                <MenuItem Header="test"/>
+        <Menu x:Name="viewMenu" DockPanel.Dock="Top" >
+            <MenuItem Header="Windows" ItemsSource="{Binding Windows}">
+                <MenuItem.ItemContainerStyle>
+                    <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
+                        <Setter Property="Command" Value="{Binding ToggleCommand}" />
+                        <Setter Property="Header" Value="{Binding Title}" />
+                        <Setter Property="IsCheckable" Value="True" />
+                        <Setter Property="IsChecked" Value="{Binding IsVisible}" />
+                    </Style>
+                </MenuItem.ItemContainerStyle>
+            </MenuItem>
+            <MenuItem Header="Layout">
+                <MenuItem Header="Restore default layout" Command="{Binding ResetLayout}"/>
             </MenuItem>
         </Menu>
         <TextBox
@@ -49,35 +63,44 @@
             DockPanel.Dock="Top"
             x:Name="dockMgr"
             AllowMixedOrientation="True" 
-            LayoutChanged="dockMgr_LayoutChanged"
-            
-            
-            >
+            AnchorablesSource="{Binding Windows}"
+            LayoutChanged="dockMgr_LayoutChanged">
+
             <xcad:DockingManager.Theme>
                 <theme:AeroTheme />
             </xcad:DockingManager.Theme>
+
+            <xcad:DockingManager.LayoutUpdateStrategy>
+                <vm:LayoutUpdateStrategy />
+            </xcad:DockingManager.LayoutUpdateStrategy>
+            
+            <xcad:DockingManager.Resources>
+                <DataTemplate DataType="{x:Type vm:StreamApiIndicatorViewModel}">
+                    <local:StreamApiIndicator />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:CastersViewModel}">
+                    <local:Casters />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:CustomKeysViewModel}">
+                    <local:CustomKeys />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:RunningSetViewModel}">
+                    <local:RunningSet />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:PendingSetsViewModel}">
+                    <local:PendingSets />
+                </DataTemplate>
+            </xcad:DockingManager.Resources>
+            <xcad:DockingManager.LayoutItemContainerStyle>
+                <Style TargetType="{x:Type xcad:LayoutAnchorableItem}" >
+                    <Setter Property="Title" Value="{Binding Model.Title}" />
+                    <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
+                    <Setter Property="ContentId" Value="{Binding Model.ContentId}" />
+                </Style>
+            </xcad:DockingManager.LayoutItemContainerStyle>
             <xcad:LayoutRoot>
                 <xcad:LayoutPanel Orientation="Horizontal">
-                    <xcad:LayoutAnchorablePaneGroup Orientation="Vertical">
-                        <xcad:LayoutAnchorablePane DockHeight="125">
-                            <local:StreamApiIndicator />
-                        </xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorablePane>
-                            <local:RunningSet/>
-                        </xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorablePane DockHeight="125">
-                            <local:Casters  />
-                        </xcad:LayoutAnchorablePane>
-                    </xcad:LayoutAnchorablePaneGroup>
-                    <xcad:LayoutAnchorablePaneGroup  DockWidth="250" Orientation="Vertical">
-                        <xcad:LayoutAnchorablePane DockWidth="250" >
-                            <local:PendingSets/>
-                        </xcad:LayoutAnchorablePane>
-                        <xcad:LayoutAnchorablePane>
-                            <local:CustomKeys  />
-                            <!-- <local:Replay Margin="5" DockPanel.Dock="Bottom" /> -->
-                        </xcad:LayoutAnchorablePane>
-                    </xcad:LayoutAnchorablePaneGroup>
+                    <xcad:LayoutAnchorablePane />
                 </xcad:LayoutPanel>
             </xcad:LayoutRoot>
         </xcad:DockingManager>

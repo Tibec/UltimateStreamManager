@@ -12,13 +12,14 @@ using NLog;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class CastersViewModel : ViewModelBase
+    class CastersViewModel : DockWindowViewModel
     {
-
         private Logger log;
 
-        public CastersViewModel()
+        public CastersViewModel() : base()
         {
+            Title = "Casters";
+
             log = LogManager.GetCurrentClassLogger();
 
             PlayerList = new ObservableCollection<Player>(PlayerDatabase.GetAllPlayers());

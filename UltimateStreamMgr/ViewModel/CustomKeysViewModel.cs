@@ -12,10 +12,11 @@ using System.Collections.Specialized;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class CustomKeysViewModel : ViewModelBase
+    class CustomKeysViewModel : DockWindowViewModel
     {
         public CustomKeysViewModel()
         {
+            Title = "Misc Info";
             if(Configuration.Instance.Output.SavedKeys != null)
             {
                 Keys = new ObservableCollection<CustomKey>(Configuration.Instance.Output.SavedKeys);

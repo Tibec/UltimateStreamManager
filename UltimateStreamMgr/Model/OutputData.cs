@@ -37,6 +37,11 @@ namespace UltimateStreamMgr.Model
                 {
                     try
                     {
+                        // for some reasons FileMode.OpenOrCreate flag does not work so, 
+                        // lets create the file manually
+                        if (!File.Exists(outputfile))
+                            File.Create(outputfile);
+
                         using (var fileStream = File.Open(outputfile, FileMode.OpenOrCreate | FileMode.Truncate, FileAccess.Write))
                         {
                             using (StreamWriter sw = new StreamWriter(fileStream))
