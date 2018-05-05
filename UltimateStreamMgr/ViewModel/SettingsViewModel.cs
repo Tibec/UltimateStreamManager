@@ -10,7 +10,7 @@ using UltimateStreamMgr.Model;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class SettingsViewModel : ViewModelBase
+    class SettingsViewModel : BaseViewModel
     {
         public SettingsViewModel()
         {

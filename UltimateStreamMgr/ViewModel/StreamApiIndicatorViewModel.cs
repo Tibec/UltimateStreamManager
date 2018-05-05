@@ -36,6 +36,8 @@ namespace UltimateStreamMgr.ViewModel
             OpenSettingsCommand = new RelayCommand(() => OpenSettings());
 
             Games = new ObservableCollection<Game> { new Game { Name = "Super Smash Bros. for Wii U" } };
+
+            Log.Debug("instance created");
         }
 
         private void RefreshChannelInfo(object sender, ElapsedEventArgs e)

@@ -14,7 +14,7 @@ using System.Windows.Data;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class PlayerDatabaseViewModel : ViewModelBase
+    class PlayerDatabaseViewModel : BaseViewModel
     {
         public PlayerDatabaseViewModel()
         {

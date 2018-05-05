@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    public abstract class DockWindowViewModel : ViewModelBase
+    public abstract class DockWindowViewModel : BaseViewModel
     {
         #region Properties
 

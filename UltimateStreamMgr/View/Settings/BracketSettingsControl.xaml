@@ -31,13 +31,13 @@
             <WrapPanel>
                 <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Lecture des sets en attente" />
                 <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Mise a jour des info" />
-                <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Blablabla" />
+                <CheckBox IsHitTestVisible="False" IsChecked="False" Margin="5" Content="Report des resultats" />
             </WrapPanel>
         </Grid>
         <Separator />
         <!-- Insert here each api control -->
         <local:SmashggSettingsControl Visibility="{Binding ElementName=apiSelector, Path=SelectedValue, 
-            Converter={qc:QuickConverter Convert='((string)$P == \'Twitch\') ? Visibility.Visible : Visibility.Collapsed '}, 
+            Converter={qc:QuickConverter Convert='((string)$P == \'Smash GG\') ? Visibility.Visible : Visibility.Collapsed '}, 
             UpdateSourceTrigger=PropertyChanged}" />
     </StackPanel>
 </UserControl>

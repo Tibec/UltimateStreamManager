@@ -12,7 +12,7 @@ using UltimateStreamMgr.Model;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    public class MainViewModel : ViewModelBase
+    public class MainViewModel : BaseViewModel
     {
         public MainViewModel()
         {

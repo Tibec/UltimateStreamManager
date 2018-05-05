@@ -10,7 +10,7 @@ using UltimateStreamMgr.Model.Api;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class ChatViewModel : ViewModelBase
+    class ChatViewModel : BaseViewModel
     {
         public ChatViewModel()
         {
@@ -29,7 +29,7 @@ namespace UltimateStreamMgr.ViewModel
             }
             catch (Exception e)
             {
-                // No api set
+                Log.Error(e);
             }
         }
 

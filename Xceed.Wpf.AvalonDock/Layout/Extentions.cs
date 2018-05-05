@@ -115,8 +115,8 @@ namespace Xceed.Wpf.AvalonDock.Layout
                 }
             }
 
-            Debug.Fail("Unable to find the side for an element, possible layout problem!");
-            return AnchorSide.Right;
+            //Debug.Fail("Unable to find the side for an element, possible layout problem!");
+            return AnchorSide.Bottom;
         }
 
 

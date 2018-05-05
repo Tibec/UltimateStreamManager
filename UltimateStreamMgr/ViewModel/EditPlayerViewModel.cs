@@ -11,7 +11,7 @@ using UltimateStreamMgr.Model;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class EditPlayerViewModel : ViewModelBase
+    class EditPlayerViewModel : BaseViewModel
     {
         public EditPlayerViewModel()
         {

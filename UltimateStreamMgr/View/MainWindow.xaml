@@ -7,7 +7,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:UltimateStreamMgr.View"
         xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
-        xmlns:theme="clr-namespace:Xceed.Wpf.AvalonDock.Themes;assembly=Xceed.Wpf.AvalonDock.Themes.Aero"
+        xmlns:theme="clr-namespace:AvalonMetroAccent;assembly=AvalonMetroAccent"
         mc:Ignorable="d" Background="WhiteSmoke"
         xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
         GlowBrush="{DynamicResource AccentColorBrush}"
@@ -65,16 +65,15 @@
             AllowMixedOrientation="True" 
             AnchorablesSource="{Binding Windows}"
             LayoutChanged="dockMgr_LayoutChanged">
-
             <xcad:DockingManager.Theme>
-                <theme:AeroTheme />
+                <theme:MetroTheme />
             </xcad:DockingManager.Theme>
-
             <xcad:DockingManager.LayoutUpdateStrategy>
                 <vm:LayoutUpdateStrategy />
             </xcad:DockingManager.LayoutUpdateStrategy>
             
             <xcad:DockingManager.Resources>
+                <!-- Controls -->
                 <DataTemplate DataType="{x:Type vm:StreamApiIndicatorViewModel}">
                     <local:StreamApiIndicator />
                 </DataTemplate>

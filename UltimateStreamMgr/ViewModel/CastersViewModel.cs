@@ -14,13 +14,9 @@ namespace UltimateStreamMgr.ViewModel
 {
     class CastersViewModel : DockWindowViewModel
     {
-        private Logger log;
-
         public CastersViewModel() : base()
         {
             Title = "Casters";
-
-            log = LogManager.GetCurrentClassLogger();
 
             PlayerList = new ObservableCollection<Player>(PlayerDatabase.GetAllPlayers());
             PlayerDatabase.DatabaseContentModified += RefreshPlayers;
@@ -31,7 +27,7 @@ namespace UltimateStreamMgr.ViewModel
 
         private void RefreshPlayers()
         {
-            log.Info("Player database content changed. Updating autocompletion list");
+            Log.Info("Player database content changed. Updating autocompletion list");
             Dispatcher.CurrentDispatcher.Invoke(() => PlayerList = new ObservableCollection<Player>(PlayerDatabase.GetAllPlayers()));
         }
 
