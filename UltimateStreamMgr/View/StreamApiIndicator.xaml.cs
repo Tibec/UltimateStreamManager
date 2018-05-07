@@ -33,13 +33,13 @@ namespace UltimateStreamMgr.View
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
             MetroWindow window = Application.Current.MainWindow as MetroWindow;
-            await window.ShowMetroDialogAsync(container.Resources["EditChannelDialog"] as CustomDialog, new MetroDialogSettings { ColorScheme = MetroDialogColorScheme.Accented });
+            await window.ShowMetroDialogAsync(uc.Resources["EditChannelDialog"] as CustomDialog, new MetroDialogSettings { ColorScheme = MetroDialogColorScheme.Accented });
         }
 
         private async void Button_Click_1(object sender, RoutedEventArgs e)
         {
             MetroWindow window = Application.Current.MainWindow as MetroWindow;
-            await window.HideMetroDialogAsync(container.Resources["EditChannelDialog"] as CustomDialog);
+            await window.HideMetroDialogAsync(uc.Resources["EditChannelDialog"] as CustomDialog);
         }
     }
 }

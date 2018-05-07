@@ -13,8 +13,7 @@ namespace UltimateStreamMgr.Model.Api
         protected Dictionary<StreamCapabilities, bool> _allowedActions = new Dictionary<StreamCapabilities, bool>();
         protected string _channel;
 
-        public Color ControlColor { get; protected set; }
-        public StreamLogo Logo { get; protected set; }
+        public StreamApiInfo ApiInfo { get; protected set; }
 
         public StreamApi(StreamSettings settings) : base()
         {
@@ -50,7 +49,6 @@ namespace UltimateStreamMgr.Model.Api
         public abstract bool IsCorrectlySetup();
 
 
-
         // public virtual
     }
 
@@ -64,11 +62,19 @@ namespace UltimateStreamMgr.Model.Api
     {
         [XmlIgnore]
         public Type Api { get; set; } = null;
+
+        public override string ToString()
+        {
+            return "Aucun";
+        }
     }
 
-    public struct StreamLogo
+    public class StreamApiInfo
     {
-        bool isFontLogo;
-        string logo; // ressourcepath if !isFontLogo
+        public bool isFontLogo { get; set; }
+        // ressourcepath if !isFontLogo
+        public string logo { get; set; }
+        public Brush color { get; set; }
+
     }
 }

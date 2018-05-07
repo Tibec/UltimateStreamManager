@@ -10,10 +10,11 @@ using UltimateStreamMgr.Model.Api;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class ChatViewModel : BaseViewModel
+    class ChatViewModel : DockWindowViewModel
     {
         public ChatViewModel()
         {
+            Title = "Chat";
             Configuration.Instance.StreamSettingsChanged += RefreshApiLink;
             RefreshApiLink();
         }

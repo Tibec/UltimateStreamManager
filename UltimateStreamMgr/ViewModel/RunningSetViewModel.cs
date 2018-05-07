@@ -37,6 +37,8 @@ namespace UltimateStreamMgr.ViewModel
 
             MessengerInstance.Register<Set>(this, StartPendingSet);
 
+            ReportEnabled = BracketData.Instance.IsReportingAvailable;
+
             PlayerList = new ObservableCollection<Player>(PlayerDatabase.GetAllPlayers());
             PlayerDatabase.DatabaseContentModified += RefreshPlayers;
 
@@ -48,7 +50,7 @@ namespace UltimateStreamMgr.ViewModel
             Dispatcher.CurrentDispatcher.Invoke(() => PlayerList = new ObservableCollection<Player>(PlayerDatabase.GetAllPlayers()));
         }
 
-        private async void LoadCharacters()
+        private void LoadCharacters()
         {
             try
             {

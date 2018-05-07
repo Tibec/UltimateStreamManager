@@ -13,19 +13,19 @@
              xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"  >
-    <StackPanel>
-        <StackPanel.DataContext>
+    <DockPanel Margin="5">
+        <DockPanel.DataContext>
             <vm:RunningSetViewModel />
-        </StackPanel.DataContext>
-        <StackPanel.Resources>
+        </DockPanel.DataContext>
+        <DockPanel.Resources>
             <ObjectDataProvider x:Key="enumValues"
             MethodName="GetValues" ObjectType="{x:Type System:Enum}">
                 <ObjectDataProvider.MethodParameters>
                     <x:Type TypeName="vm:SetMode"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-        </StackPanel.Resources>
-        <StackPanel Margin="5">
+        </DockPanel.Resources>
+        <StackPanel Margin="5" DockPanel.Dock="Top">
             <DockPanel>
                 <CheckBox 
                     DockPanel.Dock="Right"
@@ -39,6 +39,27 @@
                 </WrapPanel>
             </DockPanel>
             <Separator Margin="0 5" />
+        </StackPanel>
+        <StackPanel DockPanel.Dock="Bottom">
+            <Separator Height="1" Margin="0,5" Grid.ColumnSpan="2" Grid.Row="5"/>
+            <Grid Grid.Row="6" Grid.ColumnSpan="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Button Command="{Binding ResetCommand}" HorizontalAlignment="Left" Content="Réinitialiser"  Width="120"/>
+                <Button
+                    IsEnabled="{qc:Binding '!$P', P={Binding LiveUpdate}}"
+                    Command="{Binding UpdateCommand}" 
+                    Grid.Column="1" 
+                    Content="Mettre à jour"  
+                    Width="120" />
+                <Button Command="{Binding ReportCommand}" IsEnabled="{Binding ReportEnabled}" HorizontalAlignment="Right" Content="Reporter le set" Grid.Column="2"  Width="120"/>
+            </Grid>
+        </StackPanel>
+        <StackPanel>
+
             <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -204,23 +225,6 @@
                         Grid.RowSpan="2" FlowDirection="RightToLeft"/>
                 </Grid>
             </Grid>
-
-            <Separator Height="1" Margin="0,5" Grid.ColumnSpan="2" Grid.Row="5"/>
-            <Grid Grid.Row="6" Grid.ColumnSpan="2">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <Button Command="{Binding ResetCommand}" HorizontalAlignment="Left" Content="Réinitialiser"  Width="120"/>
-                <Button
-                    IsEnabled="{qc:Binding '!$P', P={Binding LiveUpdate}}"
-                    Command="{Binding UpdateCommand}" 
-                    Grid.Column="1" 
-                    Content="Mettre à jour"  
-                    Width="120" />
-                <Button Command="{Binding ReportCommand}" IsEnabled="{Binding ReportEnabled}" HorizontalAlignment="Right" Content="Reporter le set" Grid.Column="2"  Width="120"/>
-            </Grid>
         </StackPanel>
-    </StackPanel>
+    </DockPanel>
 </UserControl>

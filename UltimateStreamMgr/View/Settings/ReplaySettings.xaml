@@ -9,7 +9,7 @@
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
              xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
              xmlns:qc="http://QuickConverter.CodePlex.com/"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" IsEnabled="False"
              d:DesignHeight="246.8" Background="White" d:DesignWidth="445.6">
     <UserControl.DataContext>
         <vm:ReplaySettingsViewModel />

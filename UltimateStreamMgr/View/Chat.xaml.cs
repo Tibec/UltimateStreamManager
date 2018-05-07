@@ -9,7 +9,7 @@ namespace UltimateStreamMgr.View
     /// <summary>
     /// Interaction logic for Chat.xaml
     /// </summary>
-    public partial class Chat : MetroWindow
+    public partial class Chat : UserControl
     {
         public Chat()
         {
@@ -20,12 +20,16 @@ namespace UltimateStreamMgr.View
 
         private void ShowProgress(object sender, FrameLoadStartEventArgs e)
         {
-            Dispatcher.Invoke(() => progress.Visibility = Visibility.Visible);
+            progress.Dispatcher.BeginInvoke((Action)(() => {
+                progress.Visibility = Visibility.Visible;
+            }));
         }
 
         private void HideProgress(object sender, FrameLoadEndEventArgs e)
         {
-            Dispatcher.Invoke(() => progress.Visibility = Visibility.Collapsed);
+            progress.Dispatcher.BeginInvoke((Action)(() => {
+                progress.Visibility = Visibility.Collapsed;
+            }));
         }
     }
     

@@ -17,6 +17,7 @@ namespace UltimateStreamMgr.ViewModel
         public MainViewModel()
         {
             ResetLayout = new RelayCommand(() => DoResetLayout());
+            CompactLayout = new RelayCommand(() => DoCompactLayout());
 
             Windows = new ObservableCollection<DockWindowViewModel>();
 
@@ -33,10 +34,19 @@ namespace UltimateStreamMgr.ViewModel
             */
         }
 
-        public RelayCommand ResetLayout { get; set; } 
+        public RelayCommand ResetLayout { get; set; }
         private void DoResetLayout()
         {
             using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UltimateStreamMgr.Resources.DefaultLayout.xml"))
+            {
+                string xml = new StreamReader(stream).ReadToEnd();
+                Messenger.Default.Send(xml);
+            }
+        }
+        public RelayCommand CompactLayout { get; set; }
+        private void DoCompactLayout()
+        {
+            using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("UltimateStreamMgr.Resources.CompactLayout.xml"))
             {
                 string xml = new StreamReader(stream).ReadToEnd();
                 Messenger.Default.Send(xml);

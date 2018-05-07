@@ -34,7 +34,7 @@
         <TabControl TabStripPlacement="Left" Controls:TabControlHelper.Underlined="TabPanel">
             <TabItem Controls:ControlsHelper.HeaderFontSize="18"  Header="Vue d'ensemble">
                 <TabItem.Content>
-                    <Grid></Grid>
+                    <local:OverviewSettings />
                 </TabItem.Content>
             </TabItem>
             <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Chaine de streaming">

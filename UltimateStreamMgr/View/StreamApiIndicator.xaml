@@ -7,120 +7,137 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UltimateStreamMgr.View"
              xmlns:helper="clr-namespace:UltimateStreamMgr.Helpers"
-             xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
              xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:qc="http://QuickConverter.CodePlex.com/"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             mc:Ignorable="d">
-    <Grid Background="#FF693DA5" x:Name="container">
-        <Grid.DataContext>
-            <vm:StreamApiIndicatorViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
-        </Grid.DataContext>
-
-        <Grid.Resources>
-            <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
-            <Dialogs:CustomDialog 
+             d:DesignHeight="199.7" d:DesignWidth="236.3" 
+             mc:Ignorable="d" x:Name="uc" >
+    <UserControl.DataContext>
+        <vm:StreamApiIndicatorViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
+    </UserControl.DataContext>
+    <UserControl.Resources>
+        <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
+        <Dialogs:CustomDialog 
             x:Key="EditChannelDialog" 
             Title="Edit channel info"
             x:Name="EditChannelDialog">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="2*"/>
-                    </Grid.ColumnDefinitions>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
 
-                    <TextBlock 
+                <TextBlock 
                     Margin="3" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center"
                     Text="Titre :" />
-                    <TextBlock             
+                <TextBlock             
                     Margin="3" 
                     Grid.Row="1"
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center"
                     Text="Jeu :" />
 
-                    <TextBox 
+                <TextBox 
                     Margin="3"
                     Grid.Column="1"
                     Text="{Binding Data.EditName, Source={StaticResource proxy}}" />
-                    <ComboBox 
+                <ComboBox 
                     Margin="3"
                     Grid.Row="1"
                     Grid.Column="1" DisplayMemberPath="Name"
                     ItemsSource="{Binding Data.Games, Source={StaticResource proxy}}"
                     SelectedItem="{Binding Data.EditGame, Source={StaticResource proxy}}" />
 
-                    <WrapPanel ItemWidth="80" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
-                        <Button Content="Annuler" Click="Button_Click_1" Margin="3"/>
-                        <Button Content="Valider" Click="Button_Click_1" Command="{Binding Data.EditChannelCommand, Source={StaticResource proxy}}" Margin="3"/>
-                    </WrapPanel>
-                </Grid>
-            </Dialogs:CustomDialog>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="58"/>
-            <ColumnDefinition Width="142*"/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+                <WrapPanel ItemWidth="80" HorizontalAlignment="Right" Grid.Column="1" Grid.Row="2">
+                    <Button Content="Annuler" Click="Button_Click_1" Margin="3"/>
+                    <Button Content="Valider" Click="Button_Click_1" Command="{Binding Data.EditChannelCommand, Source={StaticResource proxy}}" Margin="3"/>
+                </WrapPanel>
+            </Grid>
+        </Dialogs:CustomDialog>
+    </UserControl.Resources>
+    <Grid Background="{Binding ChannelData.ApiInfo.color, FallbackValue=Gray}" x:Name="container">
+        <!-- Loading block -->
+        <Controls:ProgressRing 
+            Foreground="White" 
+            Visibility="{qc:Binding '(!$P) ? Visibility.Visible : Visibility.Collapsed', 
+            P={Binding ChannelData.IsInitialized, Mode=TwoWay}}"/>
+        <!-- Error block -->
+        <TextBlock 
+            Foreground="White" 
+            Text="Les paramètres de configuration de la chaine de streaming ne sont pas correctement renseignés" 
+            TextWrapping="Wrap" HorizontalAlignment="Center" 
+            VerticalAlignment="Center" TextAlignment="Center" 
+            Visibility="{qc:MultiBinding '(!$P0 &amp;&amp; $P1) ? Visibility.Visible : Visibility.Collapsed',
+                         P0={Binding ChannelData.IsConfigured, Mode=TwoWay}, P1={Binding ChannelData.IsInitialized, Mode=TwoWay}}"/>
 
-        <iconPacks:PackIconSimpleIcons Kind="Twitch" Foreground="White" VerticalAlignment="Top" Height="50" Width="50" Margin="5"/>
-        <WrapPanel ItemWidth="50" Grid.Column="1" Margin="5" VerticalAlignment="Bottom" HorizontalAlignment="Right">
-            <Button Height="40" Width="40" 
-                    Grid.Column="1" 
-                    Style="{DynamicResource MetroCircleButtonStyle}" 
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Click="Button_Click">
-                <iconPacks:PackIconModern Kind="Edit" Foreground="White"/>
-            </Button>
-            <Button Height="40" Width="40" 
-                    Grid.Column="1" 
-                    Style="{DynamicResource MetroCircleButtonStyle}"
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Command="{Binding OpenChatCommand}">
-                <iconPacks:PackIconModern Kind="CHat" Foreground="White"/>
-            </Button>
-            <!--
-            <Button Height="40" Width="40" 
-                    Grid.Column="1" IsEnabled="False" 
-                    Style="{DynamicResource MetroCircleButtonStyle}" 
-                    VerticalAlignment="Bottom" HorizontalAlignment="Right"
-                    Command="{Binding OpenSettingsCommand}">
-                <iconPacks:PackIconModern Kind="Settings" />
-            </Button>
-            -->
-        </WrapPanel>
-        <StackPanel Grid.Column="1" Margin="5">
-            <TextBlock Foreground="White" Margin="3" Text="{Binding Path=ChannelInfo.Title}" FontSize="20" Grid.Column="1" TextTrimming="CharacterEllipsis"/>
-            <WrapPanel ItemWidth="200">
-                <WrapPanel>
-                    <iconPacks:PackIconFontAwesome Kind="UserSolid" Foreground="White" Height="12" VerticalAlignment="Stretch"/>
-                    <TextBlock Foreground="White" Margin="3" Text="{Binding Path=ChannelInfo.Name}" Grid.Row="1" Grid.Column="1"/>
-                </WrapPanel>
-                <WrapPanel>
-                    <iconPacks:PackIconFontAwesome Kind="GamepadSolid" Foreground="White" Height="12" VerticalAlignment="Stretch"/>
-                    <TextBlock Foreground="White" Margin="3" Text="{Binding Path=ChannelInfo.Game.Name}" Grid.Row="1" Grid.Column="1"/>
-                </WrapPanel>
+        <!-- Display status block -->
+        <Grid Visibility="{qc:MultiBinding '($P1 &amp;&amp; $P0) ? Visibility.Visible : Visibility.Collapsed',  
+            P0={Binding ChannelData.IsInitialized, Mode=TwoWay}, 
+            P1={Binding ChannelData.IsConfigured, Mode=TwoWay}}" >
+            <WrapPanel 
+                    ClipToBounds="True"
+                    Background="Transparent"
+                    DockPanel.Dock="Bottom" ItemWidth="50"
+                    Margin="5" VerticalAlignment="Bottom" 
+                    HorizontalAlignment="Right" Height="40" Width="100">
+                <Button Height="40" Width="40" 
+                        Style="{DynamicResource MetroCircleButtonStyle}" 
+                        VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                        ToolTip="Editer le statut de la chaine"
+                        Click="Button_Click">
+                    <iconPacks:PackIconModern Kind="Edit" Foreground="White"/>
+                </Button>
+                <Button Height="40" Width="40" 
+                        Style="{DynamicResource MetroCircleButtonStyle}"
+                        ToolTip="Ouvrir le chat"
+                        VerticalAlignment="Bottom" HorizontalAlignment="Right"
+                        Command="{Binding OpenChatCommand}">
+                    <iconPacks:PackIconModern Kind="CHat" Foreground="White"/>
+                </Button>
             </WrapPanel>
-            <StackPanel Visibility="{qc:Binding '($P == ChannelStatus.Online)  ? Visibility.Visible : Visibility.Collapsed', P={Binding Path=ChannelInfo.Status, Mode=TwoWay}}">
-                <TextBlock Foreground="Red" Margin="3" Text="⬤ LIVE" />
-                <StackPanel Margin="3" Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
-                    <TextBlock Foreground="White" ><iconPacks:PackIconModern Height="18" Kind="People" Width="12"/></TextBlock>
-                    <TextBlock Foreground="White" Height="18" Text="{Binding Path=ChannelInfo.Viewers}"/>
-                    <TextBlock Foreground="White" Height="18" Text="{Binding ViewersPeak, StringFormat=(Max : {0})}"/>
+            <DockPanel Background="Transparent" IsHitTestVisible="False">
+                <iconPacks:PackIconSimpleIcons 
+                    DockPanel.Dock="Left"
+                    Kind="Twitch" Foreground="White" 
+                    VerticalAlignment="Top" Height="64" Width="64" Margin="5,5,0,0"/>
+                <StackPanel Margin="5">
+                    <TextBlock 
+                        Foreground="White" 
+                        Margin="3" 
+                        Text="{Binding Path=ChannelData.ChannelInfo.Title, FallbackValue=Channel Title}" 
+                        FontSize="20" Grid.Column="1" TextTrimming="CharacterEllipsis"/>
+                    <WrapPanel>
+                        <StackPanel Orientation="Horizontal" Width="150">
+                            <iconPacks:PackIconFontAwesome Kind="UserSolid" Foreground="White" Height="12" VerticalAlignment="Stretch"/>
+                            <TextBlock TextTrimming="CharacterEllipsis" Foreground="White" Margin="3" Text="{Binding Path=ChannelData.ChannelInfo.Name, FallbackValue=Channel Name}" Grid.Row="1" Grid.Column="1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Width="150">
+                            <iconPacks:PackIconFontAwesome Kind="GamepadSolid" Foreground="White" Height="12" VerticalAlignment="Stretch"/>
+                            <TextBlock TextTrimming="CharacterEllipsis" Foreground="White" Margin="3" Text="{Binding Path=ChannelData.ChannelInfo.Game.Name, FallbackValue=Game Name}" Grid.Row="1" Grid.Column="1"/>
+                        </StackPanel>
+                    </WrapPanel>
+                    <WrapPanel 
+                        ItemWidth="150"
+                        Visibility="{qc:Binding '($P == ChannelStatus.Online)  ? Visibility.Visible : Visibility.Collapsed', P={Binding Path=ChannelData.ChannelInfo.Status, Mode=TwoWay}}">
+                        <TextBlock Foreground="Red" Margin="3" Text="⬤ LIVE" />
+                        <StackPanel Margin="3" Orientation="Horizontal" Grid.Row="1" Grid.ColumnSpan="2">
+                            <TextBlock Foreground="White" ><iconPacks:PackIconModern Height="18" Kind="Eye" Width="12"/></TextBlock>
+                            <TextBlock Foreground="White" Height="18" Text="{Binding Path=ChannelData.ChannelInfo.Viewers, FallbackValue=10}"/>
+                            <TextBlock Foreground="White" Height="18" Text="{Binding ChannelData.ViewersPeak, StringFormat=' (Max : {0})', FallbackValue=' (Max : 20)'}"/>
+                        </StackPanel>
+                    </WrapPanel>
+                    <StackPanel Visibility="{qc:Binding '($P == ChannelStatus.Offline) ? Visibility.Visible : Visibility.Collapsed', P={Binding Path=ChannelData.ChannelInfo.Status, Mode=TwoWay}}">
+                        <TextBlock Margin="3" Foreground="RED" >OFFLINE</TextBlock>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <StackPanel Visibility="{qc:Binding '($P == ChannelStatus.Offline) ? Visibility.Visible : Visibility.Collapsed', P={Binding Path=ChannelInfo.Status, Mode=TwoWay}}">
-                <TextBlock Margin="3" Foreground="RED" >OFFLINE</TextBlock>
-            </StackPanel>
-        </StackPanel>
+            </DockPanel>
+        </Grid>
     </Grid>
 </UserControl>

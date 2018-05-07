@@ -394,5 +394,10 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
         }
 
         public string TournamentName { get; set; }
+
+        public override string ToString()
+        {
+            return "Smash.gg ( Tournoi : " + (string.IsNullOrEmpty(TournamentName) ? "Aucun" : TournamentName) + " )";
+        }
     }
 }

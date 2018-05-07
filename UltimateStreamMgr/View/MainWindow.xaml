@@ -24,13 +24,13 @@
     </Controls:MetroWindow.Resources>
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
-            <Button Click="Button_Click">
+            <Button Click="OpenPlayerDatabase">
                 <WrapPanel>
                     <iconPacks:PackIconModern Kind="PeopleProfile"/>
                     <TextBlock> Player Database</TextBlock>
                 </WrapPanel>
             </Button>
-            <Button Click="Button_Click_1">
+            <Button Click="OpenSettings">
                 <WrapPanel>
                     <iconPacks:PackIconModern Kind="Settings"/>
                     <TextBlock> Settings</TextBlock>
@@ -40,7 +40,7 @@
     </Controls:MetroWindow.RightWindowCommands>
     <DockPanel>
         <Menu x:Name="viewMenu" DockPanel.Dock="Top" >
-            <MenuItem Header="Windows" ItemsSource="{Binding Windows}">
+            <MenuItem Header="Fenêtres" ItemsSource="{Binding Windows}">
                 <MenuItem.ItemContainerStyle>
                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource {x:Type MenuItem}}">
                         <Setter Property="Command" Value="{Binding ToggleCommand}" />
@@ -50,8 +50,9 @@
                     </Style>
                 </MenuItem.ItemContainerStyle>
             </MenuItem>
-            <MenuItem Header="Layout">
-                <MenuItem Header="Restore default layout" Command="{Binding ResetLayout}"/>
+            <MenuItem Header="Dispositions">
+                <MenuItem Header="Disposition de base" Command="{Binding ResetLayout}"/>
+                <MenuItem Header="Disposition compacte" Command="{Binding CompactLayout}"/>
             </MenuItem>
         </Menu>
         <TextBox
@@ -66,6 +67,7 @@
             AnchorablesSource="{Binding Windows}"
             LayoutChanged="dockMgr_LayoutChanged">
             <xcad:DockingManager.Theme>
+                <!--<xcad:AeroTheme/>-->
                 <theme:MetroTheme />
             </xcad:DockingManager.Theme>
             <xcad:DockingManager.LayoutUpdateStrategy>
@@ -89,12 +91,17 @@
                 <DataTemplate DataType="{x:Type vm:PendingSetsViewModel}">
                     <local:PendingSets />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:ChatViewModel}">
+                    <local:Chat />
+                </DataTemplate>
             </xcad:DockingManager.Resources>
             <xcad:DockingManager.LayoutItemContainerStyle>
                 <Style TargetType="{x:Type xcad:LayoutAnchorableItem}" >
                     <Setter Property="Title" Value="{Binding Model.Title}" />
                     <Setter Property="Visibility" Value="{Binding Model.IsVisible, Mode=TwoWay, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter={x:Static Visibility.Hidden}}"/>
                     <Setter Property="ContentId" Value="{Binding Model.ContentId}" />
+                    <Setter Property="MinHeight" Value="400" />
+                    <Setter Property="MinWidth" Value="400" />
                 </Style>
             </xcad:DockingManager.LayoutItemContainerStyle>
             <xcad:LayoutRoot>

@@ -13,50 +13,20 @@ namespace UltimateStreamMgr.ViewModel
 {
     class PendingSetsViewModel : DockWindowViewModel
     {
-        private List<Player> _players;
-        private BracketApi _api;
-        private Timer _refreshInfo;
-
         public PendingSetsViewModel()
         {
             Title = "Pending Set";
 
-            Configuration.Instance.BracketSettingsChanged += RefreshApiLink;
-            RefreshApiLink();
-
-            _refreshInfo = new Timer(1000);
-            _refreshInfo.Elapsed += RefreshPendingSets;
-            _refreshInfo.AutoReset = false;
-            _refreshInfo.Start();
+            BracketInfo = BracketData.Instance;
 
             StartSetCommand = new RelayCommand<Set>((s) => StartSet(s));
         }
 
-        private void RefreshPendingSets(object sender, ElapsedEventArgs e)
+        private BracketData _bracketInfo;
+        public BracketData BracketInfo
         {
-            _players = _api.GetAllEntrants();
-            PendingSets = _api.GetAllPendingSets();
-            Output.Data.Top8List = _api.GetAvailablesTop8();
-            _refreshInfo.Start();
-        }
-
-        private void RefreshApiLink()
-        {
-            try
-            {
-                _api = Activator.CreateInstance(Configuration.Instance.Bracket.Api, Configuration.Instance.Bracket) as BracketApi;
-            }
-            catch (Exception e)
-            {
-                // api not set
-            }
-        }
-
-        private List<Set> _pendingSets;
-        public List<Set> PendingSets
-        {
-            get { return _pendingSets; }
-            set { Set("PendingSets", ref _pendingSets, value); }
+            get { return _bracketInfo; }
+            set { Set("BracketInfo", ref _bracketInfo, value); }
         }
 
         public RelayCommand<Set> StartSetCommand { get; set; }

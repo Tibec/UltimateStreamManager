@@ -51,7 +51,7 @@ namespace UltimateStreamMgr.Model.Api
                     try
                     {
                         Task<HttpResponseMessage> task = client.SendAsync(request);
-                        task.Wait(10000);
+                        task.Wait();
                         HttpResponseMessage response = task.Result;
                         response.EnsureSuccessStatusCode();
                         string result = response.Content.ReadAsStringAsync().Result;

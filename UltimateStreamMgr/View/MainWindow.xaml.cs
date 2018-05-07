@@ -31,7 +31,7 @@ namespace UltimateStreamMgr.View
     public partial class MainWindow : MetroWindow
     {
 
-        public MainWindow()
+        public MainWindow(bool firstLaunch)
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
@@ -44,23 +44,42 @@ namespace UltimateStreamMgr.View
             t.AutoReset = true;
             t.Elapsed += dockMgr_LayoutChanged;
             t.Start();
+
+
+            if(firstLaunch)
+            {
+                this.IsVisibleChanged += PopupFirstLaunch;
+            }
+        }
+
+        private void PopupFirstLaunch(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Window w = new Settings.SettingsWindow();
+            w.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            w.Owner = this;
+            w.Show();
+            MessageBox.Show(w, "Il s'agit du premier lancement. Veuillez renseigner les paramètres nécessaires au bon fonctionnement de l'application");
+            this.IsVisibleChanged -= PopupFirstLaunch;
         }
 
         private void HandleMessage(NotificationMessage obj)
         {
             if(obj.Notification == "OpenChat")
             {
-                Window w = new Chat();
-                w.WindowStartupLocation = WindowStartupLocation.Manual;
-                double startX = Left + Width + 3;
-                double startY = Top;
-                w.Left = startX;
-                w.Top = startY;
-                w.Show();
+                var window = new LayoutAnchorable()
+                {
+                    Content = new ChatViewModel(),
+                    FloatingHeight = 500,
+                    FloatingWidth = 200,
+                    
+                };
+
+                window.AddToLayout(dockMgr, AnchorableShowStrategy.Top);
+                window.Float();
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void OpenPlayerDatabase(object sender = null, RoutedEventArgs e=null)
         {
             Window w = new PlayerDatabase.PlayerDatabaseWindow();
             w.WindowStartupLocation = WindowStartupLocation.CenterOwner;
@@ -68,7 +87,7 @@ namespace UltimateStreamMgr.View
             w.Show();
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void OpenSettings(object sender=null, RoutedEventArgs e=null)
         {
             Window w = new Settings.SettingsWindow();
             w.WindowStartupLocation = WindowStartupLocation.CenterOwner;

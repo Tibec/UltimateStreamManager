@@ -10,11 +10,11 @@
              xmlns:wpfext="http://schemas.xceed.com/wpf/xaml/toolkit"
              xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:dgs="clr-namespace:UltimateStreamMgr.View.Controls"
-             mc:Ignorable="d" >
-    <StackPanel>
-        <StackPanel.DataContext>
+             mc:Ignorable="d" d:DesignWidth="452.4" d:DesignHeight="60" >
+    <Grid>
+        <Grid.DataContext>
             <vm:CastersViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
-        </StackPanel.DataContext>
+        </Grid.DataContext>
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -29,17 +29,17 @@
                 Grid.Column="0"
                 Text="{Binding Caster1.Name}"
                 SelectedPlayer="{Binding Caster1.LinkedPlayer}"
-                PlayerSource="{Binding PlayerList}"
+                PlayerSource="{Binding PlayerList}" VerticalAlignment="Center" 
                 />
             <Button
-                Width="70"
+                Width="70" VerticalAlignment="Center" 
                 Grid.Column="1"
                 Command="{Binding SwapCommand}"
                 Margin="5">
                 <iconPacks:PackIconModern Kind="ArrowLeftRight" />
             </Button>
             <custom:PlayerBox 
-                MinWidth="50"
+                MinWidth="50" VerticalAlignment="Center" 
                 Margin="5"
                 Watermark="Caster 2"
                 Grid.Column="2"
@@ -49,10 +49,11 @@
                 />
             <Button
                 Command="{Binding UpdateCommand}"
-                Grid.Column="3" 
+                Grid.Column="3"  VerticalAlignment="Center" 
                 Content="Mettre à jour" 
+                FontSize="12"
                 Margin="5"/>
 
         </Grid>
-    </StackPanel>
+    </Grid>
 </UserControl>

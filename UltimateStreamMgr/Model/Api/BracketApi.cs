@@ -51,6 +51,11 @@ namespace UltimateStreamMgr.Model.Api
     {
         [XmlIgnore]
         public Type Api { get; set; }
+
+        public override string ToString()
+        {
+            return "Aucun";
+        }
     }
 
     public enum BracketCapabilities

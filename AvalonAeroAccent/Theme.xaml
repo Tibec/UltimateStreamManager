@@ -301,56 +301,67 @@
     <Setter Property="Padding"
             Value="0" />
     <Setter Property="BorderThickness"
-            Value="0" />
+        Value="1" />
+    <Setter Property="BorderBrush"
+        Value="{DynamicResource AvalonDock_ThemeMetro_BaseColor8}" />
     <Setter Property="Foreground"
-            Value="{Binding Model.Root.Manager.Foreground, RelativeSource={RelativeSource Self}}" />
+        Value="{Binding Model.Root.Manager.Foreground, RelativeSource={RelativeSource Self}}" />
     <Setter Property="Background"
             Value="{Binding Model.Root.Manager.Background, RelativeSource={RelativeSource Self}}" />
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutAnchorablePaneControl}">
-          <Grid ClipToBounds="true"
-                SnapsToDevicePixels="true"
-                KeyboardNavigation.TabNavigation="Local">
-            <Grid.RowDefinitions>
-              <RowDefinition Height="*" />
-              <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-            <!--Following border is required to catch mouse events-->
-            <Border Background="Transparent"
-                    Grid.RowSpan="2" />
-            <Border x:Name="ContentPanel"
-                    BorderBrush="{TemplateBinding BorderBrush}"
-                    BorderThickness="{TemplateBinding BorderThickness}"
-                    Background="{TemplateBinding Background}"
-                    Grid.Column="0"
-                    KeyboardNavigation.DirectionalNavigation="Contained"
-                    Grid.Row="0"
-                    KeyboardNavigation.TabIndex="2"
-                    KeyboardNavigation.TabNavigation="Cycle">
-              <ContentPresenter x:Name="PART_SelectedContentHost"
-                                ContentSource="SelectedContent"
-                                Margin="{TemplateBinding Padding}"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-            </Border>
-            <avalonDockControls:AnchorablePaneTabPanel x:Name="HeaderPanel"
-                                                       Margin="0,0,2,2"
-                                                       IsItemsHost="true"
-                                                       Grid.Row="1"
-                                                       KeyboardNavigation.TabIndex="1"
-                                                       Panel.ZIndex="1" />
-          </Grid>
+          <Border
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}">
+
+            <Grid ClipToBounds="true" Margin="0,0,0,0"
+                  SnapsToDevicePixels="true"
+                  KeyboardNavigation.TabNavigation="Local">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*" />
+                  <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <!--Following border is required to catch mouse events-->
+                <Border Background="Transparent"
+                        Grid.RowSpan="2" />
+                <Border x:Name="ContentPanel"
+                        Background="{TemplateBinding Background}"
+                        Grid.Column="0"
+                        KeyboardNavigation.DirectionalNavigation="Contained"
+                        Grid.Row="0"
+                        KeyboardNavigation.TabIndex="2"
+                        KeyboardNavigation.TabNavigation="Cycle">
+                  <ContentPresenter x:Name="PART_SelectedContentHost"
+                                    ContentSource="SelectedContent"
+                                    Margin="{TemplateBinding Padding}"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                </Border>
+                    <avalonDockControls:AnchorablePaneTabPanel x:Name="HeaderPanel"
+                                                           Margin="0,0,2,2"
+                                                           IsItemsHost="true"
+                                                           Grid.Row="1"
+                                                           KeyboardNavigation.TabIndex="1"
+                                                           Panel.ZIndex="1" />
+               </Grid>
+          </Border>
           <ControlTemplate.Triggers>
             <Trigger Property="IsEnabled"
                      Value="false">
               <Setter Property="Foreground"
                       Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
             </Trigger>
+
             <DataTrigger Binding="{Binding Items.Count, RelativeSource={RelativeSource Self}}"
                          Value="1">
               <Setter Property="Margin"
                       Value="0"
                       TargetName="HeaderPanel" />
+            </DataTrigger>
+            <DataTrigger Binding="{Binding Path=IsSelected, RelativeSource={RelativeSource TemplatedParent}}"
+                         Value="True">
+                <Setter Property="BorderThickness"
+                        Value="0"/>
             </DataTrigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
@@ -474,7 +485,7 @@
               <avalonDockControls:DropDownControlArea DropDownContextMenu="{Binding Model.Root.Manager.AnchorableContextMenu, RelativeSource={RelativeSource TemplatedParent}}"
                                                       DropDownContextMenuDataContext="{Binding Path=LayoutItem, RelativeSource={RelativeSource TemplatedParent}}">
                 <ContentPresenter x:Name="Header"
-                                  Margin="2,0,0,0"
+                                  Margin="2,0,0,2"
                                   TextElement.Foreground="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}"
                                   
                                   Content="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}"
@@ -1097,7 +1108,7 @@
         <ControlTemplate TargetType="{x:Type avalonDock:DockingManager}">
           <Border Background="{TemplateBinding Background}"
                   BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}">
+                  BorderThickness="0" > 
             <Grid>
               <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -1145,8 +1156,8 @@
     <Setter Property="Template">
       <Setter.Value>
         <ControlTemplate TargetType="{x:Type avalonDockControls:LayoutGridResizerControl}">
-          <Border Background="{TemplateBinding Background}"
-                  Margin="2" />
+          <Border Background="Transparent"
+                   Width="Auto" Height="Auto" Margin="0" />
         </ControlTemplate>
       </Setter.Value>
     </Setter>
@@ -1297,7 +1308,9 @@
               <Border x:Name="Header">
                 <avalonDockControls:AnchorablePaneTitle Model="{Binding Model, RelativeSource={RelativeSource TemplatedParent}}" />
               </Border>
-              <ContentPresenter Grid.Row="1"
+              <ContentPresenter 
+                                
+                                Grid.Row="1"
                                 FlowDirection="{TemplateBinding FlowDirection}"
                                 Content="{Binding LayoutItem.View, RelativeSource={RelativeSource TemplatedParent}}" />
 
@@ -1546,7 +1559,7 @@
                 <Border x:Name="Header"
                         Padding="2,0,2,0"
                         TextElement.Foreground="{DynamicResource AvalonDock_ThemeMetro_BaseColor2}"
-                        Background="{DynamicResource AvalonDock_ThemeMetro_BaseColor1}">
+                        Background="{DynamicResource AvalonDock_ThemeMetro_BaseColor3}">
                   <Grid>
                     <Grid.ColumnDefinitions>
                       <ColumnDefinition Width="*" />

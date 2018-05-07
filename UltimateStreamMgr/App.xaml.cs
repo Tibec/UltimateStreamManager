@@ -30,19 +30,28 @@ namespace UltimateStreamMgr
         {
             try
             {
+                bool firstLaunch = false;
 
                 GenerateDemoLicenceKey();
-
-                if (File.Exists("config.xml"))
+                try
                 {
-                    Configuration.Instance.Load("config.xml");
+                    if (File.Exists("config.xml"))
+                    {
+                        Configuration.Instance.Load("config.xml");
+                    }
+                    else
+                        firstLaunch = true;
+                }
+                catch {
+                    LogManager.GetCurrentClassLogger().Error("Couldn't read a valid configuration file. A new one will be created");
+                    firstLaunch = true;
                 }
 
                 PlayerDatabase.Init();
 
                 InitializeQuickConverter();
 
-                MainWindow = new MainWindow();
+                MainWindow = new MainWindow(firstLaunch);
 
                 if (Configuration.Instance.Window.AppHeight != 0
                     && Configuration.Instance.Window.AppWidth != 0)
@@ -54,7 +63,7 @@ namespace UltimateStreamMgr
 
                 MainWindow.Show();
 
-                if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+                if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition) && !firstLaunch)
                 {
                     Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
                 }
@@ -79,7 +88,7 @@ namespace UltimateStreamMgr
 
             // It will be removed once WPF Toolkit Community Edition 3.6 will be released.
 
-            string regPath = @"Software\Xceed Software\Licences\WTK";
+            string regPath = @"Software\Xceed Software\Licenses\WTK";
             string regKey = "3.6";
             
             BitArray licence = new BitArray(65, false);

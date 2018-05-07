@@ -16,8 +16,13 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
             : base(settings)
         {
             ApiName = "Twitch";
-            // Logo = 
-            // ControlColor = new Color()
+            ApiInfo = new StreamApiInfo()
+            {
+                isFontLogo = false,
+                logo = "Twitch",
+                color = new SolidColorBrush(Color.FromRgb(0x69, 0x3D, 0xA5))
+            };
+
             if (settings is TwitchSettings)
             {
                 _settings = settings as TwitchSettings;
@@ -42,7 +47,7 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
         static public string GetAuthentificationUrl()
         {
             string clientId = "ca48u330owoiyhvnmmwl7rkai3i6vqs";
-            string redirectUri = "http://51.254.99.66";
+            string redirectUri = "http://gtfo.noe";
             string rights = "chat_login channel_read channel_editor";
 
             return "https://api.twitch.tv/kraken/oauth2/authorize" +
@@ -75,9 +80,9 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
         public override bool IsCorrectlySetup()
         {
             // Check if : 
-            //  - Use a valid channel
+            //  - Use a valid channel (ok)
             // optional : 
-            //  - has a valid Authentification token 
+            //  - has a valid Authentification token (todo)
             return ChannelExist(_settings.ChannelName);
         }
 
@@ -138,5 +143,10 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
         public string ChannelName { get; set; }
         public int ChannelId { get; set; } = -1;
         public string OAuthToken { get; set; }
+
+        public override string ToString()
+        {
+            return "Twitch - " + (string.IsNullOrEmpty(ChannelName) ? "Aucune chaine" : ChannelName);
+        }
     }
 }

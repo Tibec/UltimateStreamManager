@@ -3,27 +3,52 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
              xmlns:qc="http://QuickConverter.CodePlex.com/"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:UltimateStreamMgr.View"
              xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:helper="clr-namespace:UltimateStreamMgr.Helpers"
+             d:DesignHeight="100.333" d:DesignWidth="126.8"
              mc:Ignorable="d" 
              >
-    <DockPanel>
-        <DockPanel.DataContext>
+    <Grid>
+        <Grid.DataContext>
             <vm:PendingSetsViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
-        </DockPanel.DataContext>
-        <DockPanel.Resources>
+        </Grid.DataContext>
+        <Grid.Resources>
             <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
-        </DockPanel.Resources>
+        </Grid.Resources>
 
-        <TextBlock DockPanel.Dock="Top" Visibility="{qc:Binding '$P.Count == 0 ? Visibility.Visible : Visibility.Collapsed', P={Binding PendingSets, Mode=TwoWay}}" Text="Aucun set en attente." />
-        <ListBox DockPanel.Dock="Top" 
-                 Visibility="{qc:Binding '$P.Count > 0 ? Visibility.Visible : Visibility.Collapsed', P={Binding PendingSets, Mode=TwoWay}}"
+        <Controls:ProgressRing 
+            Foreground="Black"
+            Visibility="{qc:Binding '$P ? Visibility.Collapsed : Visibility.Visible', P={Binding BracketInfo.IsInitialized, Mode=TwoWay}}"
+            />
+
+        <!-- Error block -->
+        <TextBlock 
+            Text="Les paramètres de configuration du bracket ne sont pas correctement renseignés" 
+            TextWrapping="Wrap" HorizontalAlignment="Center" 
+            VerticalAlignment="Center" TextAlignment="Center" 
+            Visibility="{qc:MultiBinding '(!$P0 &amp;&amp; $P1) ? Visibility.Visible : Visibility.Collapsed',
+                         P0={Binding BracketInfo.IsConfigured, Mode=TwoWay}, P1={Binding BracketInfo.IsInitialized, Mode=TwoWay}}"/>
+
+
+        <TextBlock 
+            DockPanel.Dock="Top" 
+            Visibility="{qc:MultiBinding '($P0==null || $P0.Count == 0) &amp;&amp; $P1 ? Visibility.Visible : Visibility.Collapsed', 
+                            P0={Binding BracketInfo.PendingSets, Mode=TwoWay, FallbackValue=null}, 
+                            P1={Binding BracketInfo.IsInitialized, Mode=TwoWay, FallbackValue=false}}" 
+            Text="Aucun set en attente." HorizontalAlignment="Center" VerticalAlignment="Center" />
+
+        <ListBox  
+                 Visibility="{qc:MultiBinding '($P0.Count > 0 || $P0 == null) &amp;&amp; $P1  &amp;&amp; $P2 ? Visibility.Visible : Visibility.Collapsed', 
+                                P0={Binding BracketInfo.PendingSets, Mode=TwoWay, FallbackValue=null},
+                                P2={Binding BracketInfo.IsConfigured, Mode=TwoWay, FallbackValue=false},
+                                P1={Binding BracketInfo.IsInitialized, Mode=TwoWay, FallbackValue=false}}"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding PendingSets, Mode=TwoWay}">
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding BracketInfo.PendingSets, Mode=TwoWay}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ClipToBounds="True">
@@ -38,14 +63,14 @@
                                 <TextBlock FontSize="18" Text="{Binding Opponent2.Name}" />
                             </WrapPanel>
                             <WrapPanel Visibility="{qc:Binding '$P == false ? Visibility.Collapsed : Visibility.Visible', P={Binding isDouble} }">
-		                        <TextBlock FontSize="18" Text="{Binding Opponent1.Name}" />
+                                <TextBlock FontSize="18" Text="{Binding Opponent1.Name}" />
                                 <TextBlock FontSize="18" Text="/" />
                                 <TextBlock FontSize="18" Text="{Binding Opponent3.Name}" />
                                 <TextBlock FontSize="18" Text=" vs "/>
                                 <TextBlock FontSize="18" Text="{Binding Opponent2.Name}" />
                                 <TextBlock FontSize="18" Text="/" />
                                 <TextBlock FontSize="18" Text="{Binding Opponent4.Name}" />
-							</WrapPanel>
+                            </WrapPanel>
                             <TextBlock FontSize="14" Text="{Binding RoundName}"/>
                         </StackPanel>
 
@@ -76,5 +101,5 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-    </DockPanel>
+    </Grid>
 </UserControl>

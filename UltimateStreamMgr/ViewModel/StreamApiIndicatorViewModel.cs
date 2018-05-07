@@ -17,69 +17,24 @@ namespace UltimateStreamMgr.ViewModel
 {
     class StreamApiIndicatorViewModel : DockWindowViewModel
     {
-        private StreamApi _apiLink;
-        private Timer _refreshInfo;
-
         public StreamApiIndicatorViewModel() : base ()
         {
             Title = "Stream Status";
-
-            Configuration.Instance.StreamSettingsChanged += RefreshApiLink;
-            RefreshApiLink();
-
-            _refreshInfo = new Timer(1000);
-            _refreshInfo.Elapsed += RefreshChannelInfo;
-            _refreshInfo.Start();
 
             OpenChatCommand = new RelayCommand(() => OpenChat());
             EditChannelCommand = new RelayCommand(() => EditChannel());
             OpenSettingsCommand = new RelayCommand(() => OpenSettings());
 
+            ChannelData = StreamChannelData.Instance;
+
             Games = new ObservableCollection<Game> { new Game { Name = "Super Smash Bros. for Wii U" } };
-
-            Log.Debug("instance created");
         }
 
-        private void RefreshChannelInfo(object sender, ElapsedEventArgs e)
+        private StreamChannelData _channelData;
+        public StreamChannelData ChannelData
         {
-            if(_apiLink !=null)
-            {
-                ChannelInfo = _apiLink.GetChannelInfo();
-                if (ChannelInfo.Viewers > ViewersPeak)
-                    ViewersPeak = ChannelInfo.Viewers;
-
-                if(string.IsNullOrEmpty(EditName))
-                    EditName = ChannelInfo.Title;
-                if (string.IsNullOrEmpty(EditGame?.Name))
-                    EditGame = ChannelInfo.Game;
-            }
-            _refreshInfo.Start();
-        }
-
-        private void RefreshApiLink()
-        {
-            try
-            {
-                _apiLink = Activator.CreateInstance(Configuration.Instance.Stream.Api, Configuration.Instance.Stream) as StreamApi;
-            }
-            catch(Exception e)
-            {
-                // api not set
-            }
-        }
-
-        private ChannelInfo _channelInfo;
-        public ChannelInfo ChannelInfo
-        {
-            get { return _channelInfo; }
-            set { Set("ChannelInfo", ref _channelInfo, value); }
-        }
-
-        private int _viewersPeak;
-        public int ViewersPeak
-        {
-            get { return _viewersPeak; }
-            set { Set("ViewersPeak", ref _viewersPeak, value); }
+            get { return _channelData; }
+            set { Set("ChannelData", ref _channelData, value); }
         }
 
         private string _editName;
@@ -114,7 +69,7 @@ namespace UltimateStreamMgr.ViewModel
         {
             try
             {
-                _apiLink.UpdateChannelInfo(EditName, EditGame);
+                ChannelData.UpdateChannelInfo(EditName, EditGame);
             }
             catch(HttpRequestException e)
             {
