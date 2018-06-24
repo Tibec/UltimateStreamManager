@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings.Stream"
              xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
              xmlns:qc="http://QuickConverter.CodePlex.com/"
-             mc:Ignorable="d" 
+             mc:Ignorable="d" x:Name="module"
              d:DesignHeight="228.693" d:DesignWidth="404.414">
     <UserControl.DataContext>
         <vm:StreamSettingsViewModel />
@@ -23,7 +23,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <TextBlock Margin="5" Text="Plateforme : " HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <ComboBox Margin="5" x:Name="apiSelector" SelectedIndex="{Binding SelectedApi}" ItemsSource="{Binding ApiList}" Grid.Column="1"/>
+            <ComboBox Margin="5" x:Name="apiSelector" SelectedValue="{Binding SelectedApiName}" SelectedIndex="{Binding SelectedApi}" ItemsSource="{Binding ApiList}" Grid.Column="1"/>
 
             <TextBlock Margin="5" Grid.Row="1" Text="Fonctions supportés : " HorizontalAlignment="Right" />
         </Grid>
@@ -36,8 +36,9 @@
         </Grid>
         <Separator />
         <!-- Insert here each api control -->
-        <local:TwitchSettingsControl Visibility="{Binding ElementName=apiSelector, Path=SelectedValue, 
-            Converter={qc:QuickConverter Convert='((string)$P == \'Twitch\') ? Visibility.Visible : Visibility.Collapsed '}, 
-            UpdateSourceTrigger=PropertyChanged}" />
+        <local:TwitchSettingsControl IsEnabled="{Binding Path=DataContext.SelectedApiName, 
+            Converter={qc:QuickConverter '$P == \'Twitch\''}, ElementName=module}" />
+
+
     </StackPanel>
 </UserControl>

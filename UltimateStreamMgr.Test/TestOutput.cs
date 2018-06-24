@@ -10,7 +10,7 @@ namespace UltimateStreamMgr.Test
         [TestMethod]
         public void RetrieveInfo()
         {
-            var output = Output.RetrieveAllProperties();
+            var output = Output.RetrieveAllPropertiesValues();
         }
     }
 }

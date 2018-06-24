@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="UltimateStreamMgr.View.Settings.SocialSettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings.Stream"
+             xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
+             xmlns:qc="http://QuickConverter.CodePlex.com/"
+             mc:Ignorable="d" x:Name="module"
+             d:DesignHeight="228.693" d:DesignWidth="404.414">
+    <UserControl.DataContext>
+        <vm:SocialSettingsViewModel />
+    </UserControl.DataContext>
+    <StackPanel Margin="5">
+        <TextBlock Margin="5" Text="Twitter" FontSize="18" HorizontalAlignment="Left" VerticalAlignment="Center" />
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Margin="5" Text="Consumer Key : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Margin="5" Grid.Column="1" Text="{Binding  ConsumerKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Margin="5" Grid.Row="1" Text="Consumer Secret : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Margin="5" Grid.Row="1" Grid.Column="1" Text="{Binding  ConsumerSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Margin="5" Grid.Row="2" Text="Access Key : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Margin="5" Grid.Row="2" Grid.Column="1" Text="{Binding  AccessKey, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+            <TextBlock Margin="5" Grid.Row="3" Text="Access Secret : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Margin="5" Grid.Row="3" Grid.Column="1" Text="{Binding  AccessSecret, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+        <Separator />
+        <TextBlock FontStyle="Italic" Text="Se referer au mode d'emploi pour plus d'informations sur cette partie" />
+
+    </StackPanel>
+</UserControl>

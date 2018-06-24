@@ -33,6 +33,9 @@ namespace UltimateStreamMgr
                 bool firstLaunch = false;
 
                 GenerateDemoLicenceKey();
+
+                //AppDomain.CurrentDomain.AppendPrivatePath(@"dependencies");
+
                 try
                 {
                     if (File.Exists("config.xml"))
@@ -75,6 +78,7 @@ namespace UltimateStreamMgr
             catch (Exception exception)
             {
                 LogManager.GetCurrentClassLogger().Fatal(exception);
+                App.Current.Shutdown();
             }
 
         }
@@ -109,9 +113,9 @@ namespace UltimateStreamMgr
             Array.Copy(a2, 0, a, a1.Length, a2.Length);
 
             byte checksum = CalculateChecksum(a);
-
+          
             MapBits(ref licence, checksum, new byte[] { 0, 9, 18, 27, 36, 45, 54, 63, 0xFF });
-
+          
             string regKeyValue = prodId + GenAlpha(licence);
 
             RegistryKey root = Registry.CurrentUser;
@@ -127,7 +131,7 @@ namespace UltimateStreamMgr
                     root = key; 
                 }
             }
-            root.SetValue("3.6", regKeyValue);
+            root.SetValue(regKey, regKeyValue);
         }
 
         private string GenAlpha(BitArray ba)

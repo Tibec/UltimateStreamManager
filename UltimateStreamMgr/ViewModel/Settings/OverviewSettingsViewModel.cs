@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GalaSoft.MvvmLight.Command;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,9 @@ namespace UltimateStreamMgr.ViewModel
             Configuration.Instance.BracketSettingsChanged += UpdateSettings;
 
             UpdateSettings();
+
+            GoToStreamSettings = new RelayCommand(() => DoOpenStreamSettings());
+            GoToBracketSettings = new RelayCommand(() => DoOpenBracketSettings());
         }
 
         private void UpdateSettings()
@@ -36,6 +40,20 @@ namespace UltimateStreamMgr.ViewModel
         {
             get { return _stream; }
             set { Set("Stream", ref _stream, value); }
+        }
+
+        private RelayCommand _goToStreamSettings;
+        public RelayCommand GoToStreamSettings { get; set; }
+        private void DoOpenStreamSettings()
+        {
+            MessengerInstance.Send(1);
+        }
+
+        private RelayCommand _goToBracketSettings;
+        public RelayCommand GoToBracketSettings { get; set; }
+        private void DoOpenBracketSettings()
+        {
+            MessengerInstance.Send(2);
         }
     }
 }

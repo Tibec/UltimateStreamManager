@@ -10,7 +10,7 @@
              xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:qc="http://QuickConverter.CodePlex.com/"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             d:DesignHeight="199.7" d:DesignWidth="236.3" 
+             d:DesignHeight="231.7" d:DesignWidth="553.3" 
              mc:Ignorable="d" x:Name="uc" >
     <UserControl.DataContext>
         <vm:StreamApiIndicatorViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />

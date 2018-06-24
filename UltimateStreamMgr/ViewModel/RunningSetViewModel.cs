@@ -43,6 +43,7 @@ namespace UltimateStreamMgr.ViewModel
             PlayerDatabase.DatabaseContentModified += RefreshPlayers;
 
             LoadCharacters();
+            LoadTeams();
         }
 
         private void RefreshPlayers()
@@ -54,7 +55,6 @@ namespace UltimateStreamMgr.ViewModel
         {
             try
             {
-
                 ObservableCollection<Character> characters = new ObservableCollection<Character>();
                 string rundir = Utils.RunDirectory();
                 string[] subfiles = Directory.GetFiles(Path.Combine(rundir, "characters"));
@@ -72,6 +72,32 @@ namespace UltimateStreamMgr.ViewModel
                 }
 
                 Application.Current.Dispatcher.Invoke(() => CharacterList = characters);
+            }
+            catch (Exception e) { }
+        }
+
+
+        private void LoadTeams()
+        {
+            try
+            {
+                ObservableCollection<Character> teams = new ObservableCollection<Character>();
+                string rundir = Utils.RunDirectory();
+                string[] subfiles = Directory.GetFiles(Path.Combine(rundir, "teams"));
+                foreach (string file in subfiles)
+                {
+                    FileInfo f = new FileInfo(file);
+                    if (f.Extension == ".png" || f.Extension == ".jpg" || f.Extension == ".gif")
+                    {
+                        teams.Add(new Character
+                        {
+                            Name = f.Name.Split('.')[0],
+                            FilePath = file
+                        });
+                    }
+                }
+
+                Application.Current.Dispatcher.Invoke(() => TeamList = teams);
             }
             catch (Exception e) { }
         }
@@ -122,6 +148,13 @@ namespace UltimateStreamMgr.ViewModel
             set { Set("CharacterList", ref _characterList, value); }
         }
 
+        private ObservableCollection<Character> _teamList;
+        public ObservableCollection<Character> TeamList
+        {
+            get { return _teamList; }
+            set { Set("TeamList", ref _teamList, value); }
+        }
+
         private ObservableCollection<Player> _playerList;
         public ObservableCollection<Player> PlayerList
         {
@@ -164,6 +197,21 @@ namespace UltimateStreamMgr.ViewModel
             set { Set("Opponent4", ref _opponent4, value); }
         }
 
+        private Character _teamA = null;
+        public Character TeamA
+        {
+            get { return _teamA; }
+            set { Set("TeamA", ref _teamA, value); }
+        }
+
+        private Character _teamB = null;
+        public Character TeamB
+        {
+            get { return _teamB; }
+            set { Set("TeamB", ref _teamB, value); }
+        }
+
+
         private string _round;
         public string Round
         {
@@ -178,6 +226,8 @@ namespace UltimateStreamMgr.ViewModel
             Opponent2 = new Opponent();
             Opponent3 = new Opponent();
             Opponent4 = new Opponent();
+            TeamA = new Character();
+            TeamB = new Character();
             Round = "";
         }
 

@@ -56,20 +56,33 @@ namespace UltimateStreamMgr.Model
             }
             else
             {
-                Dictionary<string, object> values = RetrieveAllProperties();
+                Dictionary<string, object> values = RetrieveAllPropertiesValues();
                 if (Configuration.Instance.Output.OutputFormat == OutputFormat.Text)
                 {
-                    foreach(var value in values)
+                    foreach (var value in values)
                     {
-                        string filename = Path.Combine(Configuration.Instance.Output.Folder, value.Key +".txt");
-                        using (var fileStream = File.Open(filename, FileMode.OpenOrCreate, FileAccess.ReadWrite))
-                        {
-                            using (StreamWriter sw = new StreamWriter(fileStream))
-                            {
-                                sw.Write(value.Value);
-                            }
-                        }
+                        if (value.Key == null)
+                            continue;
+                        string filename = Path.Combine(Configuration.Instance.Output.Folder, value.Key + ".txt");
+                        if(value.Value == null)
+                            File.WriteAllText(filename, string.Empty);
+                        else
+                            File.WriteAllText(filename, value.Value.ToString()  );
                     }
+                    // copy image if possible
+                    List<Opponent> listOpponent = new List<Opponent> { Data.Player1, Data.Player2, Data.Player3, Data.Player4 };
+                    int i = 1;
+                    foreach(var opponent in listOpponent)
+                    {
+                        if(opponent?.Character != null && !string.IsNullOrEmpty(opponent.Character.FilePath))
+                        {
+                            string imgExt = Path.GetExtension(opponent.Character.FilePath);
+                            string outFile = Path.Combine(Configuration.Instance.Output.Folder, "Player"+i+".Character"+imgExt );
+                            File.Copy(opponent.Character.FilePath, outFile, true);
+                        }
+                        ++i;
+                    }
+                    
                 }
                 else if(Configuration.Instance.Output.OutputFormat == OutputFormat.Template)
                 {
@@ -82,12 +95,47 @@ namespace UltimateStreamMgr.Model
             _timer.Start();
         }
 
-        public static Dictionary<string, object> RetrieveAllProperties()
+        public static Dictionary<string, object> RetrieveAllPropertiesValues()
         {
             Dictionary<string, object> props = new Dictionary<string, object>();
+            RetrieveSubProperties(ref props, Data.GetType());
             RetrieveSubPropertiesValue(ref props, Data);
             return props;
         }
+
+        public static void RetrieveSubProperties(ref Dictionary<string, object> values, Type obj, string prefix = "")
+        {
+            if (obj == null)
+            {
+                return;
+            }
+            else if (obj == typeof(DateTime))
+            {
+                values[prefix] = null;
+            }
+            else if (obj.IsPrimitive || obj == typeof(string))
+            {
+                values[prefix] = null;
+            }
+            else
+            {
+                PropertyInfo[] subproperties = obj.GetProperties(BindingFlags.Public | BindingFlags.Instance);
+                foreach (var property in subproperties)
+                {
+                    if (property.GetIndexParameters().Length != 0)
+                        continue;
+                    string newprefix;
+                    if (string.IsNullOrEmpty(prefix))
+                        newprefix = property.Name;
+                    else
+                        newprefix = prefix + "." + property.Name;
+
+                    RetrieveSubProperties(ref values, property.PropertyType, newprefix);
+                }
+            }
+        }
+
+
 
         public static void RetrieveSubPropertiesValue(ref Dictionary<string, object> values, object obj, string prefix = "")
         {
@@ -95,14 +143,18 @@ namespace UltimateStreamMgr.Model
             {
                 return;
             }
-            else if(obj is CustomKey)
+            else if (obj is CustomKey)
             {
                 CustomKey customKey = obj as CustomKey;
                 values.Add(customKey.Name, customKey.Value);
             }
+            else if (obj is DateTime)
+            {
+                values[prefix] = ((DateTime)obj).ToString("");
+            }
             else if (obj.GetType().IsPrimitive || obj.GetType() == typeof(string))
             {
-                values.Add(prefix, obj);
+                values[prefix] = obj;
             }
             else
             {
@@ -154,8 +206,12 @@ namespace UltimateStreamMgr.Model
 
         #endregion
 
+        #region
+        public SocialMessage HighlightedTweet { get; set; }
+        #endregion
+
         #region Replay
-        
+
         public List<Replay> Replays { get; set; }
 
         #endregion

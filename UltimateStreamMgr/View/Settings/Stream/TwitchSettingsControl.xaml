@@ -7,7 +7,7 @@
              xmlns:Dialog="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
              xmlns:helper="clr-namespace:UltimateStreamMgr.Helpers"
              xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
-             mc:Ignorable="d" IsVisibleChanged="UserControl_IsVisibleChanged"
+             mc:Ignorable="d" IsEnabledChanged="UserControl_IsVisibleChanged"
              d:DesignHeight="106.961" d:DesignWidth="415.11"
              Dialog:DialogParticipation.Register="{Binding}"
              >
@@ -17,10 +17,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="b2v" />
     </UserControl.Resources>
-    <Grid x:Name="content" d:DataContext="">
-        <Grid.Visibility>
-            <Binding Path="Enabled" Mode="TwoWay" Converter="{StaticResource b2v}" UpdateSourceTrigger="PropertyChanged"/>
-        </Grid.Visibility>
+    <Grid x:Name="content" d:DataContext="" IsEnabled="{Binding Enabled, Mode=OneWayToSource}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -36,9 +33,12 @@
             <TextBox Text="{Binding ChannelName}" Margin="5" Grid.Column="1"/>
             <Button Grid.Column="3" Command="{Binding CheckChannelCommand}" Margin="5" Content="Verifier" />
 
-            <TextBlock Grid.Row="1" Margin="5" Text="Token d'accès : " HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <TextBox x:Name="token" Text="{Binding OAuthToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Grid.Row="1" Margin="5" Grid.Column="1"/>
-            <Button Grid.Row="1" Grid.Column="3" Click="Button_Click" Margin="5" Content="Obtenir" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" 
+                       Text="Saisissez uniquement le nom de la chaine. &#x0a;Exemple : masuperchaine" FontStyle="Italic" />
+
+            <TextBlock Grid.Row="2" Margin="5" Text="Token d'accès : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox x:Name="token" Text="{Binding OAuthToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Grid.Row="2" Margin="5" Grid.Column="1"/>
+            <Button Grid.Row="2" Grid.Column="3" Click="Button_Click" Margin="5" Content="Obtenir" />
 
         </Grid>
     </Grid>

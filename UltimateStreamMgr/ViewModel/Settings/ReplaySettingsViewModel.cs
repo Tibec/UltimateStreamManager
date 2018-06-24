@@ -20,6 +20,10 @@ namespace UltimateStreamMgr.ViewModel
             OutputFolder = Configuration.Instance.Replay.OutputDirectory;
         }
 
+        ~ReplaySettingsViewModel()
+        {
+            Messenger.Default.Unregister(this);
+        }
 
         private void Save(NotificationMessage m)
         {

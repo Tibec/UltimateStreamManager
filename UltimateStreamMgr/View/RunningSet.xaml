@@ -80,8 +80,9 @@
                     <ColumnDefinition Width="1.5*"/>
                     <ColumnDefinition Width="3*"/>
                 </Grid.ColumnDefinitions>
-
-                <Grid Grid.Column="0">
+                <!-- Singles Opponent A-->
+                <Grid Grid.Column="0" 
+                    Visibility="{qc:Binding '$P == SetMode.Singles ? Visibility.Visible : Visibility.Collapsed', P={Binding SetMode}}">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -93,30 +94,120 @@
                         <ColumnDefinition/>
                         <ColumnDefinition Width="60"/>
                     </Grid.ColumnDefinitions>
-                    <custom:PlayerBox 
-                        Watermark="Player 1"
-                        Margin="5"
-                        Grid.Column="0"
-                        Text="{Binding Opponent1.Name}"
-                        SelectedPlayer="{Binding Opponent1.LinkedPlayer, Mode=TwoWay}"
-                        PlayerSource="{Binding PlayerList}"
-                        Grid.ColumnSpan="3"/>
-                    <custom:PlayerBox 
-                        Watermark="Player 3"
-                        Margin="5"
-                        Grid.Column="0"
-                        Grid.Row="1"
-						Visibility="{qc:Binding '$P == SetMode.Doubles ? Visibility.Visible : Visibility.Collapsed', P={Binding SetMode}}"
-                        Text="{Binding Opponent3.Name}"
-                        SelectedPlayer="{Binding Opponent3.LinkedPlayer}"
-                        PlayerSource="{Binding PlayerList}"
-                        Grid.ColumnSpan="3"/>
+
+                    <DockPanel
+                            Margin="5"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3">
+                        
+                        <custom:CharacterBox
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Left"
+                            SelectedCharacter="{Binding Opponent1.Character}"
+                            CharacterSource="{Binding CharacterList}"/>
+                        <custom:PlayerBox 
+                            Watermark="Player 1"
+                            Text="{Binding Opponent1.Name}"
+                            SelectedPlayer="{Binding Opponent1.LinkedPlayer, Mode=TwoWay}"
+                            PlayerSource="{Binding PlayerList}"/>
+
+                    </DockPanel>
+
                     <ComboBox
                         Margin="5"
                         Grid.Row="2"
                         Grid.ColumnSpan="2"
-                        SelectedItem="{Binding Path=Opponent1.Character, Mode=TwoWay}"
-                        ItemsSource="{Binding CharacterList}"
+                        SelectedItem="{Binding Path=TeamA, Mode=TwoWay}"
+                        Controls:TextBoxHelper.Watermark="Couleur"
+                        ItemsSource="{Binding TeamList}"
+                        >
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <Image Height="16" Source="{Binding FilePath }"/>
+                                    <TextBlock Text="{Binding Name}" />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <CheckBox 
+                        IsChecked="{Binding AddP1L}"
+                        Margin="5"
+                        Content="[L]"
+                        Grid.Row="3"
+                        Grid.Column="1"/>
+                    <CheckBox 
+                        IsChecked="{Binding AddP1W}"
+                        Margin="5"
+                        Content="[W]"
+                        Grid.Row="3" />
+                    <wpfext:IntegerUpDown 
+                        Margin="0,5,5,5"
+                        FontSize="32"
+                        Value="{Binding Path=Opponent1.Score, Mode=TwoWay}"
+                        Grid.Column="2"
+                        Grid.ColumnSpan="2"
+                        Grid.Row="2"
+                        Grid.RowSpan="2"/>
+                </Grid>
+                
+                <!-- Doubles Team A-->
+                <Grid Grid.Column="0" 
+                    Visibility="{qc:Binding '$P == SetMode.Doubles ? Visibility.Visible : Visibility.Collapsed', P={Binding SetMode}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="60"/>
+                    </Grid.ColumnDefinitions>
+
+
+                    <DockPanel
+                            Margin="5"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3">
+                        <custom:CharacterBox
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Left"
+                            SelectedCharacter="{Binding Opponent1.Character}"
+                            CharacterSource="{Binding CharacterList}"/>
+                        <custom:PlayerBox 
+                            Watermark="Player 1"
+                            Text="{Binding Opponent1.Name}"
+                            SelectedPlayer="{Binding Opponent1.LinkedPlayer, Mode=TwoWay}"
+                            PlayerSource="{Binding PlayerList}"/>
+                    </DockPanel>
+
+                    <DockPanel
+                        Margin="5"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Grid.ColumnSpan="3">
+                        <custom:CharacterBox
+                            DockPanel.Dock="Left"
+                            Margin="0,0,5,0"
+                            SelectedCharacter="{Binding Opponent3.Character}"
+                            CharacterSource="{Binding CharacterList}"/>
+                        <custom:PlayerBox 
+                            Watermark="Player 3"
+                            Text="{Binding Opponent3.Name}"
+                            SelectedPlayer="{Binding Opponent3.LinkedPlayer}"
+                            PlayerSource="{Binding PlayerList}"/>
+                    </DockPanel>
+
+
+                    <ComboBox
+                        Controls:TextBoxHelper.Watermark="Team color"
+                        Margin="5"
+                        Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        SelectedItem="{Binding Path=TeamA, Mode=TwoWay}"
+                        ItemsSource="{Binding TeamList}"
                         >
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
@@ -156,8 +247,9 @@
                         <iconPacks:PackIconModern Kind="ArrowLeftRight" />
                     </Button>
                 </StackPanel>
-
-                <Grid Grid.Column="2">
+                <!-- Singles Opponent B-->
+                <Grid Grid.Column="2"			
+                      Visibility="{qc:Binding '$P == SetMode.Singles ? Visibility.Visible : Visibility.Collapsed', P={Binding SetMode}}">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition/>
@@ -169,30 +261,115 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <custom:PlayerBox 
-                        Margin="5"
-                        Watermark="Player 2"
-                        Text="{Binding Path=Opponent2.Name, Mode=TwoWay}"
-                        SelectedPlayer="{Binding Opponent2.LinkedPlayer}"
-                        PlayerSource="{Binding PlayerList}"
-                        Grid.Column="0"
-                        Grid.ColumnSpan="3" FlowDirection="RightToLeft" />
-                    <custom:PlayerBox 
-                        Watermark="Player 4"
-                        Margin="5"
-                        Grid.Column="0"
-                        Grid.Row="1"
-						Visibility="{qc:Binding '$P == SetMode.Doubles ? Visibility.Visible : Visibility.Collapsed', P={Binding SetMode}}"
-                        Text="{Binding Opponent4.Name}"
-                        SelectedPlayer="{Binding Opponent4.LinkedPlayer}"
-                        PlayerSource="{Binding PlayerList}"
-                        Grid.ColumnSpan="3" FlowDirection="RightToLeft"/>
+                    <DockPanel
+                            Margin="5"
+                            FlowDirection="RightToLeft"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3">
+                        <custom:CharacterBox
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Left"
+                            SelectedCharacter="{Binding Opponent2.Character}"
+                            CharacterSource="{Binding CharacterList}"/>
+                        <custom:PlayerBox 
+                            Watermark="Player 2"
+                            Text="{Binding Opponent2.Name}"
+                            SelectedPlayer="{Binding Opponent2.LinkedPlayer, Mode=TwoWay}"
+                            PlayerSource="{Binding PlayerList}"/>
+                    </DockPanel>
                     <ComboBox
                         Margin="5"
                         Grid.Row="2"
                         Grid.Column="1"
                         ItemsSource="{Binding CharacterList}"
-                        SelectedItem="{Binding Path=Opponent2.Character, Mode=TwoWay}"
+                        SelectedItem="{Binding Path=TeamB, Mode=TwoWay}"
+                        Grid.ColumnSpan="2" 
+                        Controls:TextBoxHelper.Watermark="Couleur"
+                        FlowDirection="RightToLeft">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <WrapPanel>
+                                    <Image Height="16" Source="{Binding FilePath }"/>
+                                    <TextBlock Text="{Binding Name}" />
+                                </WrapPanel>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <CheckBox 
+                        IsChecked="{Binding AddP2L}"
+                        Margin="5"
+                        Content="[L]"
+                        Grid.Row="3"
+                        Grid.Column="2"/>
+                    <CheckBox 
+                        IsChecked="{Binding AddP2W}"
+                        Margin="5"
+                        Content="[W]"
+                        Grid.Row="3"                          
+                        Grid.Column="1"/>
+                    <wpfext:IntegerUpDown 
+                        Margin="0,5,5,5"
+                        FontSize="32"
+                        Value="{Binding Path=Opponent2.Score, Mode=TwoWay}"
+                        Grid.Column="0"
+                        Grid.Row="2"
+                        Grid.RowSpan="2" FlowDirection="RightToLeft"/>
+                </Grid>
+                <!-- Doubles Team B-->
+                <Grid Grid.Column="2"
+                      Visibility="{qc:Binding '$P == SetMode.Doubles ? Visibility.Visible : Visibility.Collapsed', P={Binding SetMode}}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="60"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <DockPanel
+                            Margin="5"
+                            FlowDirection="RightToLeft"
+                            Grid.Column="0"
+                            Grid.ColumnSpan="3">
+                        <custom:CharacterBox
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Left"
+                            SelectedCharacter="{Binding Opponent2.Character}"
+                            CharacterSource="{Binding CharacterList}"/>
+                        <custom:PlayerBox 
+                            Watermark="Player 2"
+                            Text="{Binding Opponent2.Name}"
+                            SelectedPlayer="{Binding Opponent2.LinkedPlayer, Mode=TwoWay}"
+                            PlayerSource="{Binding PlayerList}"/>
+                    </DockPanel>
+
+                    <DockPanel
+                        Margin="5"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        FlowDirection="RightToLeft"
+                        Grid.ColumnSpan="3">
+                        <custom:CharacterBox
+                            Margin="0,0,5,0"
+                            DockPanel.Dock="Left"
+                            SelectedCharacter="{Binding Opponent4.Character}"
+                            CharacterSource="{Binding CharacterList}"/>
+                        <custom:PlayerBox 
+                            Watermark="Player 4"
+                            Text="{Binding Opponent4.Name}"
+                            SelectedPlayer="{Binding Opponent4.LinkedPlayer}"
+                            PlayerSource="{Binding PlayerList}"/>
+                    </DockPanel>
+                    <ComboBox
+                        Margin="5"
+                        Controls:TextBoxHelper.Watermark="Team color"
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        ItemsSource="{Binding TeamList}"
+                        SelectedItem="{Binding Path=TeamB, Mode=TwoWay}"
                         Grid.ColumnSpan="2" 
                         FlowDirection="RightToLeft">
                         <ComboBox.ItemTemplate>

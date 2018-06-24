@@ -1,4 +1,5 @@
-﻿using MahApps.Metro.Controls;
+﻿using GalaSoft.MvvmLight.Messaging;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,18 @@ namespace UltimateStreamMgr.View.Settings
         public SettingsWindow()
         {
             InitializeComponent();
+            Messenger.Default.Register<NotificationMessage>(this, Exit);
+        }
+
+        ~SettingsWindow()
+        {
+            Messenger.Default.Unregister(this);
+        }
+
+        private void Exit(NotificationMessage msg)
+        {
+            if(msg.Notification == "CloseSettings")
+                Close();
         }
     }
 }

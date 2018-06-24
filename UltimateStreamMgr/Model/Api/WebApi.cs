@@ -28,7 +28,7 @@ namespace UltimateStreamMgr.Model.Api
             JsonSerializer serializer = new JsonSerializer();
         }
 
-        public string Request(string requestUri, HttpMethod method = null)
+        virtual public string Request(string requestUri, HttpMethod method = null)
         {
             int maxTries = 3;
 
@@ -52,8 +52,9 @@ namespace UltimateStreamMgr.Model.Api
                     {
                         Task<HttpResponseMessage> task = client.SendAsync(request);
                         task.Wait();
-                        HttpResponseMessage response = task.Result;
-                        response.EnsureSuccessStatusCode();
+                        HttpResponseMessage response = task.Result;/*
+                        task.Result.Content.ToString();
+                        response.EnsureSuccessStatusCode();*/
                         string result = response.Content.ReadAsStringAsync().Result;
                         return result;
                     }

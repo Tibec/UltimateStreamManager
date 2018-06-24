@@ -3,9 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings.Bracket"
-             mc:Ignorable="d" IsVisibleChanged="UserControl_IsVisibleChanged"
-             d:DesignHeight="68.251" d:DesignWidth="364.177">
+             xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings.Bracket" x:Name="control"
+             mc:Ignorable="d" IsEnabledChanged="UserControl_IsVisibleChanged"
+             d:DesignHeight="138.201" d:DesignWidth="459.513">
     <UserControl.DataContext>
         <vm:SmashggSettingsViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
     </UserControl.DataContext>
@@ -13,10 +13,7 @@
         <BooleanToVisibilityConverter x:Key="b2v" />
     </UserControl.Resources>
 
-    <Grid x:Name="content">
-        <Grid.Visibility>
-            <Binding Path="Enabled" Mode="TwoWay" Converter="{StaticResource b2v}" UpdateSourceTrigger="PropertyChanged"/>
-        </Grid.Visibility>
+    <Grid x:Name="content" d:DataContext="" IsEnabled="{Binding Enabled, Mode=OneWayToSource}">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -28,6 +25,14 @@
         </Grid.ColumnDefinitions>
         <TextBlock Margin="5" Text="Nom du tournoi : " HorizontalAlignment="Right" VerticalAlignment="Center" />
         <TextBox Margin="5" Text="{Binding TournamentName}" Grid.Column="1"/>
+
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" TextWrapping="Wrap"
+                   FontStyle="Italic">
+            Il faut saisir le nom du tournoi sur smash.gg. 
+            <LineBreak/>
+            Par exemple si l'adresse de votre page est 
+            "https://smash.gg/tournament/mon-super-tournoi/" il faut saisir "mon-super-tournoi"
+        </TextBlock>
 
     </Grid>
 </UserControl>

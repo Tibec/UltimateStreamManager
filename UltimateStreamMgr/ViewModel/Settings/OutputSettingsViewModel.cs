@@ -19,6 +19,10 @@ namespace UltimateStreamMgr.ViewModel
             SelectedFormat = Configuration.Instance.Output.OutputFormat;
             InputFolder = Configuration.Instance.Output.TemplateFolder;
         }
+        ~OutputSettingsViewModel()
+        {
+            Messenger.Default.Unregister(this);
+        }
 
         private void Save(NotificationMessage m)
         {

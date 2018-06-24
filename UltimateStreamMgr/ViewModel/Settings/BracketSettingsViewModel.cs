@@ -13,13 +13,17 @@ using UltimateStreamMgr.Model.Api;
 
 namespace UltimateStreamMgr.ViewModel
 {
-    class BracketSettingsViewModel : ViewModelBase
+    public class BracketSettingsViewModel : ViewModelBase
     {
         public BracketSettingsViewModel()
         {
             MessengerInstance.Register<NotificationMessage>(this, (m) => Save(m));
 
             InitializeBracketApiList();
+        }
+        ~BracketSettingsViewModel()
+        {
+            Messenger.Default.Unregister(this);
         }
 
         private void InitializeBracketApiList()
@@ -49,6 +53,13 @@ namespace UltimateStreamMgr.ViewModel
         {
             get { return _selectedApi; }
             set { Set("SelectedApi", ref _selectedApi, value); }
+        }
+
+        private string _selectedApiName;
+        public string SelectedApiName
+        {
+            get { return _selectedApiName; }
+            set { Set("SelectedApiName", ref _selectedApiName, value); }
         }
 
 

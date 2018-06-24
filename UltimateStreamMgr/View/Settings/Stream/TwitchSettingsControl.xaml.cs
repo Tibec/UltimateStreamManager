@@ -30,6 +30,7 @@ namespace UltimateStreamMgr.View.Settings.Stream
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             content.Visibility = ((bool)e.NewValue) ? Visibility.Visible : Visibility.Collapsed;
+            content.IsEnabled = (bool)e.NewValue;
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

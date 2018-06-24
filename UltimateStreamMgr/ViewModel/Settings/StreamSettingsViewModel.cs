@@ -22,6 +22,11 @@ namespace UltimateStreamMgr.ViewModel
             InitializeBracketApiList();
         }
 
+        ~StreamSettingsViewModel()
+        {
+            Messenger.Default.Unregister(this);
+        }
+
         private void InitializeBracketApiList()
         {
             Type[] apis = Assembly.GetExecutingAssembly().GetTypes().Where((t) => t.IsSubclassOf(typeof(StreamApi))).ToArray();
@@ -49,6 +54,14 @@ namespace UltimateStreamMgr.ViewModel
             get { return _selectedApi; }
             set { Set("SelectedApi", ref _selectedApi, value); }
         }
+
+        private string _selectedApiName;
+        public string SelectedApiName
+        {
+            get { return _selectedApiName; }
+            set { Set("SelectedApiName", ref _selectedApiName, value); }
+        }
+
 
         private void Save(NotificationMessage msg)
         {

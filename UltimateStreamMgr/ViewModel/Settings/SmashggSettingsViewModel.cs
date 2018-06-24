@@ -19,6 +19,10 @@ namespace UltimateStreamMgr.ViewModel
             if (Configuration.Instance.Bracket is SmashGgSettings)
                 TournamentName = (Configuration.Instance.Bracket as SmashGgSettings).TournamentName;
         }
+        ~SmashggSettingsViewModel()
+        {
+            Messenger.Default.Unregister(this);
+        }
 
         private bool _enabled;
         public bool Enabled

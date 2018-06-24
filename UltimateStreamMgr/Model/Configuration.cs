@@ -39,7 +39,8 @@ namespace UltimateStreamMgr.Model
             XmlSerializer xs = new XmlSerializer(typeof(Configuration), 
                 Assembly.GetExecutingAssembly().GetTypes().Where(
                     (t) => t.IsSubclassOf(typeof(BracketSettings) )
-                    || t.IsSubclassOf(typeof(StreamSettings) )
+                    || t.IsSubclassOf(typeof(StreamSettings))
+                    || t.IsSubclassOf(typeof(SocialSettings))
                     ).ToArray()) ;
             using (StreamReader rd = new StreamReader(loadFile))
             {
@@ -53,7 +54,8 @@ namespace UltimateStreamMgr.Model
                 Assembly.GetExecutingAssembly().GetTypes().Where(
                     (t) => t.IsSubclassOf(typeof(BracketSettings))
                     || t.IsSubclassOf(typeof(StreamSettings))
-                    ).ToArray());
+                    || t.IsSubclassOf(typeof(SocialSettings))
+                ).ToArray());
              using (StreamWriter wr = new StreamWriter(saveFile))
             {
                 xs.Serialize(wr, this);
@@ -103,6 +105,12 @@ namespace UltimateStreamMgr.Model
             get { return _replay; }
             set { _replay = value; OnStreamSettingsChanged(); }
         }
+        private SocialSettings _social;
+        public SocialSettings Social
+        {
+            get { return _social; }
+            set { _social = value; OnSocialSettingsChanged(); }
+        }
 
         public WindowSettings Window { get; set; } = new WindowSettings();
 
@@ -129,12 +137,18 @@ namespace UltimateStreamMgr.Model
             if (AdvancedSettingsChanged != null) AdvancedSettingsChanged();
         }
 
+        private void OnSocialSettingsChanged()
+        {
+            if (SocialSettingsChanged != null) SocialSettingsChanged();
+        }
+
         public delegate void SettingsChanged();
         public event SettingsChanged OutputSettingsChanged;
         public event SettingsChanged ReplaySettingsChanged;
         public event SettingsChanged StreamSettingsChanged;
         public event SettingsChanged BracketSettingsChanged;
         public event SettingsChanged AdvancedSettingsChanged;
+        public event SettingsChanged SocialSettingsChanged;
 
         #endregion
     }

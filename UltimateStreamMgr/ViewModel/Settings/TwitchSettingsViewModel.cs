@@ -29,7 +29,10 @@ namespace UltimateStreamMgr.ViewModel
             CheckChannelCommand = new RelayCommand(() => CheckChannel());
             GetTokenCommand = new RelayCommand(() => GetToken());
         }
-
+        ~TwitchSettingsViewModel()
+        {
+            Messenger.Default.Unregister(this);
+        }
         private bool _enabled;
         public bool Enabled
         {

@@ -31,8 +31,8 @@
 
         </WrapPanel>
         <Separator DockPanel.Dock="Bottom" />
-        <TabControl TabStripPlacement="Left" Controls:TabControlHelper.Underlined="TabPanel">
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18"  Header="Vue d'ensemble">
+        <TabControl TabStripPlacement="Left" Controls:TabControlHelper.Underlined="TabPanel" SelectedIndex="{Binding ActiveTab, Mode=TwoWay}">
+            <TabItem Controls:ControlsHelper.HeaderFontSize="18"  Header="Vue d'ensemble"> 
                 <TabItem.Content>
                     <local:OverviewSettings />
                 </TabItem.Content>
@@ -55,6 +55,11 @@
             <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Format de sortie">
                 <TabItem.Content>
                     <local:OutputSettings />
+                </TabItem.Content>
+            </TabItem>
+            <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Réseaux sociaux">
+                <TabItem.Content>
+                    <local:SocialSettingsControl />
                 </TabItem.Content>
             </TabItem>
 

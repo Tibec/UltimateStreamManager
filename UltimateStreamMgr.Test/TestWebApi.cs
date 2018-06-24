@@ -5,6 +5,7 @@ using UltimateStreamMgr.Model.Api;
 using System.Net.Http;
 using UltimateStreamMgr.Model.Api.StreamApis;
 using UltimateStreamMgr.Model.Api.BracketApis;
+using UltimateStreamMgr.Model.Api.SocialApis;
 
 namespace UltimateStreamMgr.Test
 {
@@ -58,6 +59,13 @@ namespace UltimateStreamMgr.Test
         {
             Smashgg api = new Smashgg(new SmashGgSettings { TournamentName = "gre-3" });
             var a = api.GetAvailablesTop8();
+        }
+        [TestMethod]
+        public void TestTwitter()
+        {
+            Twitter api = new Twitter();
+           // api.PublishMessage("Ceci est un message con posté depuis une application génial ! Et il contient un lien !!!! https://smash.gg/tournament/gre-1/events");
+            var a = api.GetMessagesByHashtag("hashtagdecon");
         }
     }
 }

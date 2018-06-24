@@ -26,6 +26,7 @@ namespace UltimateStreamMgr.ViewModel
             Windows.Add(new RunningSetViewModel());
             Windows.Add(new CustomKeysViewModel());
             Windows.Add(new CastersViewModel());
+            Windows.Add(new SocialModuleViewModel());
             /*
             if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
             {

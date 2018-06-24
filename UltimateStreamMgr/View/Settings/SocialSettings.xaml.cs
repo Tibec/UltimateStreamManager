@@ -13,22 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace UltimateStreamMgr.View.Settings.Bracket
+namespace UltimateStreamMgr.View.Settings
 {
     /// <summary>
-    /// Logique d'interaction pour SmashggSettingsControl.xaml
+    /// Logique d'interaction pour StreamSettingsControl.xaml
     /// </summary>
-    public partial class SmashggSettingsControl : UserControl
+    public partial class SocialSettingsControl : UserControl
     {
-        public SmashggSettingsControl()
+        public SocialSettingsControl()
         {
             InitializeComponent();
-        }
-
-        private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        {
-            content.Visibility = ((bool)e.NewValue) ? Visibility.Visible : Visibility.Collapsed;
-            content.IsEnabled = (bool)e.NewValue;
         }
     }
 }

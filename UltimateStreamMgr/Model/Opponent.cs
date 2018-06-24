@@ -18,7 +18,10 @@ namespace UltimateStreamMgr.Model
             Score = previous.Score;
         }
 
-        public Opponent() { }
+        public Opponent() {
+            // Force events to fire
+            Character = new Character();
+        }
 
         private string _name = "";
         public string Name

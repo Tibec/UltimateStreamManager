@@ -94,6 +94,9 @@
                 <DataTemplate DataType="{x:Type vm:ChatViewModel}">
                     <local:Chat />
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type vm:SocialModuleViewModel}">
+                    <local:SocialModule />
+                </DataTemplate>
             </xcad:DockingManager.Resources>
             <xcad:DockingManager.LayoutItemContainerStyle>
                 <Style TargetType="{x:Type xcad:LayoutAnchorableItem}" >
