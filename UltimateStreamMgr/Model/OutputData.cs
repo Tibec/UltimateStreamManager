@@ -184,6 +184,9 @@ namespace UltimateStreamMgr.Model
         public Opponent Player3 { get; set; }
         public Opponent Player4 { get; set; }
 
+        public Character TeamA { get; set; }
+        public Character TeamB { get; set; }
+
         public string RoundName { get; set; }
 
         #endregion

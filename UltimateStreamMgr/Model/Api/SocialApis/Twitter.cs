@@ -26,6 +26,12 @@ namespace UltimateStreamMgr.Model.Api.SocialApis
         {
             ApiName = "Twitter";
 
+            _consumerKey = (settings as TwitterSettings).ConsumerKey;
+            _consumerSecret = (settings as TwitterSettings).ConsumerSecret;
+            _accessTokenKey = (settings as TwitterSettings).AccessToken;
+            _accessTokenSecret = (settings as TwitterSettings).AccessTokenSecret;
+
+
             apiWrapper = new TinyTwitter(
                 new OAuthInfo
                 {
@@ -45,8 +51,10 @@ namespace UltimateStreamMgr.Model.Api.SocialApis
             foreach (var tweet in tweets)
             {
                 SocialMessage msg = new SocialMessage();
+                msg.Id = tweet.Id;
                 msg.Date = tweet.CreatedAt;
                 msg.Author = tweet.UserName;
+                msg.AuthorHandle = tweet.ScreenName;
                 msg.Message = tweet.Text;
                 msgs.Add(msg);
             }
@@ -63,8 +71,10 @@ namespace UltimateStreamMgr.Model.Api.SocialApis
             foreach (var tweet in tweets)
             {
                 SocialMessage msg = new SocialMessage();
+                msg.Id = tweet.Id;
                 msg.Date = tweet.CreatedAt;
-                msg.Author = tweet.UserName ;
+                msg.Author = tweet.UserName;
+                msg.AuthorHandle = tweet.ScreenName;
                 msg.Message = tweet.Text;
                 msgs.Add(msg);
             }

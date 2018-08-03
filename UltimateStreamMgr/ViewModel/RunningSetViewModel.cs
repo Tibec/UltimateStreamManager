@@ -297,6 +297,9 @@ namespace UltimateStreamMgr.ViewModel
                 Output.Data.Player4 = new Opponent(Opponent4);
             }
 
+            Output.Data.TeamA = new Character(TeamA);
+            Output.Data.TeamB = new Character(TeamB);
+
             Output.Data.RoundName = Round;
         }
 

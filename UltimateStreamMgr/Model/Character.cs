@@ -8,6 +8,18 @@ namespace UltimateStreamMgr.Model
 {
     public class Character
     {
+        // Copy constructor.
+        public Character(Character previous)
+        {
+            Name = previous.Name;
+            FilePath = previous.FilePath;
+        }
+
+        public Character()
+        {
+
+        }
+
         public string Name { get; set; }
         public string FilePath { get; set; }
     }
