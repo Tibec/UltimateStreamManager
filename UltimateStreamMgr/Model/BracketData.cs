@@ -34,6 +34,7 @@ namespace UltimateStreamMgr.Model
         {
             Players = new ObservableCollection<Player>(_apiLink.GetAllEntrants());
             PendingSets = new ObservableCollection<Set>(_apiLink.GetAllPendingSets());
+            PendingSetsForStream = new ObservableCollection<Set>(_apiLink.GetAllPendingSets(true));
             Output.Data.Top8List = _apiLink.GetAvailablesTop8();
 
             if (!IsInitialized)
@@ -84,6 +85,13 @@ namespace UltimateStreamMgr.Model
         {
             get { return _pendingSets; }
             set { Set("PendingSets", ref _pendingSets, value); }
+        }
+
+        private ObservableCollection<Set> _pendingSetsForStream;
+        public ObservableCollection<Set> PendingSetsForStream
+        {
+            get { return _pendingSetsForStream; }
+            set { Set("PendingSetsForStream", ref _pendingSetsForStream, value); }
         }
 
         private ObservableCollection<Player> _players;

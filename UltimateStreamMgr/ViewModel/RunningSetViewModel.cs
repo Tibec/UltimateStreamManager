@@ -13,6 +13,7 @@ using System.IO;
 using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using System.Windows;
+using System.Reflection;
 
 namespace UltimateStreamMgr.ViewModel
 {
@@ -24,6 +25,7 @@ namespace UltimateStreamMgr.ViewModel
 
         public RunningSetViewModel()
         {
+            Log.Info("Initializing RunningSet module...");
             Title = "Running Set";
             Reset();
 
@@ -35,6 +37,11 @@ namespace UltimateStreamMgr.ViewModel
             UpdateCommand = new RelayCommand(() => Update());
             SwapPlayerCommand = new RelayCommand(() => SwapPlayer());
 
+            IncrementEntrant1Command = new RelayCommand(() => IncrementEntrant1());
+            DecrementEntrant1Command = new RelayCommand(() => DecrementEntrant1());
+            IncrementEntrant2Command = new RelayCommand(() => IncrementEntrant2());
+            DecrementEntrant2Command = new RelayCommand(() => DecrementEntrant2());
+
             MessengerInstance.Register<Set>(this, StartPendingSet);
 
             ReportEnabled = BracketData.Instance.IsReportingAvailable;
@@ -44,6 +51,7 @@ namespace UltimateStreamMgr.ViewModel
 
             LoadCharacters();
             LoadTeams();
+            Log.Info("RunningSet module initialized !");
         }
 
         private void RefreshPlayers()
@@ -275,6 +283,33 @@ namespace UltimateStreamMgr.ViewModel
             o = Opponent3;
             Opponent3 = Opponent4;
             Opponent4 = o;
+        }
+
+        public RelayCommand IncrementEntrant1Command { get; set; }
+        private void IncrementEntrant1()
+        {
+            ++Opponent1.Score;
+        }
+
+
+        public RelayCommand DecrementEntrant1Command { get; set; }
+        private void DecrementEntrant1()
+        {
+            --Opponent1.Score;
+        }
+
+
+        public RelayCommand IncrementEntrant2Command { get; set; }
+        private void IncrementEntrant2()
+        {
+            ++Opponent2.Score;
+        }
+
+
+        public RelayCommand DecrementEntrant2Command { get; set; }
+        private void DecrementEntrant2()
+        {
+            --Opponent2.Score;
         }
 
         public RelayCommand UpdateCommand { get; set; }

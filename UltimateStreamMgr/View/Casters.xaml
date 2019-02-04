@@ -12,9 +12,11 @@
              xmlns:dgs="clr-namespace:UltimateStreamMgr.View.Controls"
              mc:Ignorable="d" d:DesignWidth="452.4" d:DesignHeight="60" >
     <Grid>
-        <Grid.DataContext>
+        <!--
+      <Grid.DataContext>
             <vm:CastersViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
         </Grid.DataContext>
+        -->
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

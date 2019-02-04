@@ -14,12 +14,19 @@
              mc:Ignorable="d" 
              >
     <Grid>
+        <!--
+
         <Grid.DataContext>
             <vm:PendingSetsViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
         </Grid.DataContext>
+        -->
         <Grid.Resources>
             <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
         </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
 
         <Controls:ProgressRing 
             Foreground="Black"
@@ -101,5 +108,7 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <!--<CheckBox Grid.Row="1" Content="Display everything" IsChecked="{Binding DisplayAllSets}" />-->
     </Grid>
 </UserControl>

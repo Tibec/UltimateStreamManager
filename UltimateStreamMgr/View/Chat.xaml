@@ -8,10 +8,12 @@
              xmlns:cef="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
              mc:Ignorable="d" 
              d:DesignHeight="650" d:DesignWidth="350">
+    <!--
 
     <UserControl.DataContext>
         <vm:ChatViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
     </UserControl.DataContext>
+    -->
     <Grid>
         <cef:ChromiumWebBrowser x:Name="browser" Address="{Binding ChatUrl}" />
         <metro:ProgressRing x:Name="progress"/>

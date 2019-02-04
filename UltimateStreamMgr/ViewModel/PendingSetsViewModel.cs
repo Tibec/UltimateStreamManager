@@ -15,11 +15,13 @@ namespace UltimateStreamMgr.ViewModel
     {
         public PendingSetsViewModel()
         {
+            Log.Info("Initialize Module...");
             Title = "Pending Set";
 
             BracketInfo = BracketData.Instance;
 
             StartSetCommand = new RelayCommand<Set>((s) => StartSet(s));
+            Log.Info("Module initialized");
         }
 
         private BracketData _bracketInfo;

@@ -63,7 +63,7 @@ namespace UltimateStreamMgr.Test
         [TestMethod]
         public void TestTwitter()
         {
-            Twitter api = new Twitter();
+            Twitter api = new Twitter(null);
            // api.PublishMessage("Ceci est un message con posté depuis une application génial ! Et il contient un lien !!!! https://smash.gg/tournament/gre-1/events");
             var a = api.GetMessagesByHashtag("hashtagdecon");
         }

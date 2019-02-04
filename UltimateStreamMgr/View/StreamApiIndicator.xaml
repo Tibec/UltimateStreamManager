@@ -12,9 +12,11 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              d:DesignHeight="231.7" d:DesignWidth="553.3" 
              mc:Ignorable="d" x:Name="uc" >
+    <!--
     <UserControl.DataContext>
         <vm:StreamApiIndicatorViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
     </UserControl.DataContext>
+    -->
     <UserControl.Resources>
         <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
         <Dialogs:CustomDialog 
@@ -91,6 +93,7 @@
                         Style="{DynamicResource MetroCircleButtonStyle}" 
                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         ToolTip="Editer le statut de la chaine"
+                        Command="{Binding OpenSettingsCommand}"
                         Click="Button_Click">
                     <iconPacks:PackIconModern Kind="Edit" Foreground="White"/>
                 </Button>
@@ -114,11 +117,12 @@
                         Text="{Binding Path=ChannelData.ChannelInfo.Title, FallbackValue=Channel Title}" 
                         FontSize="20" Grid.Column="1" TextTrimming="CharacterEllipsis"/>
                     <WrapPanel>
-                        <StackPanel Orientation="Horizontal" Width="150">
+                        <StackPanel Orientation="Horizontal" Width="Auto">
                             <iconPacks:PackIconFontAwesome Kind="UserSolid" Foreground="White" Height="12" VerticalAlignment="Stretch"/>
                             <TextBlock TextTrimming="CharacterEllipsis" Foreground="White" Margin="3" Text="{Binding Path=ChannelData.ChannelInfo.Name, FallbackValue=Channel Name}" Grid.Row="1" Grid.Column="1"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Width="150">
+                        <TextBlock Width="20" />
+                        <StackPanel Orientation="Horizontal" Width="Auto">
                             <iconPacks:PackIconFontAwesome Kind="GamepadSolid" Foreground="White" Height="12" VerticalAlignment="Stretch"/>
                             <TextBlock TextTrimming="CharacterEllipsis" Foreground="White" Margin="3" Text="{Binding Path=ChannelData.ChannelInfo.Game.Name, FallbackValue=Game Name}" Grid.Row="1" Grid.Column="1"/>
                         </StackPanel>

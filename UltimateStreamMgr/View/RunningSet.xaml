@@ -13,10 +13,22 @@
              xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d"  >
+    <UserControl.InputBindings>
+        <KeyBinding Gesture="Ctrl+Alt+Add" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding IncrementEntrant1Command}" />
+        <KeyBinding Gesture="Ctrl+Alt+Subtract" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding DecrementEntrant1Command}" />
+        <KeyBinding Gesture="Ctrl+Shift+Add" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding IncrementEntrant2Command}" />
+        <KeyBinding Gesture="Ctrl+Shift+Subtract" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding DecrementEntrant2Command}" />
+        <KeyBinding Gesture="Ctrl+Shift+R" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding ResetCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+S" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding SwapPlayerCommand}" />
+    </UserControl.InputBindings>
+
     <DockPanel Margin="5">
+        <!--
+
         <DockPanel.DataContext>
             <vm:RunningSetViewModel />
         </DockPanel.DataContext>
+        -->
         <DockPanel.Resources>
             <ObjectDataProvider x:Key="enumValues"
             MethodName="GetValues" ObjectType="{x:Type System:Enum}">
@@ -281,7 +293,7 @@
                         Margin="5"
                         Grid.Row="2"
                         Grid.Column="1"
-                        ItemsSource="{Binding CharacterList}"
+                        ItemsSource="{Binding TeamList}"
                         SelectedItem="{Binding Path=TeamB, Mode=TwoWay}"
                         Grid.ColumnSpan="2" 
                         Controls:TextBoxHelper.Watermark="Couleur"

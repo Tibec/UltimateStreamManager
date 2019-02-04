@@ -27,7 +27,8 @@ namespace UltimateStreamMgr.ViewModel
 
             ChannelData = StreamChannelData.Instance;
 
-            Games = new ObservableCollection<Game> { new Game { Name = "Super Smash Bros. for Wii U" } };
+            // TODO: replace this by a proper call to the twitch API :singe: and store the result somewhere
+            Games = new ObservableCollection<Game> { new Game { Name = "Super Smash Bros. for Wii U" }, new Game { Name = "Super Smash Bros. Ultimate" }, new Game { Name = "Super Smash Bros. Melee" }, };
         }
 
         private StreamChannelData _channelData;
@@ -75,15 +76,17 @@ namespace UltimateStreamMgr.ViewModel
             {
                 if(e.Message.Contains("401"))
                 {
-                    // Display not enough right
+                    Log.Error("The specified account does not have enough right to edit this channel data");
                 }
+                Log.Trace("Resetting the the dialog preset channel title and game ...");
             }
         }
 
         public RelayCommand OpenSettingsCommand { get; set; }
         private void OpenSettings()
         {
-
+            EditName = ChannelData.ChannelInfo.Title;
+            EditGame = Games.FirstOrDefault(g => g.Name == ChannelData.ChannelInfo.Game.Name);
         }
     }
 }

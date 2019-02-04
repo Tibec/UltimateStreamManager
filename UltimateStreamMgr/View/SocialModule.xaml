@@ -10,9 +10,11 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" x:Name="uc"
              d:DesignHeight="361.335" d:DesignWidth="320.445">
+    <!--
+
     <UserControl.DataContext>
         <vm:SocialModuleViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
-    </UserControl.DataContext>
+    </UserControl.DataContext> -->
     <UserControl.Resources>
         <helper:BindingProxy x:Key="proxy" Data="{Binding}" />
         <Dialogs:CustomDialog 
