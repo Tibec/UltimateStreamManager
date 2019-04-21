@@ -210,7 +210,10 @@ namespace UltimateStreamMgr.View.Controls
             if (e.AddedItems.Count > 0)
             {
                 SelectedPlayer = e.AddedItems[0] as Player;
-                Text = SelectedPlayer.Name;
+                if(!string.IsNullOrEmpty(SelectedPlayer.Team?.ShortName))
+                    Text = SelectedPlayer.Team.ShortName + " | "+ SelectedPlayer.Name;
+                else
+                    Text = SelectedPlayer.Name;
             }
         }
 
