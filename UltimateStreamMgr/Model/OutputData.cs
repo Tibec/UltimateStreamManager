@@ -143,10 +143,10 @@ namespace UltimateStreamMgr.Model
             {
                 return;
             }
-            else if (obj is CustomKey)
+            else if (obj is List<CustomKey>)
             {
-                CustomKey customKey = obj as CustomKey;
-                values.Add(customKey.Name, customKey.Value);
+                foreach(var key in obj as List<CustomKey>)
+                    values.Add(key.Name, key.Value);
             }
             else if (obj is DateTime)
             {
