@@ -72,6 +72,8 @@ namespace UltimateStreamMgr.View.Controls
                     pb.team.Text = pb.SelectedPlayer.Team.ShortName + " | ";
                 else
                     pb.team.Text = "";
+
+                pb.Text = pb.team.Text + pb.name.Text;
             }
             else
             {
@@ -210,10 +212,6 @@ namespace UltimateStreamMgr.View.Controls
             if (e.AddedItems.Count > 0)
             {
                 SelectedPlayer = e.AddedItems[0] as Player;
-                if(!string.IsNullOrEmpty(SelectedPlayer.Team?.ShortName))
-                    Text = SelectedPlayer.Team.ShortName + " | "+ SelectedPlayer.Name;
-                else
-                    Text = SelectedPlayer.Name;
             }
         }
 

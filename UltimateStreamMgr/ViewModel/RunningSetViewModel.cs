@@ -115,17 +115,12 @@ namespace UltimateStreamMgr.ViewModel
             Reset();
 
             Opponent1.LinkedPlayer = obj.Opponent1;
-            Opponent1.Name = obj.Opponent1?.Name;
-
             Opponent2.LinkedPlayer = obj.Opponent2;
-            Opponent2.Name = obj.Opponent2?.Name;
-            if(obj.isDouble)
+
+            if (obj.isDouble)
             {
                 Opponent3.LinkedPlayer = obj.Opponent3;
-                Opponent3.Name = obj.Opponent3?.Name;
-
                 Opponent4.LinkedPlayer = obj.Opponent4;
-                Opponent4.Name = obj.Opponent4?.Name;
 
                 SetMode = SetMode.Doubles;
             }
