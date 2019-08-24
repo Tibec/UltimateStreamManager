@@ -1,0 +1,14 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout
+    - name: Compile
+      run: msbuild UltimateStreamManager.sln.sln /t:Rebuild /p:Configuration=Release /p:Platform="any cpu"
+
