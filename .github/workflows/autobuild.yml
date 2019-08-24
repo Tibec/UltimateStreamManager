@@ -8,7 +8,7 @@ jobs:
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checkout
+    - uses: actions/checkout@v1
     - name: Compile
       run: msbuild UltimateStreamManager.sln.sln /t:Rebuild /p:Configuration=Release /p:Platform="any cpu"
 
