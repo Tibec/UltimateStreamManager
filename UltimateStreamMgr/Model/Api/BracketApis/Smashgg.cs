@@ -46,7 +46,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if(entrant.id == entrantId)
                 {
-                    playerId = (int)(entrant.playerIds as JObject).First;
+                    playerId = (int)(entrant.playerIds as JArray).First;
                 }
             }
             if(playerId == -1)
@@ -64,7 +64,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if (entrant.id == entrantId)
                 {
-                    foreach (var token in (entrant.playerIds as JObject).Children())
+                    foreach (var token in (entrant.playerIds as JArray).Children())
                     {
                         int pId = (int)token;
                         r.Add(players.First((p) => p.SmashggId == pId));
@@ -84,7 +84,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if(entrant.id == entrantId)
                 {
-                    return (entrant.playerIds as JObject).Children().Count() > 1;
+                    return (entrant.playerIds as JArray).Children().Count() > 1;
                 }
             }
             return true;
