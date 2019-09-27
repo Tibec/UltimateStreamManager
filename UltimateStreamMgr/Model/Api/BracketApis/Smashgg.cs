@@ -46,7 +46,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if(entrant.id == entrantId)
                 {
-                    playerId = (int)(entrant.playerIds as JArray).First;
+                    playerId = (int)(entrant.playerIds as JArray)?.First;
                 }
             }
             if(playerId == -1)
@@ -64,11 +64,15 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if (entrant.id == entrantId)
                 {
-                    foreach (var token in (entrant.playerIds as JArray).Children())
+                    try
                     {
-                        int pId = (int)token;
-                        r.Add(players.First((p) => p.SmashggId == pId));
+                        foreach (var token in (entrant.playerIds as JArray).Children())
+                        {
+                            int pId = (int) token;
+                            r.Add(players.First((p) => p.SmashggId == pId));
+                        }
                     }
+                    catch { }
                 }
             }
 
@@ -274,13 +278,14 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             foreach(dynamic entrant in entrantList)
             {
                 // ignore every 'team' entrant
-                if ((entrant.playerIds as JArray).Children().Count() > 1)
+                var playerIdsArray = (entrant.playerIds as JArray);
+                if (playerIdsArray == null || playerIdsArray.Children().Count() > 1)
                     continue;
-                int entrantPlayerId = (int)(entrant.playerIds as JArray).First;
+                int entrantPlayerId = (int)playerIdsArray.First;
                 
                 if(entrantPlayerId == playerId)
                 {
-                    return (string)(entrant.prefixes as JArray).First;
+                    return (string)playerIdsArray.First;
                 }
             }
             return "";
