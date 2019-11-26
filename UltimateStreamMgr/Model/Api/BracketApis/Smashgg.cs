@@ -271,13 +271,13 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             foreach(dynamic entrant in entrantList)
             {
                 // ignore every 'team' entrant
-                if (entrant?.participantsIds == null || (entrant.participantsIds as JArray).Children().Count() > 1)
+                if (entrant?.playerIds == null || (entrant.playerIds as JObject) == null || (entrant.playerIds as JObject).Children().Count() > 1)
                     continue;
-                int entrantPlayerId = (int)(entrant.participantsIds as JArray).First;
+                int entrantPlayerId = (int)(entrant.playerIds as JObject).First;
                 
                 if(entrantPlayerId == playerId)
                 {
-                    return (string)(entrant.prefixes as JArray).First;
+                    return (entrant.prefixes as JObject).Properties().First().First.ToString();
                 }
             }
             return "";

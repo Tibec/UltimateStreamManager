@@ -39,6 +39,6 @@
         <local:SmashggSettingsControl IsEnabled="{Binding
             Mode=TwoWay,
             Path=DataContext.SelectedApiName, 
-            Converter={qc:QuickConverter '$P == \'Smash GG\''}, ElementName=module}" />
+            Converter={qc:QuickConverter '$P == \'smash.gg\''}, ElementName=module}" />
     </StackPanel>
 </UserControl>
