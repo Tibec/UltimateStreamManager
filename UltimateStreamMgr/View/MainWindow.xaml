@@ -67,7 +67,6 @@
             AnchorablesSource="{Binding Windows}"
             LayoutChanged="dockMgr_LayoutChanged">
             <xcad:DockingManager.Theme>
-                <!--<xcad:AeroTheme/>-->
                 <theme:MetroTheme />
             </xcad:DockingManager.Theme>
             <xcad:DockingManager.LayoutUpdateStrategy>
