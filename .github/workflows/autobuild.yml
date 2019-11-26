@@ -15,5 +15,5 @@ jobs:
 
     - name: MSBuild
       working-directory: /
-      run:  msbuild UltimateStreamManager.sln -property:Configuration=Debug -t:restore
+      run:  msbuild ./UltimateStreamManager.sln -property:Configuration=Debug -t:restore
 
