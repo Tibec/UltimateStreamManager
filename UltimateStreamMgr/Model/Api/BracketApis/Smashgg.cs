@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLog.Targets.Wrappers;
 
 namespace UltimateStreamMgr.Model.Api.BracketApis
 {
@@ -78,8 +79,8 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
 
             if (r.Count == 0)
                 throw new KeyNotFoundException("Entrant without player id");
-            else
-                return r;
+
+            return r;
         }
 
         private bool IsTeamEntrant(dynamic entrantList, int entrantId)

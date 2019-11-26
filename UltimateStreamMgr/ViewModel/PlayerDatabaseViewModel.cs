@@ -11,6 +11,8 @@ using UltimateStreamMgr.Model.Api;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Threading;
 
 namespace UltimateStreamMgr.ViewModel
 {
@@ -114,12 +116,18 @@ namespace UltimateStreamMgr.ViewModel
         public RelayCommand BracketSynchroCommand { get; set; }
         private void BracketSynchro()
         {
-            BracketApi api = Activator.CreateInstance(Configuration.Instance.Bracket.Api, Configuration.Instance.Bracket) as BracketApi;
-            List<Player> list = api.GetAllEntrants();
-            foreach(Player player in list)
-            {
-                PlayerDatabase.UpdateOrAddPlayer(player);
-            }
+
+            Task.Run(()=>{
+                BracketApi api = Activator.CreateInstance(Configuration.Instance.Bracket.Api, Configuration.Instance.Bracket) as BracketApi;
+                List<Player> list = api.GetAllEntrants();
+                foreach (Player player in list)
+                {
+                    Dispatcher.CurrentDispatcher.Invoke(() =>
+                    {
+                        PlayerDatabase.UpdateOrAddPlayer(player);
+                    });
+                }
+            });
         }
 
         public RelayCommand AddPlayerCommand { get; set; }
