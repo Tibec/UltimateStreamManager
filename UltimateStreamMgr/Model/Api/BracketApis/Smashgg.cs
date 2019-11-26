@@ -2,11 +2,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NLog.Targets.Wrappers;
 
 namespace UltimateStreamMgr.Model.Api.BracketApis
 {
@@ -19,7 +15,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
 
         public Smashgg(BracketSettings settings) : base(settings)
         {
-            ApiName = "Smash GG";
+            ApiName = "smash.gg";
             _baseUrl = "https://api.smash.gg/";
 
             if (settings is SmashGgSettings)
@@ -47,7 +43,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if(entrant.id == entrantId)
                 {
-                    playerId = (int)(entrant.playerIds as JArray)?.First;
+                    playerId = (int)(entrant.playerIds as JObject)?.First;
                 }
             }
             if(playerId == -1)
@@ -65,22 +61,18 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if (entrant.id == entrantId)
                 {
-                    try
+                    foreach (var token in (entrant.participantsIds as JArray).Children())
                     {
-                        foreach (var token in (entrant.playerIds as JArray).Children())
-                        {
-                            int pId = (int) token;
-                            r.Add(players.First((p) => p.SmashggId == pId));
-                        }
+                        int pId = (int)token;
+                        r.Add(players.First((p) => p.SmashggId == pId));
                     }
-                    catch { }
                 }
             }
 
             if (r.Count == 0)
                 throw new KeyNotFoundException("Entrant without player id");
-
-            return r;
+            else
+                return r;
         }
 
         private bool IsTeamEntrant(dynamic entrantList, int entrantId)
@@ -89,7 +81,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if(entrant.id == entrantId)
                 {
-                    return (entrant.playerIds as JArray).Children().Count() > 1;
+                    return (entrant.participantIds as JArray).Children().Count() > 1;
                 }
             }
             return true;
@@ -279,14 +271,13 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             foreach(dynamic entrant in entrantList)
             {
                 // ignore every 'team' entrant
-                var playerIdsArray = (entrant.playerIds as JArray);
-                if (playerIdsArray == null || playerIdsArray.Children().Count() > 1)
+                if (entrant?.participantsIds == null || (entrant.participantsIds as JArray).Children().Count() > 1)
                     continue;
-                int entrantPlayerId = (int)playerIdsArray.First;
+                int entrantPlayerId = (int)(entrant.participantsIds as JArray).First;
                 
                 if(entrantPlayerId == playerId)
                 {
-                    return (string)playerIdsArray.First;
+                    return (string)(entrant.prefixes as JArray).First;
                 }
             }
             return "";
@@ -300,7 +291,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             dynamic data = JsonConvert.DeserializeObject(result);
             return ParsePlayerData(data.entities.player, data.entities.entrants, false);
         }
-
+         
         public override List<Top8> GetAvailablesTop8()
         {
             List<Top8> top8list = new List<Top8>();
