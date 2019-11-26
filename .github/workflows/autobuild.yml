@@ -1,4 +1,4 @@
-name: CI-Autbuild
+name: CI-AutoBuild
 
 on: [push]
 
@@ -13,6 +13,9 @@ jobs:
     - name: Setup MSBuild.exe
       uses: warrenbuckley/Setup-MSBuild@v1
 
-    - name: MSBuild
-      run:  msbuild ./UltimateStreamManager.sln -property:Configuration=Debug -t:restore
+    - name: Restore NuGet packages
+      run:  msbuild ./UltimateStreamManager.sln -t:restore
+      
+    - name: Build in Release
+      run: msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release  
 
