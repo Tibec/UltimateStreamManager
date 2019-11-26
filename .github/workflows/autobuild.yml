@@ -14,6 +14,5 @@ jobs:
       uses: warrenbuckley/Setup-MSBuild@v1
 
     - name: MSBuild
-      working-directory: /
       run:  msbuild ./UltimateStreamManager.sln -property:Configuration=Debug -t:restore
 
