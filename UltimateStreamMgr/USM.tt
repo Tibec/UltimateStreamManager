@@ -1,0 +1,37 @@
+<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ output extension=".nuspec" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.RegularExpressions" #>
+<#
+    DateTime now = DateTime.Now;	
+  
+    major = now.Year;
+    minor = now.Month;
+    revision = now.Day;
+    build = now.Hour * 100 + now.Minute; 
+#>
+<package>
+  <metadata>
+    <id>USM</id>
+	<version><#= this.major #>.<#= this.minor #>.<#= this.revision #>.<#= this.build #></version>
+    <title>UltimateStreamManager</title>
+    <authors>Benjamin ROELANDT</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A tool to a stream scoreboard.</description>
+  </metadata>
+  <files>
+    <file src="bin\x86\Release\*.dll" target="" />
+    <file src="bin\x86\Release\*.pak" target="" />
+    <file src="bin\x86\Release\*.bin" target="" />
+    <file src="bin\x86\Release\*.dat" target="" />
+    <file src="bin\x86\Release\UltimateStreamManager.exe" target="" />
+    <file src="bin\x86\Release\NLog.config" target="" />    
+  </files>
+</package>
+
+<#+
+    int major = 1;
+    int minor = 0;
+    int revision = 0;
+    int build = 0;
+#>
