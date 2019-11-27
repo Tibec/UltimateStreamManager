@@ -17,7 +17,7 @@ jobs:
       run:  msbuild ./UltimateStreamManager.sln -t:restore
       
     - name: Build in Release
-      run: msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86
+      run: msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86 -p:AllowedReferenceRelatedFileExtensions=none
     
     - name: Publish artifacts
       uses: actions/upload-artifact@v1
