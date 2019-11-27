@@ -37,4 +37,4 @@ jobs:
 
     - name: Push generated package to GitHub registry
       working-directory:  ./UltimateStreamMgr
-      run: nuget push USM-Beta.*.nupkg -Source "GPR" -SkipDuplicate
+      run: nuget push *.nupkg -Source "GPR" -SkipDuplicate
