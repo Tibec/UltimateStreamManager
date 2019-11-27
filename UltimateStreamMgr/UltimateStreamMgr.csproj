@@ -426,7 +426,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>for /D %25i in ($(TargetDir)*) do (rmdir "$(TargetDir)%25i" /s/q)</PostBuildEvent>
+    <PostBuildEvent>for /D %25%25i in ($(TargetDir)*) do (rmdir "%25%25i" /s/q)</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
