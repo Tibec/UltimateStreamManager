@@ -13,7 +13,7 @@
 <package>
   <metadata>
     <id>UltimateStreamManager</id>
-	<version>beta-<#= this.major #>.<#= this.minor #>.<#= this.revision #>.<#= this.build #></version>
+	<version><#= this.major #>.<#= this.minor #>.<#= this.revision #>.<#= this.build #>-beta</version>
     <title>UltimateStreamManager Beta</title>
     <authors>Benjamin ROELANDT</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
