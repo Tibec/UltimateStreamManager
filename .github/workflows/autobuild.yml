@@ -28,10 +28,8 @@ jobs:
     - name: Install NuGet client
       uses: warrenbuckley/Setup-Nuget@v1
 
-    - name: Move to project directory
-      run: cd UltimateStreamMgr
-
     - name: Generate NuGet package
+      working-drectory:  ./UltimateStreamMgr
       run: nuget pack USM-Beta.nuspec
 
     - name: Add private GitHub registry to NuGet
