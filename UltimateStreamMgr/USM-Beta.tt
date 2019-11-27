@@ -12,7 +12,7 @@
 #>
 <package>
   <metadata>
-    <id>USM-Beta</id>
+    <id>UltimateStreamManager.Beta</id>
 	<version><#= this.major #>.<#= this.minor #>.<#= this.revision #>.<#= this.build #></version>
     <title>UltimateStreamManager Beta</title>
     <authors>Benjamin ROELANDT</authors>
