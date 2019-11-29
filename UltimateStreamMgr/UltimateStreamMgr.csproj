@@ -327,6 +327,16 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="USM-Beta.nuspec">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>USM-Beta.tt</DependentUpon>
+    </None>
+    <None Include="USM.nuspec">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>USM.tt</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
@@ -423,6 +433,19 @@
     <PackageReference Include="TinyTwitter">
       <Version>1.1.2</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="USM-Beta.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>USM-Beta.nuspec</LastGenOutput>
+    </Content>
+    <Content Include="USM.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>USM.nuspec</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

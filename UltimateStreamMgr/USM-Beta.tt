@@ -1,23 +1,51 @@
 <#@ template debug="true" hostspecific="true" language="C#" #>
 <#@ output extension=".nuspec" #>
+<#@ assembly name="System.Net" #>
+<#@ assembly name="System.Net.Http" #>
+<#@ assembly name="Microsoft.CSharp" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(TargetDir)Newtonsoft.Json.dll" #>
+<#@ import namespace="System" #>
 <#@ import namespace="System.IO" #>
 <#@ import namespace="System.Text.RegularExpressions" #>
+<#@ import namespace="Microsoft.CSharp" #>
+<#@ import namespace="System.Net" #>
+<#@ import namespace="System.Net.Http" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="System.Diagnostics" #>
 <#
-    DateTime now = DateTime.Now;	
-  
-    major = now.Year;
-    minor = now.Month;
-    revision = now.Day;
-    build = now.Hour * 100 + now.Minute; 
+	using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
+    {
+		client.DefaultRequestHeaders.Add("User-Agent", "C# App");
+        client.BaseAddress = new Uri(apiUrl);
+        HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, endpoint);
+
+		string json = client.SendAsync(request).Result.Content.ReadAsStringAsync().Result;
+		dynamic data = JsonConvert.DeserializeObject(json);
+		Regex tagRegex = new Regex("refs/tags/v(\\d+)\\.(\\d+)\\.(\\d+)", RegexOptions.Compiled);
+
+		foreach(dynamic tag in data)
+		{
+			var result = tagRegex.Match((string)tag.@ref);
+			if(result.Success)
+			{
+				major = int.Parse(result.Groups[1].Value);
+				minor =  int.Parse(result.Groups[2].Value);
+				revision = int.Parse(result.Groups[3].Value);
+			}
+		}
+	}
+	DateTime now = DateTime.Now;
+	build = int.Parse(now.ToString("MMddHHmm"));
 #>
 <package>
   <metadata>
     <id>UltimateStreamManager</id>
-	<version><#= this.major #>.<#= this.minor #>.<#= this.revision #>.<#= this.build #>-beta</version>
-    <title>UltimateStreamManager Beta</title>
+	<version><#= this.major #>.<#= this.minor #>.<#= this.revision #>-beta<#= this.build #></version>
+    <title>UltimateStreamManager</title>
     <authors>Benjamin ROELANDT</authors>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A tool to a stream scoreboard.</description>
+    <description>A tool to manage a stream scoreboard.</description>
   </metadata>
   <files>
     <file src="bin\x86\Release\*.dll" target="" />
@@ -34,4 +62,7 @@
     int minor = 0;
     int revision = 0;
     int build = 0;
+
+	string apiUrl = "https://api.github.com/";
+	string endpoint = "/repos/Tibec/UltimateStreamManager/git/refs/tags/";
 #>
