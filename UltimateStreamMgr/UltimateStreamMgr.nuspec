@@ -13,7 +13,7 @@
     <file src="bin\x86\Release\*.pak" target="" />
     <file src="bin\x86\Release\*.bin" target="" />
     <file src="bin\x86\Release\*.dat" target="" />
-    <file src="bin\x86\Release\UltimateStreamMgr.exe" target="" />
+    <file src="bin\x86\Release\*.exe" target="" />
     <file src="bin\x86\Release\NLog.config" target="" />    
   </files>
 </package>
