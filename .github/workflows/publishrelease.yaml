@@ -1,9 +1,9 @@
-name: CI-AutoBuild
+name: CI-PublishRelease
 
 on:
     push:
         tags:
-        - 'v*'
+        - '*'
 
 jobs:
   build:
@@ -12,7 +12,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@master
-      
+    - uses: olegtarasov/get-tag@j1
+            id: tagName     
     - name: Setup MSBuild.exe
       uses: warrenbuckley/Setup-MSBuild@v1
 
@@ -33,7 +34,9 @@ jobs:
 
     - name: Generate NuGet package
       working-directory:  ./UltimateStreamMgr
-      run: nuget pack USM.nuspec
+      run: |
+        $version = (git describe --tags (git rev-list --tags --max-count=1))
+        nuget pack UltimateStreamMgr.nuspec -Version $version
 
     - name: Add private GitHub registry to NuGet
       run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/Tibec/index.json -Username Tibec -Password ${{ secrets.GITHUB_TOKEN }}
