@@ -58,7 +58,7 @@ namespace UltimateStreamMgr.Model.Api
                         string result = response.Content.ReadAsStringAsync().Result;
                         return result;
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
 
                     }

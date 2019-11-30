@@ -81,7 +81,7 @@ namespace UltimateStreamMgr.ViewModel
 
                 Application.Current.Dispatcher.Invoke(() => CharacterList = characters);
             }
-            catch (Exception e) { }
+            catch (Exception) { }
         }
 
 
@@ -107,7 +107,7 @@ namespace UltimateStreamMgr.ViewModel
 
                 Application.Current.Dispatcher.Invoke(() => TeamList = teams);
             }
-            catch (Exception e) { }
+            catch (Exception) { }
         }
 
         private void StartPendingSet(Set obj)

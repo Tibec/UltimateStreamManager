@@ -17,13 +17,25 @@ namespace UltimateStreamMgr.Model
 
         public override bool Equals(object obj)
         {
-            if (obj is SocialMessage)
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == this.GetType() && Equals((SocialMessage) obj);
+        }
+
+        protected bool Equals(SocialMessage other)
+        {
+            return Author == other.Author && Date.Equals(other.Date) && Message == other.Message;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
             {
-                SocialMessage msg = obj as SocialMessage;
-                return Author == msg.Author && Message == msg.Message && Date == msg.Date;
+                var hashCode = (Author != null ? Author.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Date.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Message != null ? Message.GetHashCode() : 0);
+                return hashCode;
             }
-            else
-                return false; 
         }
     }
 }

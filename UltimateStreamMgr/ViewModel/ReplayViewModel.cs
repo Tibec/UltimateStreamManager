@@ -68,7 +68,7 @@ namespace UltimateStreamMgr.ViewModel
                     LastReplay = newReplay;
                     Application.Current.Dispatcher.Invoke(() => Playlist.Insert(0,newReplay));
                 }
-                catch (Exception ex) {
+                catch (Exception) {
                     // Happen if the file is not ready to be moved
                 }
             }

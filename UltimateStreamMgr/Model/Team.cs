@@ -15,14 +15,23 @@ namespace UltimateStreamMgr.Model
 
         public override bool Equals(object obj)
         {
-            if (obj is Team)
-            {
-                Team team = obj as Team;
-                return Id == team.Id && ShortName == team.ShortName;
-            }
-            else
-                return false;
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Team) obj);
         }
 
+        protected bool Equals(Team other)
+        {
+            return Id == other.Id && ShortName == other.ShortName;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (Id * 397) ^ (ShortName != null ? ShortName.GetHashCode() : 0);
+            }
+        }
     }
 }

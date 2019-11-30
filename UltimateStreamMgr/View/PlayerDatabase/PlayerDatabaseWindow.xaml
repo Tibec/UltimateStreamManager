@@ -76,7 +76,7 @@
                         </Button>
                         <Button
                             ToolTip="Vider la base de joueurs"
-                            Command="{Binding DeletePlayerCommand}"
+                            Command="{Binding DeleteAllPlayerCommand}"
                             Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}">
                             <iconPacks:PackIconEntypo Kind="Trash"/>
                         </Button>
@@ -128,7 +128,7 @@
                         <Separator DockPanel.Dock="Top"/>
                         <Button
                             ToolTip="Supprimer toute les teams"
-                            Command="{Binding DeleteTeamCommand}"
+                            Command="{Binding DeleteAllTeamCommand}"
                             Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}">
                             <iconPacks:PackIconEntypo Kind="Trash"/>
                         </Button>

@@ -20,11 +20,13 @@ namespace UltimateStreamMgr.ViewModel
     {
         public PlayerDatabaseViewModel()
         {
-            EditPlayerCommand = new RelayCommand<Player>((p) => EditPlayer(p));
-            DeletePlayerCommand = new RelayCommand<Player>((p) => DeletePlayer(p));
-            AddPlayerCommand = new RelayCommand(() => AddPlayer());
-            BracketSynchroCommand = new RelayCommand(() => BracketSynchro());
-            DeleteTeamCommand = new RelayCommand<Team>((t) => DeleteTeam(t));
+            EditPlayerCommand = new RelayCommand<Player>(EditPlayer);
+            DeletePlayerCommand = new RelayCommand<Player>(DeletePlayer);
+            DeleteAllPlayerCommand = new RelayCommand(DeleteAllPlayer);
+            AddPlayerCommand = new RelayCommand(AddPlayer);
+            BracketSynchroCommand = new RelayCommand(BracketSynchro);
+            DeleteTeamCommand = new RelayCommand<Team>(DeleteTeam);
+            DeleteAllTeamCommand = new RelayCommand(DeleteAllTeam);
 
             UpdatePlayerList();
 
@@ -43,34 +45,38 @@ namespace UltimateStreamMgr.ViewModel
         private ObservableCollection<Player> _players;
         public ObservableCollection<Player> Players
         {
-            get { return _players; }
-            set { Set("Players", ref _players, value); }
+            get => _players;
+            set => Set("Players", ref _players, value);
         }
 
         private ICollectionView _playersView;
         public ICollectionView PlayersView
         {
-            get { return _playersView; }
-            set { Set("PlayersView", ref _playersView, value); }
+            get => _playersView;
+            set => Set("PlayersView", ref _playersView, value);
         }
 
         private ObservableCollection<Team> _teams;
         public ObservableCollection<Team> Teams
         {
-            get { return _teams; }
-            set { Set("Teams", ref _teams, value); }
+            get => _teams;
+            set => Set("Teams", ref _teams, value);
         }
 
         private string _searchPlayer;
         public string SearchPlayer
         {
-            get { return _searchPlayer; }
-            set { Set("SearchPlayer", ref _searchPlayer, value); PlayersView.Refresh(); }
+            get => _searchPlayer;
+            set
+            {
+                Set("SearchPlayer", ref _searchPlayer, value);
+                PlayersView.Refresh();
+            }
         }
 
         public bool FilterPlayer(object p)
         {
-            if (p as Player == null)
+            if (!(p is Player))
                 return false;
             if (string.IsNullOrEmpty(SearchPlayer))
                 return true;
@@ -80,15 +86,15 @@ namespace UltimateStreamMgr.ViewModel
         private Player _selectedPlayer;
         public Player SelectedPlayers
         {
-            get { return _selectedPlayer; }
-            set { Set("SelectedPlayers", ref _selectedPlayer, value); }
+            get => _selectedPlayer;
+            set => Set("SelectedPlayers", ref _selectedPlayer, value);
         }
 
         private bool _editPanelOpen;
         public bool EditPanelOpen
         {
-            get { return _editPanelOpen; }
-            set { Set("EditPanelOpen", ref _editPanelOpen, value); }
+            get => _editPanelOpen;
+            set => Set("EditPanelOpen", ref _editPanelOpen, value);
         }
 
 
@@ -111,6 +117,24 @@ namespace UltimateStreamMgr.ViewModel
         private void DeleteTeam(Team p)
         {
             PlayerDatabase.DeleteTeam(p);
+        }
+
+        public RelayCommand DeleteAllTeamCommand { get; set; }
+        private void DeleteAllTeam()
+        {
+            foreach (var team in PlayerDatabase.GetTeams())
+            {
+                PlayerDatabase.DeleteTeam(team);
+            }
+        }
+
+        public RelayCommand DeleteAllPlayerCommand { get; set; }
+        private void DeleteAllPlayer()
+        {
+            foreach (var player in PlayerDatabase.GetAllPlayers())
+            {
+                PlayerDatabase.DeletePlayer(player);
+            }
         }
 
         public RelayCommand BracketSynchroCommand { get; set; }

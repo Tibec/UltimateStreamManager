@@ -61,7 +61,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 if (entrant.id == entrantId)
                 {
-                    foreach (var token in (entrant.participantsIds as JArray).Children())
+                    foreach (var token in (entrant.playerIds as JObject).Children())
                     {
                         int pId = (int)token;
                         r.Add(players.First((p) => p.SmashggId == pId));
@@ -135,7 +135,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
                     throw new NotImplementedException();
                 }
             }
-            catch(Exception e)
+            catch(Exception)
             { // No pending set  
             }
             return sets;
@@ -238,9 +238,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
 
                 if (p == null)
                 {
-                    p = new Player();
-                    p.SmashggId = player.id;
-                    p.Name = player.gamerTag;
+                    p = new Player {SmashggId = player.id, Name = player.gamerTag};
 
                     string playerTeamTag = RetrievePlayerTeam((int)player.id, entrantList);
                     if (!string.IsNullOrEmpty(playerTeamTag))
@@ -304,8 +302,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
 
             foreach (dynamic evt in (data.entities as JObject).GetValue("event"))
             {
-                Top8 top8 = new Top8();
-                top8.Name = evt.name;
+                Top8 top8 = new Top8 {Name = evt.name};
                 int finalPhaseId = 0, finalGroupId = 0, phaseCountForThisEvent = 0;
                 foreach(var phase in data.entities.phase)
                 {

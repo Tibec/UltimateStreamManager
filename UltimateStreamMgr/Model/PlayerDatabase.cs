@@ -16,9 +16,9 @@ namespace UltimateStreamMgr.Model
     {
         static SQLiteConnection _conn;
 
-        static private ObservableCollection<Player> _players;
-        static private ObservableCollection<Team> _teams;
-        static private List<Country> _countries;
+        private static ObservableCollection<Player> _players;
+        private static ObservableCollection<Team> _teams;
+        private static List<Country> _countries;
 
         public static void Init(string path = "./Players.db")
         {
@@ -54,10 +54,15 @@ namespace UltimateStreamMgr.Model
         private static void LoadCountries()
         {
             _countries = new List<Country>();
-            var countrylist = (CultureInfo.GetCultures(CultureTypes.SpecificCultures)
-                            .Select((c) => new RegionInfo(c.LCID)).ToList());
-            foreach (var country in countrylist)
+            var cultureList = CultureInfo.GetCultures(CultureTypes.SpecificCultures);
+            var countryList = cultureList.Select(c => new RegionInfo(c.Name)).ToList();
+            countryList = countryList.OrderBy(c => c.EnglishName).Distinct().ToList();
+            foreach (var country in countryList)
+            {
                 _countries.Add(new Country(country));
+            }
+
+            _countries = _countries.Distinct().ToList();
         }
 
         private static void UpdateTeamDatabase(object sender, NotifyCollectionChangedEventArgs e)
@@ -150,11 +155,13 @@ namespace UltimateStreamMgr.Model
 
         private static void CreateSchema()
         {
-            List<string> queries = new List<string>();
-            queries.Add("DROP TABLE IF EXISTS `teams` ; CREATE TABLE `teams` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `name` TEXT, `shortname` TEXT NOT NULL)");
-            queries.Add("DROP TABLE IF EXISTS `players` ; CREATE TABLE `players` ( `id` INTEGER NOT NULL UNIQUE, `name` TEXT NOT NULL, `twitter` TEXT, `twitch` TEXT, `team` INTEGER, `country` TEXT, `smashgg_id` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`team`) REFERENCES teams(id) ON DELETE SET NULL )");
-            queries.Add("DROP TABLE IF EXISTS `db_version` ; CREATE TABLE `db_version` ( `version` INTEGER DEFAULT 100 )");
-            queries.Add("DROP VIEW IF EXISTS vPlayers ; CREATE VIEW vPlayers (playerId, playerName, playerCountry, playerTwitter, playerTwitch,playerSmashggId, teamId, teamName, teamShortName) as SELECT players.id as playerId, players.name as playerName, players.country as playerCountry, players.twitter as playerTwitter, players.twitch as playerTwitch, players.smashgg_id as playerSmashggId, players.team as teamId, teams.name as teamName, teams.shortname as teamShortName FROM players LEFT JOIN teams ON teams.id = players.team");
+            List<string> queries = new List<string>
+            {
+                "DROP TABLE IF EXISTS `teams` ; CREATE TABLE `teams` ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, `name` TEXT, `shortname` TEXT NOT NULL)",
+                "DROP TABLE IF EXISTS `players` ; CREATE TABLE `players` ( `id` INTEGER NOT NULL UNIQUE, `name` TEXT NOT NULL, `twitter` TEXT, `twitch` TEXT, `team` INTEGER, `country` TEXT, `smashgg_id` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`team`) REFERENCES teams(id) ON DELETE SET NULL )",
+                "DROP TABLE IF EXISTS `db_version` ; CREATE TABLE `db_version` ( `version` INTEGER DEFAULT 100 )",
+                "DROP VIEW IF EXISTS vPlayers ; CREATE VIEW vPlayers (playerId, playerName, playerCountry, playerTwitter, playerTwitch,playerSmashggId, teamId, teamName, teamShortName) as SELECT players.id as playerId, players.name as playerName, players.country as playerCountry, players.twitter as playerTwitter, players.twitch as playerTwitch, players.smashgg_id as playerSmashggId, players.team as teamId, teams.name as teamName, teams.shortname as teamShortName FROM players LEFT JOIN teams ON teams.id = players.team"
+            };
             SQLiteCommand query = new SQLiteCommand(_conn);
             foreach (var q in queries)
             {
@@ -166,9 +173,7 @@ namespace UltimateStreamMgr.Model
         private static void AddPlayerToDatabase(Player p)
         {
             string query = "INSERT INTO players(name, twitch, twitter, team, country, smashgg_id) VALUES (@0, @1, @2, @3, @4, @5)";
-            SQLiteCommand command = new SQLiteCommand(_conn);
-            command.CommandText = query;
-            command.CommandType = CommandType.Text;
+            SQLiteCommand command = new SQLiteCommand(_conn) {CommandText = query, CommandType = CommandType.Text};
             command.Parameters.AddWithValue("@0", p.Name);
             command.Parameters.AddWithValue("@1", p.Twitch);
             command.Parameters.AddWithValue("@2", p.Twitter);
@@ -183,9 +188,7 @@ namespace UltimateStreamMgr.Model
         private static void AddTeamToDatabase(Team t)
         {
             string query = "INSERT INTO teams(name, shortname) VALUES (@0, @1)";
-            SQLiteCommand command = new SQLiteCommand(_conn);
-            command.CommandText = query;
-            command.CommandType = CommandType.Text;
+            SQLiteCommand command = new SQLiteCommand(_conn) { CommandText = query, CommandType = CommandType.Text };
             command.Parameters.AddWithValue("@0", t.Name);
             command.Parameters.AddWithValue("@1", t.ShortName);
 
@@ -207,13 +210,12 @@ namespace UltimateStreamMgr.Model
 
             string query = "UPDATE players SET name = @0, twitch = @1, team = "+
                 ((p.Team != null && p.Team.Id != -1) ? p.Team.Id.ToString() : "NULL")
-                +", twitter = @2 WHERE id = " + p.Id;
-            SQLiteCommand command = new SQLiteCommand(_conn);
-            command.CommandText = query;
-            command.CommandType = CommandType.Text;
+                +", country = @2, twitter = @3 WHERE id = " + p.Id;
+            SQLiteCommand command = new SQLiteCommand(_conn) {CommandText = query, CommandType = CommandType.Text};
             command.Parameters.AddWithValue("@0", p.Name);
             command.Parameters.AddWithValue("@1", p.Twitch);
-            command.Parameters.AddWithValue("@2", p.Twitter);
+            command.Parameters.AddWithValue("@2", p.Country?.ShortName);
+            command.Parameters.AddWithValue("@3", p.Twitter);
             command.ExecuteNonQuery();
         }
 
@@ -233,9 +235,7 @@ namespace UltimateStreamMgr.Model
 
         private static Player CreatePlayerFromResult(SQLiteDataReader result)
         {
-            Player p = new Player();
-            p.Id = (int)(long)result["playerId"];
-            p.Name = (string)result["playerName"];
+            Player p = new Player {Id = (int) (long) result["playerId"], Name = (string) result["playerName"]};
 
             if (result["playerTwitter"] is DBNull == false)
                 p.Twitter = (string)result["playerTwitter"];
@@ -252,8 +252,7 @@ namespace UltimateStreamMgr.Model
                 }
                 else
                 {
-                    Team t = new Team();
-                    t.Id = teamId;
+                    Team t = new Team {Id = teamId};
                     if (result["teamName"] is DBNull == false)
                         t.Name = (string)result["teamName"];
                     t.ShortName = (string)result["teamShortName"];
@@ -271,8 +270,7 @@ namespace UltimateStreamMgr.Model
 
         private static Team CreateTeamFromResult(SQLiteDataReader result)
         {
-            Team t = new Team();
-            t.Id = (int)(long)result["id"];
+            Team t = new Team {Id = (int) (long) result["id"]};
             if (result["name"] is DBNull == false)
                 t.Name = (string)result["name"];
             t.ShortName = (string)result["shortname"];
@@ -399,11 +397,6 @@ namespace UltimateStreamMgr.Model
         }
 
         #endregion
-
-
-
-
-
 
         public delegate void ContentChanged();
         public static event ContentChanged DatabaseContentModified;

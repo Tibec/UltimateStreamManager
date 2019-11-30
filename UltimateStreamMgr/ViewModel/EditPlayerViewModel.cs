@@ -15,8 +15,8 @@ namespace UltimateStreamMgr.ViewModel
     {
         public EditPlayerViewModel()
         {
-            SavePlayerCommand = new RelayCommand(() => SavePlayer());
-            CancelCommand = new RelayCommand(() => Cancel());
+            SavePlayerCommand = new RelayCommand(SavePlayer);
+            CancelCommand = new RelayCommand(Cancel);
 
             TeamList = PlayerDatabase.GetTeams();
             CountryList = PlayerDatabase.GetCountries();
@@ -34,29 +34,29 @@ namespace UltimateStreamMgr.ViewModel
         private Player _player;
         public Player Player
         {
-            get { return _player; }
-            set { Set("Player", ref _player, value); }
+            get => _player;
+            set => Set("Player", ref _player, value);
         }
 
         private List<Team> _teamList;
         public List<Team> TeamList
         {
-            get { return _teamList; }
-            set { Set("TeamList", ref _teamList, value); }
+            get => _teamList;
+            set => Set("TeamList", ref _teamList, value);
         }
 
         private string _newTeam;
         public string NewTeam
         {
-            get { return _newTeam; }
-            set { Set("NewTeam", ref _newTeam, value); }
+            get => _newTeam;
+            set => Set("NewTeam", ref _newTeam, value);
         }
 
         private List<Country> _countryList;
         public List<Country> CountryList
         {
-            get { return _countryList; }
-            set { Set("CountryList", ref _countryList, value); }
+            get => _countryList;
+            set => Set("CountryList", ref _countryList, value);
         }
 
         public RelayCommand SavePlayerCommand { get; set; }

@@ -11,12 +11,36 @@ namespace UltimateStreamMgr.Model
     {
         public Country()
         { }
+
         public Country(RegionInfo regioninfo)
         {
-            ShortName = regioninfo.Name;
+            ShortName = regioninfo.TwoLetterISORegionName;
             FullName = regioninfo.EnglishName;
         }
-        public string ShortName { get; set; }
-        public string FullName { get; set; }
+        public string ShortName { get; }
+        public string FullName { get; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Country c)
+            {
+                return Equals(c);
+            }
+
+            return false;
+        }
+
+        protected bool Equals(Country other)
+        {
+            return ShortName == other.ShortName && FullName == other.FullName;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return ((ShortName != null ? ShortName.GetHashCode() : 0) * 397) ^ (FullName != null ? FullName.GetHashCode() : 0);
+            }
+        }
     }
 }

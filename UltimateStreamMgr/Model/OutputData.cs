@@ -51,7 +51,10 @@ namespace UltimateStreamMgr.Model
                         }
                         ok = true;
                     }
-                    catch (Exception ex) { }
+                    catch (Exception)
+                    {
+                        // ignored
+                    }
                 } while (!ok && tries < 5);
             }
             else
