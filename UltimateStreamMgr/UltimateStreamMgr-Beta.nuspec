@@ -1,0 +1,21 @@
+<package>
+  <metadata>
+    <id>UltimateStreamManager-Beta</id>
+    <title>UltimateStreamManager Beta</title>
+    <authors>Benjamin ROELANDT</authors>
+	<version>1.0.0</version>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A tool to manage a stream scoreboard.</description>
+	<repository type="git" url="https://github.com/Tibec/UltimateStreamManager"/>
+  </metadata>
+  <files>
+    <file src="bin\x86\Release\locales\*.pak" target="locales" />
+    <file src="bin\x86\Release\*.dll" target="" />
+    <file src="bin\x86\Release\*.pak" target="" />
+    <file src="bin\x86\Release\*.bin" target="" />
+    <file src="bin\x86\Release\*.dat" target="" />
+    <file src="bin\x86\Release\*.exe" target="" />
+    <file src="bin\x86\Release\NLog.config" target="" />    
+  </files>
+</package>
+
