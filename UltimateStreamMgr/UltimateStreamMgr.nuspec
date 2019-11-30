@@ -8,7 +8,7 @@
     <description>A tool to manage a stream scoreboard.</description>
   </metadata>
   <files>
-    <file src="bin\x86\Release\locales\*.pak" target="" />
+    <file src="bin\x86\Release\locales\*.pak" target="locales" />
     <file src="bin\x86\Release\*.dll" target="" />
     <file src="bin\x86\Release\*.pak" target="" />
     <file src="bin\x86\Release\*.bin" target="" />
