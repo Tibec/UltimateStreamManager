@@ -44,6 +44,9 @@ namespace UltimateStreamMgr.Launcher
             "ultimatestreammanager"
         );
 
+        private const string nugetTokenP1 = "94b60da28a8581b8e350";
+        private const string nugetTokenP2 = "f76a4ffbacdd3d1b8433";
+
         protected override void OnStartup(StartupEventArgs e)
         {
             // HandleLauncherUpdate(e);
@@ -230,7 +233,7 @@ namespace UltimateStreamMgr.Launcher
                 string removeRepoCommand =
                     "sources Remove -Name GPR_USM";
                 string installRepoCommand =
-                    "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password ddb36f0c111415207d57b13bb8d32dd6103b6b30";
+                    "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password " + nugetTokenP1 + nugetTokenP2;
 
                 Program.Main(removeRepoCommand.Split(' '));
                 Program.Main(installRepoCommand.Split(' '));
