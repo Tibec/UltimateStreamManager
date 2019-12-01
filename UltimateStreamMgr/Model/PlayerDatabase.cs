@@ -8,6 +8,8 @@ using System.Globalization;
 using System.Data;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Drawing.Text;
+using MahApps.Metro.Controls;
 using NLog.Fluent;
 
 namespace UltimateStreamMgr.Model
@@ -20,8 +22,13 @@ namespace UltimateStreamMgr.Model
         private static ObservableCollection<Team> _teams;
         private static List<Country> _countries;
 
-        public static void Init(string path = "./Players.db")
+        private static readonly string _defaultPath = Path.Combine(Helpers.Utils.RunDirectory(), "./Players.db");
+
+        public static void Init(string path = null)
         {
+            if (string.IsNullOrEmpty(path))
+                path = _defaultPath;
+
             bool schemaMustBeCreated = false;
             if (!File.Exists(path))
             {

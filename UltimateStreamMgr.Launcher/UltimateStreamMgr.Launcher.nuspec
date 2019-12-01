@@ -1,0 +1,20 @@
+<package>
+  <metadata>
+    <id>UltimateStreamManager.Launcher</id>
+    <title>UltimateStreamManager</title>
+    <authors>Benjamin ROELANDT</authors>
+	<version>1.0.0</version>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Tools to update UltimateStreamManager through nuget</description>
+  </metadata>
+  <files>
+    <file src="bin\x86\Release\locales\*.pak" target="locales" />
+    <file src="bin\x86\Release\*.dll" target="" />
+    <file src="bin\x86\Release\*.pak" target="" />
+    <file src="bin\x86\Release\*.bin" target="" />
+    <file src="bin\x86\Release\*.dat" target="" />
+    <file src="bin\x86\Release\*.exe" target="" />
+    <file src="bin\x86\Release\NLog.config" target="" />    
+  </files>
+</package>
+
