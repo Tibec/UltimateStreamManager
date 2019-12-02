@@ -44,8 +44,8 @@ namespace UltimateStreamMgr.Launcher
             "ultimatestreammanager"
         );
 
-        private const string nugetTokenP1 = "94b60da28a8581b8e350";
-        private const string nugetTokenP2 = "f76a4ffbacdd3d1b8433";
+        private const string nugetTokenP1 = "a3659f3501ee28d03eae";
+        private const string nugetTokenP2 = "d00b887e4b376f8e6803";
 
         protected override void OnStartup(StartupEventArgs e)
         {
