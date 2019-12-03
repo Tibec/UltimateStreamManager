@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -6,12 +6,8 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using Newtonsoft.Json;
-
-using NuGet.CommandLine;
 
 namespace UltimateStreamMgr.Launcher
 {
@@ -37,6 +33,7 @@ namespace UltimateStreamMgr.Launcher
         private const string _targetVersionFile = "version.txt";
         private const string _releasePackage = "UltimateStreamManager";
         private const string _betaPackage = "UltimateStreamManager-Beta";
+
         private readonly string _packageDirectory = Path.Combine(
             Environment.ExpandEnvironmentVariables("%USERPROFILE%"),
             ".nuget",
@@ -111,6 +108,7 @@ namespace UltimateStreamMgr.Launcher
         }
 
         #region Launcher Update Flow
+
         private void HandleLauncherUpdate(StartupEventArgs e)
         {
             if (LauncherUpdateAvailable())
@@ -119,7 +117,7 @@ namespace UltimateStreamMgr.Launcher
             }
             else if (e.Args.Length == 2 && e.Args[0] == "update")
             {
-                LauncherUpdateSteps current = (LauncherUpdateSteps)Enum.Parse(typeof(LauncherUpdateSteps), e.Args[1]);
+                LauncherUpdateSteps current = (LauncherUpdateSteps) Enum.Parse(typeof(LauncherUpdateSteps), e.Args[1]);
                 PerformUpdate(current);
             }
         }
@@ -225,18 +223,27 @@ namespace UltimateStreamMgr.Launcher
 
         private void Install()
         {
-            using (new Notification("UltimateStreamManager", $"Updating to v{_targetVersion} ...", NotificationType.Info))
+            using (new Notification("UltimateStreamManager", $"Updating to v{_targetVersion} ...",
+                NotificationType.Info))
             {
+                var nugetExePath = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), "nuget.exe");
+                if (!File.Exists(nugetExePath))
+                {
+                    // Extract nuget
+                    var nugetExe = ExtractResource("UltimateStreamManager.Launcher.nuget.exe");
+                    File.WriteAllBytes(nugetExePath, nugetExe);
+                }
 
                 // Well i let that in clear, because it's a random account i created specially for this with only repo and package:read rights
                 // It should be harmless.. Maybe.
                 string removeRepoCommand =
                     "sources Remove -Name GPR_USM";
                 string installRepoCommand =
-                    "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password " + nugetTokenP1 + nugetTokenP2;
+                    "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password " +
+                    nugetTokenP1 + nugetTokenP2;
 
-                Program.Main(removeRepoCommand.Split(' '));
-                Program.Main(installRepoCommand.Split(' '));
+                Process.Start(nugetExePath, removeRepoCommand)?.WaitForExit();
+                Process.Start(nugetExePath, installRepoCommand)?.WaitForExit();
 
                 string outputDirectory = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"));
 /*                InstallCommand cmd = new InstallCommand
@@ -250,8 +257,10 @@ namespace UltimateStreamMgr.Launcher
                 string installPackageCommand =
                     $"install {_installPackage} -NoCache -NonInteractive -DirectDownload -source GPR_USM -DisableParallelProcessing";
 
-                Program.Main(installPackageCommand.Split(' '));
+                Process.Start(nugetExePath, installPackageCommand)?.WaitForExit();
             }
+
         }
+
     }
 }
