@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using MahApps.Metro.Controls;
 using UltimateStreamMgr.Model;
 using UltimateStreamMgr.View;
 using UltimateStreamMgr.ViewModel;
@@ -38,9 +39,10 @@ namespace UltimateStreamMgr
 
                 try
                 {
-                    if (File.Exists("config.xml"))
+                    string configPath = Path.Combine(Helpers.Utils.RunDirectory(), "config.xml");
+                    if (File.Exists(configPath))
                     {
-                        Configuration.Instance.Load("config.xml");
+                        Configuration.Instance.Load(configPath);
                     }
                     else
                         firstLaunch = true;

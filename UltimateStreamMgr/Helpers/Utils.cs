@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace UltimateStreamMgr.Helpers
 {
-    static public class Utils
+    public static class Utils
     {
-        static public string RunDirectory()
+        public static string RunDirectory()
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         } 
