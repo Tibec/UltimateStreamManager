@@ -20,6 +20,7 @@
         <KeyBinding Gesture="Ctrl+Shift+Subtract" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding DecrementEntrant2Command}" />
         <KeyBinding Gesture="Ctrl+Shift+R" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding ResetCommand}" />
         <KeyBinding Gesture="Ctrl+Shift+S" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding SwapPlayerCommand}" />
+        <KeyBinding Gesture="Ctrl+Shift+U" HotkeyManager.RegisterGlobalHotkey="True" Command="{Binding UpdateCommand }" />
     </UserControl.InputBindings>
 
     <DockPanel Margin="5">
