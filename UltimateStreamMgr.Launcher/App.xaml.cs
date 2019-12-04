@@ -226,13 +226,6 @@ namespace UltimateStreamMgr.Launcher
             using (new Notification("UltimateStreamManager", $"Updating to v{_targetVersion} ...",
                 NotificationType.Info))
             {
-                var nugetExePath = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), "nuget.exe");
-                if (!File.Exists(nugetExePath))
-                {
-                    // Extract nuget
-                    var nugetExe = ExtractResource("UltimateStreamManager.Launcher.nuget.exe");
-                    File.WriteAllBytes(nugetExePath, nugetExe);
-                }
 
                 // Well i let that in clear, because it's a random account i created specially for this with only repo and package:read rights
                 // It should be harmless.. Maybe.
@@ -242,22 +235,19 @@ namespace UltimateStreamMgr.Launcher
                     "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password " +
                     nugetTokenP1 + nugetTokenP2;
 
-                Process.Start(nugetExePath, removeRepoCommand)?.WaitForExit();
-                Process.Start(nugetExePath, installRepoCommand)?.WaitForExit();
+                NugetUtils.RunCommand(removeRepoCommand);
+                NugetUtils.RunCommand(installRepoCommand);
 
-                string outputDirectory = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"));
-/*                InstallCommand cmd = new InstallCommand
-                {
-                    DirectDownload = true,
-                    NonInteractive = true,
-                    Arguments = {_installPackage}
-                };
-                cmd.ExecuteCommand
-                */
+                string outputDirectory = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), Path.GetRandomFileName());
+
+                Directory.CreateDirectory(outputDirectory);
+
                 string installPackageCommand =
-                    $"install {_installPackage} -NoCache -NonInteractive -DirectDownload -source GPR_USM -DisableParallelProcessing";
+                    $"install {_installPackage} -Version {_targetVersion} -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
 
-                Process.Start(nugetExePath, installPackageCommand)?.WaitForExit();
+                NugetUtils.RunCommand(installPackageCommand);
+
+                Directory.Delete(outputDirectory, true);
             }
 
         }
