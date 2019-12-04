@@ -8,13 +8,9 @@
     <description>Tools to update UltimateStreamManager through nuget</description>
   </metadata>
   <files>
-    <file src="bin\x86\Release\locales\*.pak" target="locales" />
-    <file src="bin\x86\Release\*.dll" target="" />
-    <file src="bin\x86\Release\*.pak" target="" />
-    <file src="bin\x86\Release\*.bin" target="" />
-    <file src="bin\x86\Release\*.dat" target="" />
-    <file src="bin\x86\Release\*.exe" target="" />
-    <file src="bin\x86\Release\NLog.config" target="" />    
+    <file src="bin\Release\*.dll" target="" />
+    <file src="bin\Release\*.txt" target="" />
+    <file src="bin\Release\*.exe" target="" />
   </files>
 </package>
 
