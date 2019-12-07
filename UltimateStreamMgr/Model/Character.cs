@@ -12,6 +12,7 @@ namespace UltimateStreamMgr.Model
         public Character(Character previous)
         {
             Name = previous.Name;
+            Category = previous.Category;
             FilePath = previous.FilePath;
         }
 
@@ -21,6 +22,7 @@ namespace UltimateStreamMgr.Model
         }
 
         public string Name { get; set; }
+        public string Category { get; set; }
         public string FilePath { get; set; }
     }
 }

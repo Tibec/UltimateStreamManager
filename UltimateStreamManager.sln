@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalonMetroAccent", "Avalon
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateStreamMgr.Launcher", "UltimateStreamMgr.Launcher\UltimateStreamMgr.Launcher.csproj", "{7FB199AD-97FA-4173-B290-A290D1815D8E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateStreamMgr.StreamDeck", "UltimateStreamMgr.StreamDeck\UltimateStreamMgr.StreamDeck.csproj", "{98553B28-2B56-4687-B713-EB16A020EEC5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UltimateStreamMgr.Api", "UltimateStreamMgr.Api\UltimateStreamMgr.Api.csproj", "{9319E2E0-7408-4D33-8B32-819F20399A1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,22 @@ Global
 		{7FB199AD-97FA-4173-B290-A290D1815D8E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7FB199AD-97FA-4173-B290-A290D1815D8E}.Release|x86.ActiveCfg = Release|Any CPU
 		{7FB199AD-97FA-4173-B290-A290D1815D8E}.Release|x86.Build.0 = Release|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Debug|x86.Build.0 = Debug|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Release|x86.ActiveCfg = Release|Any CPU
+		{98553B28-2B56-4687-B713-EB16A020EEC5}.Release|x86.Build.0 = Release|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Debug|x86.Build.0 = Debug|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Release|x86.ActiveCfg = Release|Any CPU
+		{9319E2E0-7408-4D33-8B32-819F20399A1E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,30 +9,44 @@ using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 using UltimateStreamMgr.Model;
+using UltimateStreamMgr.StreamDeck;
 
 namespace UltimateStreamMgr.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        private StreamDeckLink streamDeckLink;
+
         public MainViewModel()
         {
             ResetLayout = new RelayCommand(() => DoResetLayout());
             CompactLayout = new RelayCommand(() => DoCompactLayout());
 
-            Windows = new ObservableCollection<DockWindowViewModel>();
-
-            Windows.Add(new StreamApiIndicatorViewModel());
-            Windows.Add(new PendingSetsViewModel());
-            Windows.Add(new RunningSetViewModel());
-            Windows.Add(new CustomKeysViewModel());
-            Windows.Add(new CastersViewModel());
-            Windows.Add(new SocialModuleViewModel());
-            /*
-            if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+            Windows = new ObservableCollection<DockWindowViewModel>
             {
-                Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
-            }
+                new StreamApiIndicatorViewModel(),
+                new PendingSetsViewModel(),
+                new RunningSetViewModel(),
+                new CustomKeysViewModel(),
+                new CastersViewModel(),
+                new SocialModuleViewModel()
+            };
+
+            streamDeckLink = new StreamDeckLink();
+
+
+            /*
+                if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+                {
+                    Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
+                }
             */
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            streamDeckLink.Stop();
         }
 
         public RelayCommand ResetLayout { get; set; }
@@ -62,6 +76,7 @@ namespace UltimateStreamMgr.ViewModel
                 Set("Windows", ref _windows, value);
             }
         }
+
 
 
         private string _dockContent;

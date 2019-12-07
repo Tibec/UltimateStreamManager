@@ -46,10 +46,15 @@
                     IsChecked="{Binding LiveUpdate}"
                     Grid.Column="2" 
                     HorizontalAlignment="Right"/>
-                <WrapPanel>
+                <WrapPanel DockPanel.Dock="Left">
                     <Label Margin="5 0" VerticalAlignment="Center" Content="Mode :"/>
                     <ComboBox Height="20" SelectedValue="{Binding SetMode}" ItemsSource="{Binding Source={StaticResource enumValues}}" />
                 </WrapPanel>
+                <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
+                    <Label Margin="5 0" VerticalAlignment="Center" Content="Jeu :"/>
+                    <ComboBox Height="20" SelectedValue="{Binding SetMode}" ItemsSource="{Binding Source={StaticResource enumValues}}" />
+                </WrapPanel>
+
             </DockPanel>
             <Separator Margin="0 5" />
         </StackPanel>

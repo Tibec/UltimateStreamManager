@@ -65,15 +65,23 @@ namespace UltimateStreamMgr.ViewModel
             {
                 ObservableCollection<Character> characters = new ObservableCollection<Character>();
                 string rundir = Utils.RunDirectory();
-                string[] subfiles = Directory.GetFiles(Path.Combine(rundir, "characters"));
+                var subfiles = Directory.GetFiles(Path.Combine(rundir, "characters")).ToList();
+
+                foreach (var subfolder in Directory.GetDirectories(Path.Combine(rundir, "characters")))
+                {
+                    subfiles.AddRange(Directory.GetFiles(Path.Combine(subfolder, "characters")));
+                }
+
                 foreach (string file in subfiles)
                 {
                     FileInfo f = new FileInfo(file);
                     if (f.Extension == ".png" || f.Extension == ".jpg" || f.Extension == ".gif")
                     {
+                        string parentDirectory = Path.GetFileName(f.DirectoryName);
                         characters.Add(new Character
                         {
-                            Name = f.Name.Split('.')[0],
+                            Name = Path.GetFileNameWithoutExtension(f.Name),
+                            Category = parentDirectory == "characters" ? "unknown" : parentDirectory,
                             FilePath = file
                         });
                     }
