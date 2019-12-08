@@ -50,18 +50,22 @@ namespace UltimateStreamMgr.StreamDeck
         private void RegisterEvents()
         {
             _runningSetVM.PropertyChanged += RefreshRegisteredEvent;
-            RefreshRegisteredEvent(null, null);
+
+            _runningSetVM.Opponent1.PropertyChanged += OnOpponentChanged;
+            _runningSetVM.Opponent2.PropertyChanged += OnOpponentChanged;
         }
 
         private void RefreshRegisteredEvent(object sender, PropertyChangedEventArgs e)
         {
             _runningSetVM.Opponent1.PropertyChanged += OnOpponentChanged;
             _runningSetVM.Opponent2.PropertyChanged += OnOpponentChanged;
+
+            OnOpponentChanged(null, null);
         }
 
         private void OnOpponentChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "Character")
+            if (sender == null || e.PropertyName == "Character")
             {
                 SendMessageToAllClients(new CurrentCharactersMessage
                 {
@@ -69,7 +73,7 @@ namespace UltimateStreamMgr.StreamDeck
                     Player2CharacterIconPath =  _runningSetVM.Opponent2.Character.FilePath
                 });
             }
-            else if (e.PropertyName == "Score")
+            if (sender == null || e.PropertyName == "Score")
             {
                 SendMessageToAllClients(new CurrentScoreMessage
                 {
@@ -98,7 +102,7 @@ namespace UltimateStreamMgr.StreamDeck
                 }
                 else if (incrementMessage.Player == 2)
                 {
-                    _runningSetVM.IncrementEntrant1Command?.Execute(null);
+                    _runningSetVM.IncrementEntrant2Command?.Execute(null);
                 }
             }
             else if (mess is DecrementPlayerScoreMessage decrementMessage)
@@ -109,7 +113,7 @@ namespace UltimateStreamMgr.StreamDeck
                 }
                 else if (decrementMessage.Player == 2)
                 {
-                    _runningSetVM.DecrementEntrant1Command?.Execute(null);
+                    _runningSetVM.DecrementEntrant2Command?.Execute(null);
                 }
             }
             else if (mess is ChangeCharacterMessage changeCharacter)
@@ -176,6 +180,22 @@ namespace UltimateStreamMgr.StreamDeck
             {
                 _runningSetVM.ResetCommand?.Execute(null);
             }
+            else if (mess is GetCurrentCharactersMessage)
+            {
+                conn.Send(new CurrentCharactersMessage
+                {
+                    Player1CharacterIconPath = _runningSetVM.Opponent1.Character.FilePath,
+                    Player2CharacterIconPath = _runningSetVM.Opponent2.Character.FilePath
+                });
+            }
+            else if (mess is GetCurrentScoreMessage)
+            {
+                conn.Send(new CurrentScoreMessage
+                {
+                    ScoreP1 = _runningSetVM.Opponent1.Score,
+                    ScoreP2 = _runningSetVM.Opponent2.Score
+                });
+            }
         }
 
         private void ConnectionClosed(StreamDeckService conn)
@@ -186,6 +206,16 @@ namespace UltimateStreamMgr.StreamDeck
         private void ConnectionOpened(StreamDeckService conn)
         {
             _clients.Add(conn);
+            conn.Send(new CurrentCharactersMessage
+            {
+                Player1CharacterIconPath = _runningSetVM.Opponent1.Character.FilePath,
+                Player2CharacterIconPath = _runningSetVM.Opponent2.Character.FilePath
+            });
+            conn.Send(new CurrentScoreMessage
+            {
+                ScoreP1 = _runningSetVM.Opponent1.Score,
+                ScoreP2 = _runningSetVM.Opponent2.Score
+            });
         }
 
         ~StreamDeckLink()

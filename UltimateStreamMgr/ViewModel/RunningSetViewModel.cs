@@ -155,8 +155,8 @@ namespace UltimateStreamMgr.ViewModel
         private ObservableCollection<Character> _characterList;
         public ObservableCollection<Character> CharacterList
         {
-            get { return _characterList; }
-            set { Set("CharacterList", ref _characterList, value); }
+            get => _characterList;
+            set => Set("CharacterList", ref _characterList, value);
         }
 
         private ObservableCollection<Character> _teamList;
@@ -169,65 +169,65 @@ namespace UltimateStreamMgr.ViewModel
         private ObservableCollection<Player> _playerList;
         public ObservableCollection<Player> PlayerList
         {
-            get { return _playerList; }
-            set { Set("PlayerList", ref _playerList, value); }
+            get => _playerList;
+            set => Set("PlayerList", ref _playerList, value);
         }
 
         private Opponent _opponent1 = null;
         public Opponent Opponent1
         {
-            get { return _opponent1; }
-            set { Set("Opponent1", ref _opponent1, value); }
+            get => _opponent1;
+            set => Set("Opponent1", ref _opponent1, value);
         }
 
         private Opponent _opponent2 = null;
         public Opponent Opponent2
         {
-            get { return _opponent2; }
-            set { Set("Opponent2", ref _opponent2, value); }
+            get => _opponent2;
+            set => Set("Opponent2", ref _opponent2, value);
         }
 
         private SetMode _setMode = SetMode.Singles;
         public SetMode SetMode
         {
-            get { return _setMode; }
-            set { Set("SetMode", ref _setMode, value); }
+            get => _setMode;
+            set => Set("SetMode", ref _setMode, value);
         }
 
         private Opponent _opponent3 = null;
         public Opponent Opponent3
         {
-            get { return _opponent3; }
-            set { Set("Opponent3", ref _opponent3, value); }
+            get => _opponent3;
+            set => Set("Opponent3", ref _opponent3, value);
         }
 
         private Opponent _opponent4 = null;
         public Opponent Opponent4
         {
-            get { return _opponent4; }
-            set { Set("Opponent4", ref _opponent4, value); }
+            get => _opponent4;
+            set => Set("Opponent4", ref _opponent4, value);
         }
 
         private Character _teamA = null;
         public Character TeamA
         {
-            get { return _teamA; }
-            set { Set("TeamA", ref _teamA, value); }
+            get => _teamA;
+            set => Set("TeamA", ref _teamA, value);
         }
 
         private Character _teamB = null;
         public Character TeamB
         {
-            get { return _teamB; }
-            set { Set("TeamB", ref _teamB, value); }
+            get => _teamB;
+            set => Set("TeamB", ref _teamB, value);
         }
 
 
         private string _round;
         public string Round
         {
-            get { return _round; }
-            set { Set("Round", ref _round, value); }
+            get => _round;
+            set => Set("Round", ref _round, value);
         }
 
         public RelayCommand ResetCommand { get; set; }
@@ -245,36 +245,56 @@ namespace UltimateStreamMgr.ViewModel
         private bool _reportEnabled = false;
         public bool ReportEnabled
         {
-            get { return _reportEnabled; }
-            set { Set("ReportEnabled", ref _reportEnabled, value); }
+            get => _reportEnabled;
+            set => Set("ReportEnabled", ref _reportEnabled, value);
         }
 
         private bool _addP1L;
         public bool AddP1L
         {
-            get { return _addP1L; }
-            set { Set("AddP1L", ref _addP1L, value); if (value && AddP1W) AddP1W = false; }
+            get => _addP1L;
+            set
+            {
+                Set("AddP1L", ref _addP1L, value);
+                if (value && AddP1W)
+                    AddP1W = false;
+            }
         }
 
         private bool _addP1W;
         public bool AddP1W
         {
-            get { return _addP1W; }
-            set { Set("AddP1W", ref _addP1W, value); if (value && AddP1L) AddP1L = false; }
+            get => _addP1W;
+            set
+            {
+                Set("AddP1W", ref _addP1W, value);
+                if (value && AddP1L)
+                    AddP1L = false;
+            }
         }
 
         private bool _addP2L;
         public bool AddP2L
         {
-            get { return _addP2L; }
-            set { Set("AddP2L", ref _addP2L, value); if (value && AddP2W) AddP2W = false; }
+            get => _addP2L;
+            set
+            {
+                Set("AddP2L", ref _addP2L, value);
+                if (value && AddP2W)
+                    AddP2W = false;
+            }
         }
 
         private bool _addP2W;
         public bool AddP2W
         {
-            get { return _addP2W; }
-            set { Set("AddP2W", ref _addP2W, value); if (value && AddP2L) AddP2L = false; }
+            get => _addP2W;
+            set
+            {
+                Set("AddP2W", ref _addP2W, value);
+                if (value && AddP2L)
+                    AddP2L = false;
+            }
         }
 
         public RelayCommand SwapPlayerCommand { get; set; }

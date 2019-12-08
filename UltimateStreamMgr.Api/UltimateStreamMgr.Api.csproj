@@ -45,6 +45,8 @@
     <Compile Include="Entities\CharacterInfo.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
     <Compile Include="Messages\Client\ChangeCharacterMessage.cs" />
+    <Compile Include="Messages\Client\GetCurrentCharactersMessage.cs" />
+    <Compile Include="Messages\Client\GetCurrentScoreMessage.cs" />
     <Compile Include="Messages\Client\ResetScoreMessage.cs" />
     <Compile Include="Messages\Client\SwapPlayerMessage.cs" />
     <Compile Include="Messages\Server\CurrentCharactersMessage.cs" />

@@ -16,12 +16,11 @@ namespace UltimateStreamMgr.StreamDeck
 
         public IncrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
-            USM.OnMessageReceived += OnMessage;
-        }
-
-        private void OnMessage(BaseMessage mess)
-        {
-            
+            if (payload.Settings.ContainsKey("playerId"))
+            {
+                string playerIdString = payload.Settings["playerId"].ToString();
+                playerId = int.Parse(playerIdString);
+            }
         }
 
         public override void KeyPressed(KeyPayload payload)
@@ -31,7 +30,7 @@ namespace UltimateStreamMgr.StreamDeck
                 Connection.ShowAlert();
                 return;
             }
-            USM.Send(new IncrementPlayerScoreMessage {Player = 1});
+            USM.Send(new IncrementPlayerScoreMessage {Player = playerId });
         }
 
         public override void KeyReleased(KeyPayload payload)
@@ -41,6 +40,8 @@ namespace UltimateStreamMgr.StreamDeck
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {
+            string playerIdString = payload.Settings["playerId"].ToString();
+            playerId = int.Parse(playerIdString);
         }
 
         public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload)

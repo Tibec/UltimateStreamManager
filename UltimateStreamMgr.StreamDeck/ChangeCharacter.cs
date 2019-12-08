@@ -5,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BarRaider.SdTools;
+using Newtonsoft.Json.Linq;
 using UltimateStreamMgr.Api.Messages;
+using UltimateStreamMgr.Api.Messages.Client;
 using UltimateStreamMgr.Api.Messages.Server;
 
 namespace UltimateStreamMgr.StreamDeck
@@ -18,7 +20,13 @@ namespace UltimateStreamMgr.StreamDeck
         public ChangeCharacter(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             USM.OnMessageReceived += OnMessage;
-            // USM.Send();
+            USM.Send(new GetCurrentCharactersMessage());
+
+            if (payload.Settings.ContainsKey("playerId"))
+            {
+                string playerIdString = payload.Settings["playerId"].ToString();
+                playerId = int.Parse(playerIdString);
+            }
         }
 
         private void OnMessage(BaseMessage mess)
@@ -27,11 +35,17 @@ namespace UltimateStreamMgr.StreamDeck
             {
                 if (playerId == 1)
                 {
-                    Connection.SetImageAsync(Image.FromFile(newCharactersMessage.Player1CharacterIconPath));
+                    if (string.IsNullOrEmpty(newCharactersMessage.Player1CharacterIconPath))
+                        Connection.SetImageAsync("");
+                    else
+                        Connection.SetImageAsync(Image.FromFile(newCharactersMessage.Player1CharacterIconPath));
                 }
                 else if (playerId == 2)
                 {
-                    Connection.SetImageAsync(Image.FromFile(newCharactersMessage.Player2CharacterIconPath));
+                    if (string.IsNullOrEmpty(newCharactersMessage.Player2CharacterIconPath))
+                        Connection.SetImageAsync("");
+                    else
+                        Connection.SetImageAsync(Image.FromFile(newCharactersMessage.Player2CharacterIconPath));
                 }
             }
 
@@ -45,7 +59,7 @@ namespace UltimateStreamMgr.StreamDeck
                 return;
             }
 
-            CharacterSelector.Initialize();
+            CharacterSelector.Initialize(playerId);
             Connection.SwitchProfileAsync("CharacterGrid");
         }
 
@@ -56,6 +70,8 @@ namespace UltimateStreamMgr.StreamDeck
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {
+            string playerIdString = payload.Settings["playerId"].ToString();
+            playerId = int.Parse(playerIdString);
         }
 
         public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload)

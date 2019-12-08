@@ -12,8 +12,15 @@ namespace UltimateStreamMgr.StreamDeck
     [PluginActionId("com.ultimatestreammgr.decrementscore")]
     class DecrementScore : PluginBase
     {
+        private int playerId = 1;
+
         public DecrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
+            if (payload.Settings.ContainsKey("playerId"))
+            {
+                string playerIdString = payload.Settings["playerId"].ToString();
+                playerId = int.Parse(playerIdString);
+            }
         }
 
         private void OnMessage(BaseMessage mess)
@@ -28,7 +35,7 @@ namespace UltimateStreamMgr.StreamDeck
                 Connection.ShowAlert();
                 return;
             }
-            USM.Send(new DecrementPlayerScoreMessage { Player = 1 });
+            USM.Send(new DecrementPlayerScoreMessage { Player = playerId });
 
         }
 
@@ -39,6 +46,8 @@ namespace UltimateStreamMgr.StreamDeck
 
         public override void ReceivedSettings(ReceivedSettingsPayload payload)
         {
+            string playerIdString = payload.Settings["playerId"].ToString();
+            playerId = int.Parse(playerIdString);
         }
 
         public override void ReceivedGlobalSettings(ReceivedGlobalSettingsPayload payload)

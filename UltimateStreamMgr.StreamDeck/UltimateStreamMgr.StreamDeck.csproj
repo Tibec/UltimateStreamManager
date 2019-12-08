@@ -126,10 +126,20 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ProperyInspector\index.html">
+    <None Include="PropertyInspector\SelectCharacter.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="ProperyInspector\sdtools.common.js">
+    <None Include="PropertyInspector\sdtools.common.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertyInspector\SelectSide.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PropertyInspector\sdpi.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

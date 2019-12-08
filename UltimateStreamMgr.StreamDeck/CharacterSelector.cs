@@ -24,9 +24,11 @@ namespace UltimateStreamMgr.StreamDeck
         private static bool keyReady = false;
         private static bool characterReady = false;
 
+        private static int _targetCharacter = 1;
 
-        public static void Initialize()
+        public static void Initialize(int targetCharacter)
         {
+            _targetCharacter = targetCharacter;
             buttons.Clear();
             characters.Clear();
             buttonCount = 0;
@@ -106,20 +108,25 @@ namespace UltimateStreamMgr.StreamDeck
                             button.SetImage(@"C:\Users\Benjamin\Pictures\padchance2.png");
                             button.OnClick = () => { button.Connection.SwitchProfileAsync(""); };
                             break;
-                        case 1: // Prev button
+                        case 2: // Prev button
                             button.SetImage(@"D:\share\Pictures\paluchibi.png");
                             if (page > minPage)
                                 button.OnClick = () => { ChangeGridPage(page - 1); };
+                            else
+                                button.OnClick = null;
                             break;
-                        case 2: // Indicator
-                            button.Connection.SetTitleAsync($"{page + 1}/{maxPage}");
+                        case 3: // Indicator
+                            button.Connection.SetTitleAsync($"{page + 1}/{Math.Ceiling(characters.Count / 10f)}");
                             break;
-                        case 3: // Next button
+                        case 4: // Next button
                             button.SetImage(@"D:\share\Pictures\lachance.png");
                             if (page < maxPage)
                                 button.OnClick = () => { ChangeGridPage(page + 1); };
+                            else
+                                button.OnClick = null;
                             break;
-                        case 4: // Unused button
+                        case 1: // Unused button
+                        default:
                             break;
                     }
 
@@ -143,7 +150,7 @@ namespace UltimateStreamMgr.StreamDeck
                         {
                             button.OnClick = () =>
                             {
-                                USM.Send(new ChangeCharacterMessage{ CharacterName = pickedCharacter.Name, PlayerId = 1});
+                                USM.Send(new ChangeCharacterMessage{ CharacterName = pickedCharacter.Name, PlayerId = _targetCharacter });
                                 button.Connection.SwitchProfileAsync("");
                             };
                         }
@@ -156,7 +163,7 @@ namespace UltimateStreamMgr.StreamDeck
         private static void LoadAltGrid(CharacterInfo pickedCharacter, int sourcePage, int altPage)
         {
             int minPage = 0;
-            int maxPage = characters.Count / 10;
+            int maxPage = pickedCharacter.Alts.Count / 10;
 
             foreach (var button in buttons)
             {
@@ -169,20 +176,25 @@ namespace UltimateStreamMgr.StreamDeck
                             button.SetImage(@"C:\Users\Benjamin\Pictures\padchance2.png");
                             button.OnClick = () => { ChangeGridPage(sourcePage); };
                             break;
-                        case 1: // Prev button
+                        case 2: // Prev button
                             button.SetImage(@"D:\share\Pictures\paluchibi.png");
                             if (altPage > minPage)
                                 button.OnClick = () => { LoadAltGrid(pickedCharacter, sourcePage, altPage - 1); };
+                            else
+                                button.OnClick = null;
                             break;
-                        case 2: // Indicator
-                            button.Connection.SetTitleAsync($"{altPage + 1}/{maxPage}");
+                        case 3: // Indicator
+                            button.Connection.SetTitleAsync($"{altPage + 1}/{Math.Ceiling(pickedCharacter.Alts.Count/10f)}");
                             break;
-                        case 3: // Next button
+                        case 4: // Next button
                             button.SetImage(@"D:\share\Pictures\lachance.png");
                             if (altPage < maxPage)
                                 button.OnClick = () => { LoadAltGrid(pickedCharacter, sourcePage, altPage + 1); };
+                            else
+                                button.OnClick = null;
                             break;
-                        case 4: // Unused button
+                        case 1: // Unused button
+                        default:
                             break;
                     }
 
@@ -200,7 +212,7 @@ namespace UltimateStreamMgr.StreamDeck
                         button.SetImage(pickedAlt.IconPath);
                         button.OnClick = () =>
                         {
-                            USM.Send(new ChangeCharacterMessage { CharacterName = pickedAlt.Name, PlayerId = 1 });
+                            USM.Send(new ChangeCharacterMessage { CharacterName = pickedAlt.Name, PlayerId = _targetCharacter });
                             button.Connection.SwitchProfileAsync("");
                         };
                     }

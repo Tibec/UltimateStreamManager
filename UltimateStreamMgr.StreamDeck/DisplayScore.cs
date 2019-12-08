@@ -16,6 +16,7 @@ namespace UltimateStreamMgr.StreamDeck
         public DisplayScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             USM.OnMessageReceived += OnMessage;
+            USM.Send(new GetCurrentScoreMessage());
         }
 
         private void OnMessage(BaseMessage mess)
