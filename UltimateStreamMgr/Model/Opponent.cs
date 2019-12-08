@@ -50,5 +50,30 @@ namespace UltimateStreamMgr.Model
             get { return _score; }
             set { Set("Score", ref _score, value); }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is Opponent opponent)
+                Equals(opponent);
+
+            return base.Equals(obj);
+        }
+
+        protected bool Equals(Opponent other)
+        {
+            return _name == other._name && Equals(_character, other._character) && Equals(_linkedPlayer, other._linkedPlayer) && _score == other._score;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (_name != null ? _name.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_character != null ? _character.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_linkedPlayer != null ? _linkedPlayer.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _score;
+                return hashCode;
+            }
+        }
     }
 }

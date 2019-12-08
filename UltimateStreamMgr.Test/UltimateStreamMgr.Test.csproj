@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>UltimateStreamMgr.Test</RootNamespace>
     <AssemblyName>UltimateStreamMgr.Test</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -54,12 +54,25 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="TestSerialization.cs" />
     <Compile Include="TestWebApi.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TestDatabase.cs" />
     <Compile Include="TestOutput.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\UltimateStreamMgr.Api\UltimateStreamMgr.Api.csproj">
+      <Project>{9319e2e0-7408-4d33-8b32-819f20399a1e}</Project>
+      <Name>UltimateStreamMgr.Api</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UltimateStreamMgr.Launcher\UltimateStreamMgr.Launcher.csproj">
+      <Project>{7fb199ad-97fa-4173-b290-a290d1815d8e}</Project>
+      <Name>UltimateStreamMgr.Launcher</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UltimateStreamMgr.StreamDeck\UltimateStreamMgr.StreamDeck.csproj">
+      <Project>{98553b28-2b56-4687-b713-eb16a020eec5}</Project>
+      <Name>UltimateStreamMgr.StreamDeck</Name>
+    </ProjectReference>
     <ProjectReference Include="..\UltimateStreamMgr\UltimateStreamMgr.csproj">
       <Project>{6c42fa81-7b28-4189-b116-fa5fb4761c5a}</Project>
       <Name>UltimateStreamMgr</Name>
@@ -67,6 +80,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json">
+      <Version>12.0.3</Version>
+    </PackageReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
