@@ -36,6 +36,12 @@
                     <TextBlock> Settings</TextBlock>
                 </WrapPanel>
             </Button>
+            <ToggleButton IsChecked="{Binding EnableDarkTheme}">
+                <WrapPanel>
+                    <iconPacks:PackIconModern Kind="Lightbulb"/>
+                    <TextBlock> Dark mode</TextBlock>
+                </WrapPanel>
+            </ToggleButton>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
     <DockPanel>

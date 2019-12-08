@@ -9,6 +9,8 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows;
+using MahApps.Metro;
 using UltimateStreamMgr.Model;
 using UltimateStreamMgr.StreamDeck;
 
@@ -78,7 +80,20 @@ namespace UltimateStreamMgr.ViewModel
             }
         }
 
+        private bool _enableDarkTheme = false;
 
+        public bool EnableDarkTheme
+        {
+            get => _enableDarkTheme;
+            set
+            {
+                Set("DarkThemeEnabled", ref _enableDarkTheme, value);
+                if (value)
+                    ThemeManager.ChangeAppTheme(Application.Current, "BaseDark");
+                else
+                    ThemeManager.ChangeAppTheme(Application.Current, "BaseLight");
+            }
+        }
 
         private string _dockContent;
         public string DockContent
