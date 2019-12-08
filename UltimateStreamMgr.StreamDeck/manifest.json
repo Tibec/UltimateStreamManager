@@ -1,0 +1,143 @@
+{
+  "Actions": [
+    {
+      "Icon": "Images/reset",
+      "Name": "Reset scores",
+      "States": [
+        {
+          "Image": "Images/reset",
+          "xTitleAlignment": "middle",
+          "xFontSize": "16",
+          "TitleColor": "#000000",
+          "OutlineThickness": 0
+        }
+      ],
+      "Tooltip": "Reset both players",
+      "UUID": "com.ultimatestreammgr.resetscore"
+    },
+    {
+      "Icon": "Images/reset",
+      "Name": "Swap players",
+      "States": [
+        {
+          "Image": "Images/reset",
+          "xTitleAlignment": "middle",
+          "xFontSize": "16",
+          "TitleColor": "#000000",
+          "OutlineThickness": 0
+        }
+      ],
+      "Tooltip": "swap both players",
+      "UUID": "com.ultimatestreammgr.swapplayers"
+    },
+    {
+      "Icon": "Images/arrowup",
+      "Name": "Increment score",
+      "States": [
+        {
+          "Image": "Images/arrowup",
+          "xTitleAlignment": "middle",
+          "xFontSize": "16",
+          "TitleColor": "#000000",
+          "OutlineThickness": 0
+        }
+      ],
+      "Tooltip": "Set the color of your light to a predefined value",
+      "UUID": "com.ultimatestreammgr.incrementscore"
+    },
+    {
+      "Icon": "Images/arrowdown",
+      "Name": "Decrement score",
+      "States": [
+        {
+          "Image": "Images/arrowdown",
+          "xTitleAlignment": "middle",
+          "xFontSize": "16",
+          "TitleColor": "#000000",
+          "OutlineThickness": 0
+        }
+      ],
+      "Tooltip": "Set the color of your light to a predefined value",
+      "UUID": "com.ultimatestreammgr.decrementscore"
+    },
+    {
+      "Icon": "Images/noicon",
+      "Name": "Change Character",
+      "States": [
+        {
+          "Image": "Images/noicon",
+          "xTitleAlignment": "middle",
+          "xFontSize": "16",
+          "TitleColor": "#000000",
+          "OutlineThickness": 0
+        }
+      ],
+      "Tooltip": "Set the color of your light to a predefined value",
+      "UUID": "com.ultimatestreammgr.changecharacter"
+    },
+    {
+      "Icon": "Images/noicon",
+      "Name": "Display score",
+      "States": [
+        {
+          "Image": "Images/noicon",
+          "TitleAlignment": "middle",
+          "FontSize": "16",
+          "TitleColor": "#FFFFFF",
+          "OutlineThickness": 5
+        }
+      ],
+      "Tooltip": "Display current score",
+      "UUID": "com.ultimatestreammgr.displayscore"
+    },
+    {
+      "Name": "Programmable",
+      "States": [
+        {
+          "Image": "Images/noicon",
+          "TitleAlignment": "middle",
+          "FontSize": "18"
+        }
+      ],
+      "SupportedInMultiActions": false,
+      "VisibleInActionsList": false,
+      "Tooltip": "",
+      "UUID": "com.ultimatestreammgr.programmable"
+    }
+  ],
+    "SDKVersion": 2,
+    "Author": "Tibec",
+    "CodePath": "./UltimateStreamMgr.StreamDeck.exe",
+    "PropertyInspectorPath": "propertyinspector/index.html",
+    "Description": "Control Elgato Key Light and other devices.",
+    "Category": "Tobok Development Inc.",
+    "CategoryIcon": "category-controlcenter",
+    "Name": "Control Center",
+    "Icon": "Images/logo",
+    "URL": "https://www.elgato.com/en/gaming/stream-deck",
+    "Version": "0.1",
+    "OS": [
+        {
+            "Platform": "mac",
+            "MinimumVersion": "10.11"
+        },
+        {
+            "Platform": "windows",
+            "MinimumVersion": "10"
+        }
+    ],
+    "Profiles": [
+    {
+      "Name": "CharacterGrid",
+      "ReadOnly": true,
+      "DeviceType": 0,
+      "DontAutoSwitchWhenInstalled": true
+    }],
+
+    "ApplicationsToMonitor": {
+        "windows": ["UltimateStreamMgr.exe"]
+    },
+    "Software": {
+        "MinimumVersion": "4.3.2"
+    }
+}

@@ -8,6 +8,8 @@ using BarRaider.SdTools;
 using NLog.Layouts;
 using UltimateStreamMgr.Api.Entities;
 using UltimateStreamMgr.Api.Messages;
+using UltimateStreamMgr.Api.Messages.Client;
+using UltimateStreamMgr.Api.Messages.Server;
 
 namespace UltimateStreamMgr.StreamDeck
 {

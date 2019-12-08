@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UltimateStreamMgr.Api.Messages
+namespace UltimateStreamMgr.Api.Messages.Client
 {
-    public class GetCharacterListMessage : BaseMessage
+    public class SwapPlayerMessage : BaseMessage
     {
     }
 }

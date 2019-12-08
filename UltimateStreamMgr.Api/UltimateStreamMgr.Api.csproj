@@ -44,12 +44,15 @@
     <Compile Include="Entities\CharacterAltInfo.cs" />
     <Compile Include="Entities\CharacterInfo.cs" />
     <Compile Include="Messages\BaseMessage.cs" />
-    <Compile Include="Messages\ChangeCharacterMessage.cs" />
-    <Compile Include="Messages\CharacterListMessage.cs" />
-    <Compile Include="Messages\DecrementPlayerScoreMessage.cs" />
-    <Compile Include="Messages\GetCharacterListMessage.cs" />
-    <Compile Include="Messages\IncrementPlayerScoreMessage.cs" />
-    <Compile Include="Messages\MessageResponse.cs" />
+    <Compile Include="Messages\Client\ChangeCharacterMessage.cs" />
+    <Compile Include="Messages\Client\ResetScoreMessage.cs" />
+    <Compile Include="Messages\Client\SwapPlayerMessage.cs" />
+    <Compile Include="Messages\Server\CurrentCharactersMessage.cs" />
+    <Compile Include="Messages\Server\CharacterListMessage.cs" />
+    <Compile Include="Messages\Server\CurrentScoreMessage.cs" />
+    <Compile Include="Messages\Client\DecrementPlayerScoreMessage.cs" />
+    <Compile Include="Messages\Client\GetCharacterListMessage.cs" />
+    <Compile Include="Messages\Client\IncrementPlayerScoreMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UltimateStreamMgrConnection.cs" />
   </ItemGroup>

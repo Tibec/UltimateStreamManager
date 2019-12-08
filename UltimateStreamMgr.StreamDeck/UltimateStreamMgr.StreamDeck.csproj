@@ -45,6 +45,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CharacterSelector.cs" />
+    <Compile Include="DisplayScore.cs" />
+    <Compile Include="ResetScore.cs" />
+    <Compile Include="SwapPlayers.cs" />
     <Compile Include="ProgrammableButton.cs" />
     <Compile Include="DecrementScore.cs" />
     <Compile Include="IncrementScore.cs" />
@@ -55,6 +58,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="CharacterGrid.streamDeckProfile">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StreamDeck-Tools">
@@ -67,5 +76,66 @@
       <Name>UltimateStreamMgr.Api</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\noicon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\arrowdown%401x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\arrowdown%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\arrowdown.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\arrowup%401x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\arrowup%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\arrowup.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\logo%401x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\logo%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\noicon%401x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\noicon%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\reset%401x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\reset%402x.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Images\reset.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ProperyInspector\index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="ProperyInspector\sdtools.common.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd $(ProjectDir)utils
+.\deploy.bat</PostBuildEvent>
+  </PropertyGroup>
 </Project>

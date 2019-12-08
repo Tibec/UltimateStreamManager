@@ -5,17 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using BarRaider.SdTools;
 using UltimateStreamMgr.Api.Messages;
+using UltimateStreamMgr.Api.Messages.Client;
 
 namespace UltimateStreamMgr.StreamDeck
 {
     [PluginActionId("com.ultimatestreammgr.decrementscore")]
     class DecrementScore : PluginBase
     {
-        private int playerId = 1;
-
         public DecrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
-            USM.OnMessageReceived += OnMessage;
         }
 
         private void OnMessage(BaseMessage mess)
@@ -27,7 +25,6 @@ namespace UltimateStreamMgr.StreamDeck
         {
             if (!USM.IsConnected)
             {
-                Connection.SetTitleAsync("NIQUE");
                 Connection.ShowAlert();
                 return;
             }
@@ -55,5 +52,6 @@ namespace UltimateStreamMgr.StreamDeck
         public override void Dispose()
         {
         }
+
     }
 }

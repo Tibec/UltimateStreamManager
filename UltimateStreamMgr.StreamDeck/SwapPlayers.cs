@@ -9,19 +9,11 @@ using UltimateStreamMgr.Api.Messages.Client;
 
 namespace UltimateStreamMgr.StreamDeck
 {
-    [PluginActionId("com.ultimatestreammgr.incrementscore")]
-    class IncrementScore : PluginBase
+    [PluginActionId("com.ultimatestreammgr.swapplayers")]
+    class SwapPlayers : PluginBase
     {
-        private int playerId = 1;
-
-        public IncrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        public SwapPlayers(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
-            USM.OnMessageReceived += OnMessage;
-        }
-
-        private void OnMessage(BaseMessage mess)
-        {
-            
         }
 
         public override void KeyPressed(KeyPayload payload)
@@ -31,7 +23,7 @@ namespace UltimateStreamMgr.StreamDeck
                 Connection.ShowAlert();
                 return;
             }
-            USM.Send(new IncrementPlayerScoreMessage {Player = 1});
+            USM.Send(new SwapPlayerMessage());
         }
 
         public override void KeyReleased(KeyPayload payload)

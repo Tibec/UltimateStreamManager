@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using UltimateStreamMgr.Api.Messages;
+using UltimateStreamMgr.Api.Messages.Client;
 
 namespace UltimateStreamMgr.Test
 {
@@ -16,7 +17,7 @@ namespace UltimateStreamMgr.Test
         public void TestSerialize()
         {
             var settings = new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All };
-            var message = new IncrementPlayerScoreMessage {Player = 1};
+            var message = new SwapPlayerMessage();
             var json = JsonConvert.SerializeObject(message, settings);
             var messageReceived = JsonConvert.DeserializeObject<BaseMessage>(json, settings);
         }

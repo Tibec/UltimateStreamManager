@@ -6,32 +6,29 @@ using System.Threading.Tasks;
 using BarRaider.SdTools;
 using UltimateStreamMgr.Api.Messages;
 using UltimateStreamMgr.Api.Messages.Client;
+using UltimateStreamMgr.Api.Messages.Server;
 
 namespace UltimateStreamMgr.StreamDeck
 {
-    [PluginActionId("com.ultimatestreammgr.incrementscore")]
-    class IncrementScore : PluginBase
+    [PluginActionId("com.ultimatestreammgr.displayscore")]
+    class DisplayScore : PluginBase
     {
-        private int playerId = 1;
-
-        public IncrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        public DisplayScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             USM.OnMessageReceived += OnMessage;
         }
 
         private void OnMessage(BaseMessage mess)
         {
-            
+            if (mess is CurrentScoreMessage scoreMessage)
+            {
+                Connection.SetTitleAsync($"{scoreMessage.ScoreP1} - {scoreMessage.ScoreP2}");
+            }
         }
 
         public override void KeyPressed(KeyPayload payload)
         {
-            if (!USM.IsConnected)
-            {
-                Connection.ShowAlert();
-                return;
-            }
-            USM.Send(new IncrementPlayerScoreMessage {Player = 1});
+
         }
 
         public override void KeyReleased(KeyPayload payload)

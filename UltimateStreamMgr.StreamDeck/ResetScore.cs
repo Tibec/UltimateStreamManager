@@ -1,40 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BarRaider.SdTools;
 using UltimateStreamMgr.Api.Messages;
-using UltimateStreamMgr.Api.Messages.Server;
+using UltimateStreamMgr.Api.Messages.Client;
 
 namespace UltimateStreamMgr.StreamDeck
 {
-    [PluginActionId("com.ultimatestreammgr.changecharacter")]
-    class ChangeCharacter : PluginBase
+    [PluginActionId("com.ultimatestreammgr.resetscore")]
+    class ResetScore : PluginBase
     {
-        private int playerId = 1;
-
-        public ChangeCharacter(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        public ResetScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             USM.OnMessageReceived += OnMessage;
-            // USM.Send();
         }
 
         private void OnMessage(BaseMessage mess)
         {
-            if(mess is CurrentCharactersMessage newCharactersMessage)
-            {
-                if (playerId == 1)
-                {
-                    Connection.SetImageAsync(Image.FromFile(newCharactersMessage.Player1CharacterIconPath));
-                }
-                else if (playerId == 2)
-                {
-                    Connection.SetImageAsync(Image.FromFile(newCharactersMessage.Player2CharacterIconPath));
-                }
-            }
-
+            
         }
 
         public override void KeyPressed(KeyPayload payload)
@@ -44,9 +29,7 @@ namespace UltimateStreamMgr.StreamDeck
                 Connection.ShowAlert();
                 return;
             }
-
-            CharacterSelector.Initialize();
-            Connection.SwitchProfileAsync("CharacterGrid");
+            USM.Send(new ResetScoreMessage());
         }
 
         public override void KeyReleased(KeyPayload payload)

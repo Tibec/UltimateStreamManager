@@ -33,7 +33,7 @@ namespace UltimateStreamMgr.ViewModel
                 new SocialModuleViewModel()
             };
 
-            streamDeckLink = new StreamDeckLink(Windows.ToList());
+            streamDeckLink = new StreamDeckLink(Windows.First(v=>v is RunningSetViewModel) as RunningSetViewModel);
 
 
             /*

@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using CefSharp.Internals;
 using Newtonsoft.Json;
 using UltimateStreamMgr.Api.Entities;
 using UltimateStreamMgr.Api.Messages;
+using UltimateStreamMgr.Api.Messages.Client;
+using UltimateStreamMgr.Api.Messages.Server;
+using UltimateStreamMgr.Model;
 using UltimateStreamMgr.StreamDeck;
 using UltimateStreamMgr.ViewModel;
 using WebSocketSharp;
@@ -22,11 +27,11 @@ namespace UltimateStreamMgr.StreamDeck
 
         private List<StreamDeckService> _clients = new List<StreamDeckService>();
 
-        private List<DockWindowViewModel> _vms;
+        private RunningSetViewModel _runningSetVM;
 
-        public StreamDeckLink(List<DockWindowViewModel> vms)
+        public StreamDeckLink(RunningSetViewModel runningSetVM)
         {
-            _vms = vms;
+            _runningSetVM = runningSetVM;
 
             _server = new WebSocketServer(IPAddress.Loopback, _port);
             _server.AddWebSocketService("/", () =>
@@ -38,47 +43,98 @@ namespace UltimateStreamMgr.StreamDeck
                 return newService;
             });
             _server.Start();
+
+            RegisterEvents();
+        }
+
+        private void RegisterEvents()
+        {
+            _runningSetVM.PropertyChanged += RefreshRegisteredEvent;
+            RefreshRegisteredEvent(null, null);
+        }
+
+        private void RefreshRegisteredEvent(object sender, PropertyChangedEventArgs e)
+        {
+            _runningSetVM.Opponent1.PropertyChanged += OnOpponentChanged;
+            _runningSetVM.Opponent2.PropertyChanged += OnOpponentChanged;
+        }
+
+        private void OnOpponentChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Character")
+            {
+                SendMessageToAllClients(new CurrentCharactersMessage
+                {
+                    Player1CharacterIconPath = _runningSetVM.Opponent1.Character.FilePath,
+                    Player2CharacterIconPath =  _runningSetVM.Opponent2.Character.FilePath
+                });
+            }
+            else if (e.PropertyName == "Score")
+            {
+                SendMessageToAllClients(new CurrentScoreMessage
+                {
+                    ScoreP1 = _runningSetVM.Opponent1.Score,
+                    ScoreP2 = _runningSetVM.Opponent2.Score
+                });
+            }
+
+        }
+
+        public void SendMessageToAllClients(BaseMessage message)
+        {
+            foreach (var client in _clients)
+            {
+                client.Send(message);
+            }
         }
 
         private void MessageReceived(StreamDeckService conn, BaseMessage mess)
         {
             if (mess is IncrementPlayerScoreMessage incrementMessage)
             {
-                RunningSetViewModel currentSet = _vms.Find((v) => v is RunningSetViewModel) as RunningSetViewModel;
                 if (incrementMessage.Player == 1)
                 {
-                    currentSet.IncrementEntrant1Command?.Execute(null);
+                    _runningSetVM.IncrementEntrant1Command?.Execute(null);
                 }
                 else if (incrementMessage.Player == 2)
                 {
-                    currentSet.IncrementEntrant1Command?.Execute(null);
+                    _runningSetVM.IncrementEntrant1Command?.Execute(null);
+                }
+            }
+            else if (mess is DecrementPlayerScoreMessage decrementMessage)
+            {
+                if (decrementMessage.Player == 1)
+                {
+                    _runningSetVM.DecrementEntrant1Command?.Execute(null);
+                }
+                else if (decrementMessage.Player == 2)
+                {
+                    _runningSetVM.DecrementEntrant1Command?.Execute(null);
                 }
             }
             else if (mess is ChangeCharacterMessage changeCharacter)
             {
-                RunningSetViewModel currentSet = _vms.Find((v) => v is RunningSetViewModel) as RunningSetViewModel;
-                var availableCharacter = currentSet.CharacterList.Where(c => c.Category == "ultimate").ToList();
+                var availableCharacter = _runningSetVM.CharacterList.Where(c => c.Category == "ultimate").ToList();
                 if (changeCharacter.PlayerId == 1)
                 {
-                    currentSet.Opponent1.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
+                    _runningSetVM.Opponent1.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
                 }
                 else if (changeCharacter.PlayerId == 2)
                 {
-                    currentSet.Opponent2.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
+                    _runningSetVM.Opponent2.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
                 }
                 else if (changeCharacter.PlayerId == 3)
-                {               
-                    currentSet.Opponent3.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
+                {
+                    _runningSetVM.Opponent3.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
                 }
                 else if (changeCharacter.PlayerId == 4)
                 {
-                    currentSet.Opponent4.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
+                    _runningSetVM.Opponent4.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
                 }
             }
             else if (mess is GetCharacterListMessage)
             {
-                RunningSetViewModel currentSet = _vms.Find((v) => v is RunningSetViewModel) as RunningSetViewModel;
-                var availableCharacter = currentSet.CharacterList.ToList().Where(c=>c.Category=="ultimate").ToList();
+                var availableCharacter = _runningSetVM.CharacterList.ToList().Where(c=>c.Category=="ultimate").ToList();
                 List<CharacterInfo> charaList = new List<CharacterInfo>();
                 foreach (var character in availableCharacter)
                 {
@@ -111,6 +167,14 @@ namespace UltimateStreamMgr.StreamDeck
                     }
                 }
                 conn.Send(new CharacterListMessage{Characters = charaList});
+            }
+            else if (mess is SwapPlayerMessage)
+            {
+                _runningSetVM.SwapPlayerCommand?.Execute(null);
+            }
+            else if (mess is ResetScoreMessage)
+            {
+                _runningSetVM.ResetCommand?.Execute(null);
             }
         }
 
