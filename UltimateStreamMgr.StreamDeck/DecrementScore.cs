@@ -8,12 +8,12 @@ using UltimateStreamMgr.Api.Messages;
 
 namespace UltimateStreamMgr.StreamDeck
 {
-    [PluginActionId("com.ultimatestreammgr.incrementscore")]
-    class IncrementScore : PluginBase
+    [PluginActionId("com.ultimatestreammgr.decrementscore")]
+    class DecrementScore : PluginBase
     {
         private int playerId = 1;
 
-        public IncrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        public DecrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
             USM.OnMessageReceived += OnMessage;
         }
@@ -27,12 +27,12 @@ namespace UltimateStreamMgr.StreamDeck
         {
             if (!USM.IsConnected)
             {
-                Connection.ShowAlert();
                 Connection.SetTitleAsync("NIQUE");
+                Connection.ShowAlert();
                 return;
             }
-            USM.Send(new IncrementPlayerScoreMessage {Player = 1});
-            
+            USM.Send(new DecrementPlayerScoreMessage { Player = 1 });
+
         }
 
         public override void KeyReleased(KeyPayload payload)

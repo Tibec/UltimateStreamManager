@@ -31,7 +31,8 @@ namespace UltimateStreamMgr.StreamDeck
                 return;
             }
 
-            USM.Send(new IncrementPlayerScoreMessage {Player = 1});
+            CharacterSelector.Initialize();
+            Connection.SwitchProfileAsync("CharacterGrid");
         }
 
         public override void KeyReleased(KeyPayload payload)

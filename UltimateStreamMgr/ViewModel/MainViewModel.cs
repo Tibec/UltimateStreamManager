@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using UltimateStreamMgr.Model;
 using UltimateStreamMgr.StreamDeck;
@@ -19,8 +20,8 @@ namespace UltimateStreamMgr.ViewModel
 
         public MainViewModel()
         {
-            ResetLayout = new RelayCommand(() => DoResetLayout());
-            CompactLayout = new RelayCommand(() => DoCompactLayout());
+            ResetLayout = new RelayCommand(DoResetLayout);
+            CompactLayout = new RelayCommand(DoCompactLayout);
 
             Windows = new ObservableCollection<DockWindowViewModel>
             {
@@ -32,7 +33,7 @@ namespace UltimateStreamMgr.ViewModel
                 new SocialModuleViewModel()
             };
 
-            streamDeckLink = new StreamDeckLink();
+            streamDeckLink = new StreamDeckLink(Windows.ToList());
 
 
             /*

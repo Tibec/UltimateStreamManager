@@ -37,10 +37,10 @@ namespace UltimateStreamMgr.ViewModel
             UpdateCommand = new RelayCommand(() => Update());
             SwapPlayerCommand = new RelayCommand(() => SwapPlayer());
 
-            IncrementEntrant1Command = new RelayCommand(() => IncrementEntrant1());
-            DecrementEntrant1Command = new RelayCommand(() => DecrementEntrant1());
-            IncrementEntrant2Command = new RelayCommand(() => IncrementEntrant2());
-            DecrementEntrant2Command = new RelayCommand(() => DecrementEntrant2());
+            IncrementEntrant1Command = new RelayCommand(IncrementEntrant1);
+            DecrementEntrant1Command = new RelayCommand(DecrementEntrant1);
+            IncrementEntrant2Command = new RelayCommand(IncrementEntrant2);
+            DecrementEntrant2Command = new RelayCommand(DecrementEntrant2);
 
             MessengerInstance.Register<Set>(this, StartPendingSet);
 
@@ -69,7 +69,7 @@ namespace UltimateStreamMgr.ViewModel
 
                 foreach (var subfolder in Directory.GetDirectories(Path.Combine(rundir, "characters")))
                 {
-                    subfiles.AddRange(Directory.GetFiles(Path.Combine(subfolder, "characters")));
+                    subfiles.AddRange(Directory.GetFiles(subfolder));
                 }
 
                 foreach (string file in subfiles)

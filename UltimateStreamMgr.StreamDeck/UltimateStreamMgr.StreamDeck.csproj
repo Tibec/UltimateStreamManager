@@ -44,6 +44,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CharacterSelector.cs" />
+    <Compile Include="ProgrammableButton.cs" />
+    <Compile Include="DecrementScore.cs" />
     <Compile Include="IncrementScore.cs" />
     <Compile Include="ChangeCharacter.cs" />
     <Compile Include="Program.cs" />

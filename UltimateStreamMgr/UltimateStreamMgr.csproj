@@ -380,6 +380,10 @@
       <Project>{ba72cce0-a9fb-4995-b496-7fec5c87b85b}</Project>
       <Name>AvalonMetroAccent</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UltimateStreamMgr.Api\UltimateStreamMgr.Api.csproj">
+      <Project>{9319E2E0-7408-4D33-8B32-819F20399A1E}</Project>
+      <Name>UltimateStreamMgr.Api</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\CompactLayout.xml" />
@@ -427,8 +431,8 @@
     <PackageReference Include="TinyTwitter">
       <Version>1.1.2</Version>
     </PackageReference>
-    <PackageReference Include="websocket-sharp.clone">
-      <Version>3.0.0</Version>
+    <PackageReference Include="WebSocketSharp">
+      <Version>1.0.3-rc11</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>

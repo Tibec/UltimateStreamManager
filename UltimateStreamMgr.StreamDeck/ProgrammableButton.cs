@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,14 +9,21 @@ using UltimateStreamMgr.Api.Messages;
 
 namespace UltimateStreamMgr.StreamDeck
 {
-    [PluginActionId("com.ultimatestreammgr.incrementscore")]
-    class IncrementScore : PluginBase
+    [PluginActionId("com.ultimatestreammgr.programmable")]
+    public class ProgrammableButton : PluginBase
     {
         private int playerId = 1;
 
-        public IncrementScore(SDConnection connection, InitialPayload payload) : base(connection, payload)
+        public Action OnClick;
+
+        public InitialPayload ButtonInfo { get; }
+        public SDConnection Connection { get; }
+
+        public ProgrammableButton(SDConnection connection, InitialPayload payload) : base(connection, payload)
         {
-            USM.OnMessageReceived += OnMessage;
+            ButtonInfo = payload;
+            Connection = connection;
+            CharacterSelector.AddKey(this);
         }
 
         private void OnMessage(BaseMessage mess)
@@ -25,14 +33,7 @@ namespace UltimateStreamMgr.StreamDeck
 
         public override void KeyPressed(KeyPayload payload)
         {
-            if (!USM.IsConnected)
-            {
-                Connection.ShowAlert();
-                Connection.SetTitleAsync("NIQUE");
-                return;
-            }
-            USM.Send(new IncrementPlayerScoreMessage {Player = 1});
-            
+            OnClick?.Invoke();
         }
 
         public override void KeyReleased(KeyPayload payload)
@@ -54,6 +55,16 @@ namespace UltimateStreamMgr.StreamDeck
 
         public override void Dispose()
         {
+        }
+
+        public void ResetImage()
+        {
+            Connection.SetImageAsync("");
+        }
+
+        public void SetImage(string imagePath)
+        {
+            Connection.SetImageAsync(Image.FromFile(imagePath), true);
         }
     }
 }

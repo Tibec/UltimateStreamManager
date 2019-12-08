@@ -7,6 +7,7 @@ using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using UltimateStreamMgr.Api;
 using UltimateStreamMgr.Api.Messages;
 
 namespace UltimateStreamMgr.StreamDeck
@@ -48,7 +49,7 @@ namespace UltimateStreamMgr.StreamDeck
 
         public static void Send(BaseMessage message)
         {
-            _connection.SendAsync(message).RunSynchronously();
+            _connection.SendAsync(message).Wait();
         }
     }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
@@ -17,6 +18,7 @@ namespace UltimateStreamMgr.StreamDeck
 
         static void Main(string[] args)
         {
+            USM.Run();
             SDWrapper.Run(args);
 
         }
