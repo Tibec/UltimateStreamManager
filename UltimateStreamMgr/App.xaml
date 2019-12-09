@@ -27,16 +27,11 @@
                 </ResourceDictionary>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml">
                 </ResourceDictionary>
-                <ResourceDictionary Source="pack://application:,,,/Xceed.Wpf.Toolkit;component/NumericUpDown/Themes/Generic.xaml ">
-                </ResourceDictionary>
                 <!-- Metro Icons -->
                <!-- <ResourceDictionary Source="/Resources/Icons.xaml" />-->
 
             </ResourceDictionary.MergedDictionaries>
-
-            <Style TargetType="{x:Type toolkit:IntegerUpDown}" BasedOn="{StaticResource IntegerUpDown}" x:Key="RedTextBasedOnButton">
-                <Setter Property="Foreground" Value="{DynamicResource BlackBrush}"/>
-            </Style>
+ 
         </ResourceDictionary>
     </Application.Resources>
 </Application>
