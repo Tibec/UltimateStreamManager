@@ -15,31 +15,31 @@
   **********************************************************************************-->
 
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:options="http://schemas.microsoft.com/winfx/2006/xaml/presentation/options"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor1" 
-                     Color="White"/>
+                     Color="{DynamicResource WhiteColor}"  options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor2" 
-                     Color="Black"/>
+                     Color="{DynamicResource BlackColor}" options:Freeze="True"/>
     <!--Active title (blue)-->
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor3" 
-                     Color="#41B1E1"/>
+                     Color="#41B1E1"  options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor4" 
-                     Color="#5EA1C0"/>
+                     Color="#5EA1C0"  options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor5" 
-                     Color="#333333"/>
+                     Color="{DynamicResource Gray1}" options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor6" 
-                     Color="#8C8E94"/>
+                     Color="{DynamicResource Gray3}" options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor7" 
-                     Color="#EEEEEE"/>
-    
-    <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor8" 
-                     Color="#808080"/>
+                     Color="{DynamicResource Gray8}" options:Freeze="True"/>
+
+<SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor8" 
+                     Color="{DynamicResource Gray2}" options:Freeze="True"/>
 
 </ResourceDictionary>

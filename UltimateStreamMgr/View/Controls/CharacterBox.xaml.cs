@@ -51,6 +51,7 @@ namespace UltimateStreamMgr.View.Controls
             }
             else
             {
+                pb.selectedCharImg.Source = null;
             }
         }
 

@@ -7,32 +7,49 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Windows;
+using MahApps.Metro;
 using UltimateStreamMgr.Model;
+using UltimateStreamMgr.StreamDeck;
 
 namespace UltimateStreamMgr.ViewModel
 {
     public class MainViewModel : BaseViewModel
     {
+        private StreamDeckLink streamDeckLink;
+
         public MainViewModel()
         {
-            ResetLayout = new RelayCommand(() => DoResetLayout());
-            CompactLayout = new RelayCommand(() => DoCompactLayout());
+            ResetLayout = new RelayCommand(DoResetLayout);
+            CompactLayout = new RelayCommand(DoCompactLayout);
 
-            Windows = new ObservableCollection<DockWindowViewModel>();
-
-            Windows.Add(new StreamApiIndicatorViewModel());
-            Windows.Add(new PendingSetsViewModel());
-            Windows.Add(new RunningSetViewModel());
-            Windows.Add(new CustomKeysViewModel());
-            Windows.Add(new CastersViewModel());
-            Windows.Add(new SocialModuleViewModel());
-            /*
-            if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+            Windows = new ObservableCollection<DockWindowViewModel>
             {
-                Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
-            }
+                new StreamApiIndicatorViewModel(),
+                new PendingSetsViewModel(),
+                new RunningSetViewModel(),
+                new CustomKeysViewModel(),
+                new CastersViewModel(),
+                new SocialModuleViewModel()
+            };
+
+            streamDeckLink = new StreamDeckLink(Windows.First(v=>v is RunningSetViewModel) as RunningSetViewModel);
+
+
+            /*
+                if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
+                {
+                    Messenger.Default.Send(Configuration.Instance.Window.DockDisposition);
+                }
             */
+        }
+
+        public override void Cleanup()
+        {
+            base.Cleanup();
+            streamDeckLink.Stop();
         }
 
         public RelayCommand ResetLayout { get; set; }
@@ -63,6 +80,20 @@ namespace UltimateStreamMgr.ViewModel
             }
         }
 
+        private bool _enableDarkTheme = false;
+
+        public bool EnableDarkTheme
+        {
+            get => _enableDarkTheme;
+            set
+            {
+                Set("DarkThemeEnabled", ref _enableDarkTheme, value);
+                if (value)
+                    ThemeManager.ChangeAppTheme(Application.Current, "BaseDark");
+                else
+                    ThemeManager.ChangeAppTheme(Application.Current, "BaseLight");
+            }
+        }
 
         private string _dockContent;
         public string DockContent

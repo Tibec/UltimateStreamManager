@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name=viewport content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,minimal-ui,viewport-fit=cover">
+    <meta name=apple-mobile-web-app-capable content=yes>
+    <meta name=apple-mobile-web-app-status-bar-style content=black>
+    <title>Ultimate Stream Manager StreamDeck Integration</title>
+    <link rel="stylesheet" href="sdpi.css">
+</head>
+<body>
+<div class="sdpi-wrapper">
+    <details class="message info">
+        <summary>Say something meaningful ... Or not. </summary>
+    </details>
+        
+    <div class="sdpi-item" id="select_single">
+        <div class="sdpi-item-label">Bind to</div>
+        <select class="sdpi-item-value select sdProperty" id="playerId" oninput="setSettings()">
+            <option value="1">Character 1</option>
+            <option value="2">Character 2</option>
+            <option value="3">Character 3 (Character 1 partner)</option>
+            <option value="4">Character 4 (Character 2 partner)</option>
+        </select>
+    </div>
+</div>
+<script src="sdtools.common.js"></script>
+</body>
+</html>
