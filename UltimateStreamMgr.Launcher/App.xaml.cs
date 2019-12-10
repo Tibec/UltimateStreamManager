@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Reflection;
 using System.Windows;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace UltimateStreamMgr.Launcher
 {
@@ -37,9 +38,14 @@ namespace UltimateStreamMgr.Launcher
         private readonly string _packageDirectory = Path.Combine(
             Environment.ExpandEnvironmentVariables("%USERPROFILE%"),
             ".nuget",
-            "packages",
-            "ultimatestreammanager"
+            "packages"
         );
+
+        private string GetPackageDirectory()
+        {
+            return Path.Combine(_packageDirectory, _installPackage);
+
+        }
 
         private const string nugetTokenP1 = "a3659f3501ee28d03eae";
         private const string nugetTokenP2 = "d00b887e4b376f8e6803";
@@ -151,7 +157,7 @@ namespace UltimateStreamMgr.Launcher
 
         private void Start()
         {
-            string exe = Path.Combine(_packageDirectory, _lastVersion, "UltimateStreamMgr.exe");
+            string exe = Path.Combine(GetPackageDirectory(), _lastVersion, "UltimateStreamMgr.exe");
             Process process = new Process
             {
                 StartInfo =
@@ -161,19 +167,19 @@ namespace UltimateStreamMgr.Launcher
                 }
             };
 
-            process.Start();
+            process.Start(); 
         }
 
 
         private bool AlreadyInstalled()
         {
-            if (!Directory.Exists(_packageDirectory) || Directory.GetDirectories(_packageDirectory).Length == 0)
+            if (!Directory.Exists(GetPackageDirectory()) || Directory.GetDirectories(GetPackageDirectory()).Length == 0)
                 return false;
 
-            var directories = Directory.EnumerateDirectories(_packageDirectory);
+            var directories = Directory.EnumerateDirectories(GetPackageDirectory());
             var selected = directories.OrderBy(d => d).Last();
 
-            System.Console.WriteLine("Found currentVersion : " + selected);
+            Console.WriteLine("Found currentVersion : " + selected);
 
             _currentVersion = Path.GetFileName(selected);
 
@@ -190,19 +196,41 @@ namespace UltimateStreamMgr.Launcher
                 {
                     client.BaseAddress = new Uri("https://api.github.com/");
                     HttpRequestMessage request =
-                        new HttpRequestMessage(HttpMethod.Get, "/repos/Tibec/UltimateStreamManager/releases");
+                        new HttpRequestMessage(HttpMethod.Post, "/graphql");
                     request.Headers.Add("User-Agent", "USM.Launcher");
-
+                    request.Headers.Add("Authorization", "bearer " + nugetTokenP1+nugetTokenP2);
+                    request.Headers.Add("Accept", "application/vnd.github.packages-preview+json");
+                    string graphqlRequest = @"
+                     { ""query"": 
+                       ""query {
+                          repository(owner:\""Tibec\"", name:\""UltimateStreamManager\"") {
+                            name
+                            packages(last: 3)
+                            {
+                              nodes {
+                                name
+                                versions(last:100) {
+                                  nodes {
+                                    version
+                                  }
+                                }
+                              }
+                            }
+                           }
+                        }""
+                     }";
+                    request.Content = new StringContent(graphqlRequest.Replace("\r\n", ""));
+                         
                     HttpResponseMessage response = client.SendAsync(request).Result;
                     string result = response.Content.ReadAsStringAsync().Result;
                     dynamic json = JsonConvert.DeserializeObject(result);
-
+                    JArray repo = json.data.repository.packages.nodes;
+                    JObject repoVersion = repo.First(e => (e as JObject)["name"].ToString() == _installPackage).ToObject<JObject>();
                     List<string> releases = new List<string>();
 
-
-                    foreach (var release in json)
+                    foreach (var release in repoVersion["versions"]["nodes"])
                     {
-                        string n = release.tag_name;
+                        string n = release["version"].ToString();
                         releases.Add(n);
                     }
 
@@ -210,7 +238,7 @@ namespace UltimateStreamMgr.Launcher
 
                     _lastVersion = releases.Last();
 
-                    System.Console.WriteLine($"Current : {_currentVersion} | Latest : {_lastVersion}");
+                    Console.WriteLine($"Current : {_currentVersion} | Latest : {_lastVersion}"); 
 
                     return new[] {_lastVersion, _currentVersion}.OrderBy(v => v).Last() != _currentVersion;
                 }
@@ -223,7 +251,7 @@ namespace UltimateStreamMgr.Launcher
 
         private void Install()
         {
-            using (new Notification("UltimateStreamManager", $"Updating to v{_targetVersion} ...",
+            using (new Notification("UltimateStreamManager", "Updating to v"+ (_targetVersion == "latest" ?  _lastVersion : _targetVersion) +" ...",
                 NotificationType.Info))
             {
 
@@ -239,11 +267,18 @@ namespace UltimateStreamMgr.Launcher
                 NugetUtils.RunCommand(installRepoCommand);
 
                 string outputDirectory = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), Path.GetRandomFileName());
-
                 Directory.CreateDirectory(outputDirectory);
+                string installPackageCommand;
 
-                string installPackageCommand =
-                    $"install {_installPackage} -Version {_targetVersion} -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
+                if (_targetVersion == "latest")
+                {
+                    installPackageCommand = $"install {_installPackage} -Version {_lastVersion} -PreRelease -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
+                }
+                else
+                {
+                    installPackageCommand =
+                        $"install {_installPackage} -Version {_targetVersion} -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
+                }
 
                 NugetUtils.RunCommand(installPackageCommand);
 
