@@ -52,7 +52,7 @@
                 </WrapPanel>
                 <WrapPanel DockPanel.Dock="Bottom" HorizontalAlignment="Center">
                     <Label Margin="5 0" VerticalAlignment="Center" Content="Jeu :"/>
-                    <ComboBox Height="20" SelectedValue="{Binding SetMode}" ItemsSource="{Binding Source={StaticResource enumValues}}" />
+                    <ComboBox Height="20" SelectedValue="{Binding SelectedCharacterCategory}" ItemsSource="{Binding CharacterCategories}" />
                 </WrapPanel>
 
             </DockPanel>

@@ -64,6 +64,7 @@ namespace UltimateStreamMgr.ViewModel
             try
             {
                 ObservableCollection<Character> characters = new ObservableCollection<Character>();
+                ObservableCollection<string> categories = new ObservableCollection<string>();
                 string rundir = Utils.RunDirectory();
                 var subfiles = Directory.GetFiles(Path.Combine(rundir, "characters")).ToList();
 
@@ -78,16 +79,23 @@ namespace UltimateStreamMgr.ViewModel
                     if (f.Extension == ".png" || f.Extension == ".jpg" || f.Extension == ".gif")
                     {
                         string parentDirectory = Path.GetFileName(f.DirectoryName);
+                        string categoryName = parentDirectory == "characters" ? "Unknown" : parentDirectory;
+                        if (!categories.Contains(categoryName))
+                            categories.Add(categoryName);
                         characters.Add(new Character
                         {
                             Name = Path.GetFileNameWithoutExtension(f.Name),
-                            Category = parentDirectory == "characters" ? "unknown" : parentDirectory,
+                            Category = categoryName,
                             FilePath = file
                         });
                     }
                 }
 
-                Application.Current.Dispatcher.Invoke(() => CharacterList = characters);
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    CharacterList = characters;
+                    CharacterCategories = categories;
+                });
             }
             catch (Exception) { }
         }
@@ -228,6 +236,20 @@ namespace UltimateStreamMgr.ViewModel
         {
             get => _round;
             set => Set("Round", ref _round, value);
+        }
+
+        private string _selectedCharacterCategory;
+        public string SelectedCharacterCategory
+        {
+            get => _selectedCharacterCategory;
+            set => Set("SelectedCharacterCategory", ref _selectedCharacterCategory, value);
+        }
+
+        private ObservableCollection<string> _characterCategories;
+        public ObservableCollection<string> CharacterCategories
+        {
+            get => _characterCategories;
+            set => Set("CharacterCategories", ref _characterCategories, value);
         }
 
         public RelayCommand ResetCommand { get; set; }

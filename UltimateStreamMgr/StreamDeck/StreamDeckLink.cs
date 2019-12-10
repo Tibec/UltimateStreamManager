@@ -118,7 +118,7 @@ namespace UltimateStreamMgr.StreamDeck
             }
             else if (mess is ChangeCharacterMessage changeCharacter)
             {
-                var availableCharacter = _runningSetVM.CharacterList.Where(c => c.Category == "ultimate").ToList();
+                var availableCharacter = _runningSetVM.CharacterList.Where(c => c.Category == _runningSetVM.SelectedCharacterCategory).ToList();
                 if (changeCharacter.PlayerId == 1)
                 {
                     _runningSetVM.Opponent1.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
@@ -138,7 +138,7 @@ namespace UltimateStreamMgr.StreamDeck
             }
             else if (mess is GetCharacterListMessage)
             {
-                var availableCharacter = _runningSetVM.CharacterList.ToList().Where(c=>c.Category=="ultimate").ToList();
+                var availableCharacter = _runningSetVM.CharacterList.ToList().Where(c=>c.Category==_runningSetVM.SelectedCharacterCategory).ToList();
                 List<CharacterInfo> charaList = new List<CharacterInfo>();
                 foreach (var character in availableCharacter)
                 {
