@@ -29,7 +29,6 @@
         </Grid.RowDefinitions>
 
         <Controls:ProgressRing 
-            Foreground="Black"
             Visibility="{qc:Binding '$P ? Visibility.Collapsed : Visibility.Visible', P={Binding BracketInfo.IsInitialized, Mode=TwoWay}}"
             />
 
