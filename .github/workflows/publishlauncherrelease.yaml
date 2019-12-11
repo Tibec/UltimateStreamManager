@@ -21,15 +21,14 @@ jobs:
     - name: Restore NuGet packages
       run:  msbuild ./UltimateStreamManager.sln -t:restore
 
-    - name: Update project version
-      uses: roryprimrose/set-vs-sdk-project-version@v1
-      with:
-        version: 1.1.1
-        assemblyVersion: 1.1.1
-        fileVersion: 1.1.1
+    - name: Install NuGet client
+      uses: warrenbuckley/Setup-Nuget@v1
 
-    - name: Build in Release
-      run: msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86 -p:AllowedReferenceRelatedFileExtensions=none
+    - name: Build in Release    
+      run: |
+        $version = (git describe --tags (git rev-list --tags --max-count=1))
+        $stampVersion = (git describe)
+        msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86 -p:AllowedReferenceRelatedFileExtensions=none -
     
     - name: Publish artifacts
       uses: actions/upload-artifact@v1
