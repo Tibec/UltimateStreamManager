@@ -95,6 +95,7 @@ namespace UltimateStreamMgr.ViewModel
                 {
                     CharacterList = characters;
                     CharacterCategories = categories;
+                    SelectedCharacterCategory = categories.First(); 
                 });
             }
             catch (Exception) { }

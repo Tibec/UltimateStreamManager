@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -16,8 +17,7 @@ namespace UltimateStreamMgr.Launcher
     public enum LauncherUpdateSteps
     {
         Downloading = 0,
-        Copying = 1,
-        Deleting = 2,
+        Copying = 1
     }
 
     /// <summary>
@@ -28,6 +28,8 @@ namespace UltimateStreamMgr.Launcher
         private string _currentVersion = "";
         private string _lastVersion = "";
         private string _targetVersion = "latest";
+        private string _launcherNewVersion = "";
+        private bool _launcherRequireStop = false;
 
         private string _installPackage = _releasePackage;
 
@@ -44,7 +46,6 @@ namespace UltimateStreamMgr.Launcher
         private string GetPackageDirectory()
         {
             return Path.Combine(_packageDirectory, _installPackage);
-
         }
 
         private const string nugetTokenP1 = "a3659f3501ee28d03eae";
@@ -52,14 +53,21 @@ namespace UltimateStreamMgr.Launcher
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            // HandleLauncherUpdate(e);
+            HandleLauncherUpdate(e);
+
+            if (_launcherRequireStop)
+            {
+                Shutdown(0);
+                return;
+            }
+
             LoadTargetVersion();
             ParseArguments(e);
 
             bool installed = AlreadyInstalled();
             bool lookForUpdate = _targetVersion != _currentVersion;
             bool updateAvailable = UpdateAvailable();
-
+            
 
             if (!installed && !updateAvailable) // User have not a version and doesn't have internet
             {
@@ -70,6 +78,7 @@ namespace UltimateStreamMgr.Launcher
                     return;
                 }
             }
+
             if (!installed || (installed && lookForUpdate && updateAvailable))
             {
                 Install();
@@ -130,7 +139,67 @@ namespace UltimateStreamMgr.Launcher
 
         private bool LauncherUpdateAvailable()
         {
-            return false;
+            try
+            {
+
+                using (var client = new HttpClient(new HttpClientHandler
+                    {AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate}))
+                {
+                    client.BaseAddress = new Uri("https://api.github.com/");
+                    HttpRequestMessage request =
+                        new HttpRequestMessage(HttpMethod.Post, "/graphql");
+                    request.Headers.Add("User-Agent", "USM.Launcher");
+                    request.Headers.Add("Authorization", "bearer " + nugetTokenP1 + nugetTokenP2);
+                    request.Headers.Add("Accept", "application/vnd.github.packages-preview+json");
+                    string graphqlRequest = @"
+                     { ""query"": 
+                       ""query
+                        {
+                          repository(name:\""UltimateStreamManager\"",owner:\""Tibec\"" ) {
+		                    packages(names:\""UltimateStreamManager.Launcher\"", first:1) {
+                              nodes {
+                                versions(first:1) {
+                                  nodes {
+                                    version
+                                  }
+                                }
+                              }
+                            }    
+                          }
+                        }""}";
+                    request.Content = new StringContent(graphqlRequest.Replace("\r\n", "").Replace("\t", ""));
+
+                    HttpResponseMessage response = client.SendAsync(request).Result;
+                    string result = response.Content.ReadAsStringAsync().Result;
+                    dynamic json = JsonConvert.DeserializeObject(result);
+                    JArray repo = json.data.repository.packages.nodes;
+                        List<string> releases = new List<string>();
+                    if (repo.Count > 0)
+                    {
+                        JObject repoVersion = repo.First().ToObject<JObject>();
+
+                        foreach (var release in repoVersion["versions"]["nodes"])
+                        {
+                            string n = release["version"].ToString();
+                            releases.Add(n);
+                        }
+
+                        releases.Sort();
+                    }
+
+                    string latestLauncherVersion = releases.Count == 0 ? "" : releases.Last();
+                    string currentLauncherVersion = FileVersionInfo.GetVersionInfo(Assembly.GetExecutingAssembly().Location).ProductVersion;
+                    Console.WriteLine($"Current Launcher : {currentLauncherVersion} | Latest : {latestLauncherVersion}");
+
+                    _launcherNewVersion = latestLauncherVersion;
+
+                    return new[] {_lastVersion, _currentVersion}.OrderBy(v => v).Last() != _currentVersion;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private void PerformUpdate(LauncherUpdateSteps currentSteps)
@@ -138,18 +207,30 @@ namespace UltimateStreamMgr.Launcher
             switch (currentSteps)
             {
                 case LauncherUpdateSteps.Downloading:
-                    //Store Launcher.update.exe and launch it
+                    DownloadUpdate();
                     break;
 
-                case LauncherUpdateSteps.Copying:
-                    // Copy Launcher.update.exe as Launcher.exe and launch it
+                case LauncherUpdateSteps.Copying: // Where currently being executed from somewhere
+                    ApplyUpdate();
                     break;
-
-                case LauncherUpdateSteps.Deleting:
-                    // Deleting Launcher.update.exe and resume normal startup
-                    break;
-
             }
+        }
+
+        private void ApplyUpdate()
+        {
+            File.Copy(Assembly.GetExecutingAssembly().Location, "UltimateStreamMgr.Launcher.exe", true);
+            Process process = new Process
+            {
+                StartInfo =
+                {
+                    WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    FileName = "UltimateStreamMgr.Launcher.exe",
+                    UseShellExecute = false
+                }
+            };
+
+            process.Start();
+            _launcherRequireStop = true;
         }
 
         #endregion
@@ -157,17 +238,18 @@ namespace UltimateStreamMgr.Launcher
 
         private void Start()
         {
-            string exe = Path.Combine(GetPackageDirectory(), _lastVersion, "UltimateStreamMgr.exe");
+            string exe = Path.Combine(GetPackageDirectory(), _targetVersion == "latest" ? _lastVersion : _targetVersion, "UltimateStreamMgr.exe");
             Process process = new Process
             {
                 StartInfo =
                 {
                     WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
-                    FileName = exe
+                    FileName = exe,
+                    UseShellExecute = false
                 }
             };
 
-            process.Start(); 
+            process.Start();
         }
 
 
@@ -219,7 +301,7 @@ namespace UltimateStreamMgr.Launcher
                            }
                         }""
                      }";
-                    request.Content = new StringContent(graphqlRequest.Replace("\r\n", ""));
+                    request.Content = new StringContent(graphqlRequest.Replace("\r\n", "").Replace("\t", ""));
                          
                     HttpResponseMessage response = client.SendAsync(request).Result;
                     string result = response.Content.ReadAsStringAsync().Result;
@@ -251,41 +333,66 @@ namespace UltimateStreamMgr.Launcher
 
         private void Install()
         {
-            using (new Notification("UltimateStreamManager", "Updating to v"+ (_targetVersion == "latest" ?  _lastVersion : _targetVersion) +" ...",
+            using (new Notification("UltimateStreamManager", "Updating to v" + (_targetVersion == "latest" ? _lastVersion : _targetVersion) + " ...",
                 NotificationType.Info))
             {
 
-                // Well i let that in clear, because it's a random account i created specially for this with only repo and package:read rights
-                // It should be harmless.. Maybe.
-                string removeRepoCommand =
-                    "sources Remove -Name GPR_USM";
-                string installRepoCommand =
-                    "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password " +
-                    nugetTokenP1 + nugetTokenP2;
-
-                NugetUtils.RunCommand(removeRepoCommand);
-                NugetUtils.RunCommand(installRepoCommand);
-
                 string outputDirectory = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), Path.GetRandomFileName());
                 Directory.CreateDirectory(outputDirectory);
-                string installPackageCommand;
 
-                if (_targetVersion == "latest")
-                {
-                    installPackageCommand = $"install {_installPackage} -Version {_lastVersion} -PreRelease -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
-                }
-                else
-                {
-                    installPackageCommand =
-                        $"install {_installPackage} -Version {_targetVersion} -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
-                }
+                string versionToInstall = _targetVersion == "latest" ? _lastVersion : _targetVersion;
 
-                NugetUtils.RunCommand(installPackageCommand);
+                InstallNugetPackage(_installPackage, versionToInstall, outputDirectory);
 
                 Directory.Delete(outputDirectory, true);
             }
 
         }
 
+        private void DownloadUpdate()
+        {
+            using (new Notification("UltimateStreamManager", "Updating launcher ...",
+                NotificationType.Info))
+            {
+
+                string outputDirectory = Path.Combine(Environment.ExpandEnvironmentVariables("%TEMP%"), Path.GetRandomFileName());
+                Directory.CreateDirectory(outputDirectory);
+
+                InstallNugetPackage("UltimateStreamManager.Launcher", _launcherNewVersion, outputDirectory);
+
+                Process process = new Process
+                {
+                    StartInfo =
+                    {
+                        WorkingDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                        FileName = Path.Combine(outputDirectory,"UltimateStreamMgr.Launcher.exe"),
+                        UseShellExecute = false,
+                        Arguments = "update 2"
+                    }
+                };
+
+                process.Start();
+                _launcherRequireStop = true;
+            }
+        }
+
+        private void InstallNugetPackage(string packageName, string packageVersion, string outputDirectory)
+        {
+            // Well i let that in clear, because it's a random account i created specially for this with only repo and package:read rights
+            // It should be harmless.. Maybe.
+            string removeRepoCommand =
+                "sources Remove -Name GPR_USM";
+            string installRepoCommand =
+                "sources Add -Name GPR_USM -Source https://nuget.pkg.github.com/Tibec/index.json -UserName userbidon42 -Password " +
+                nugetTokenP1 + nugetTokenP2;
+
+            NugetUtils.RunCommand(removeRepoCommand);
+            NugetUtils.RunCommand(installRepoCommand);
+
+            string installPackageCommand =
+                $"install {packageName} -Version {packageVersion} -OutputDirectory {outputDirectory} -NonInteractive -source GPR_USM ";
+
+            NugetUtils.RunCommand(installPackageCommand);
+        }
     }
 }

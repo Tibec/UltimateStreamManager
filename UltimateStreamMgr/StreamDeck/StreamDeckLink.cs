@@ -119,6 +119,10 @@ namespace UltimateStreamMgr.StreamDeck
             else if (mess is ChangeCharacterMessage changeCharacter)
             {
                 var availableCharacter = _runningSetVM.CharacterList.Where(c => c.Category == _runningSetVM.SelectedCharacterCategory).ToList();
+
+                if (availableCharacter.Find(c => c.Name == changeCharacter.CharacterName) == null)
+                    return;
+
                 if (changeCharacter.PlayerId == 1)
                 {
                     _runningSetVM.Opponent1.Character = availableCharacter.Find(c => c.Name == changeCharacter.CharacterName);
@@ -143,14 +147,14 @@ namespace UltimateStreamMgr.StreamDeck
                 foreach (var character in availableCharacter)
                 {
                     string[] info = character.Name.Split('_');
-                    string charaName = string.Join("_",info.SubArray(0, info.Length - 1));
-                    string charaAlt = info.Last();
                     if (info.Length == 1) // No alt
                     {
-                        charaList.Add(new CharacterInfo{Name = charaName, IconPath = character.FilePath});
+                        charaList.Add(new CharacterInfo{Name = character.Name, IconPath = character.FilePath});
                     }
                     else // There is alt
                     {
+                        string charaName = string.Join("_", info.SubArray(0, info.Length - 1));
+                        string charaAlt = info.Last();
                         var sourceChara = charaList.Find(c => c.Name == charaName);
                         if (sourceChara == null) // But we have to create the first entry
                         {
@@ -161,9 +165,10 @@ namespace UltimateStreamMgr.StreamDeck
                         }
                         else
                         {
-                            if (int.Parse(charaAlt) == 0) // In the case of the first entry was not created with the good alt, replace it by the good first one.
+                            if (sourceChara.Alts.Count == 0) // In the case of the first entry was not created with the good alt, replace it by the good first one.
                             {
-                                sourceChara.IconPath = character.FilePath;
+                                var mainAltEntry = new CharacterAltInfo() { Name = sourceChara.Name, IconPath = sourceChara.IconPath };
+                                sourceChara.Alts.Add(mainAltEntry);
                             }
                             var altEntry = new CharacterAltInfo() { Name = character.Name, IconPath = character.FilePath };
                             sourceChara.Alts.Add(altEntry);
