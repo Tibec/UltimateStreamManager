@@ -4,8 +4,8 @@ on:
   push:
     branches:
     - testsCI
-#        branches: 
-#        - refs/tags/launcher/*
+      branches: 
+        - refs/tags/launcher*
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
       run: |
         $version = (git describe --tags (git rev-list --tags --max-count=1))
         $stampVersion = (git describe)
-        msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86 -p:AllowedReferenceRelatedFileExtensions=none -
+        msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86 -p:AllowedReferenceRelatedFileExtensions=none -p:Version=$version -p:VersionStamp="$stampVersion"
     
     - name: Publish artifacts
       uses: actions/upload-artifact@v1
