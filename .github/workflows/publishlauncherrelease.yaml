@@ -1,9 +1,11 @@
 name: CI-PublishLauncherRelease
 
 on:
-    push:
-        branches: 
-        - refs/tags/launcher/*
+  push:
+    branches:
+    - testsCI
+#        branches: 
+#        - refs/tags/launcher/*
 
 jobs:
   build:
