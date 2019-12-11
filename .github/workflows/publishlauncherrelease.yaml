@@ -1,0 +1,53 @@
+name: CI-PublishLauncherRelease
+
+on:
+  push:
+    branches:
+    - testsCI
+      branches: 
+        - refs/tags/launcher*
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+    
+    steps:
+    - uses: actions/checkout@v1.2.0
+ 
+    - name: Setup MSBuild.exe
+      uses: warrenbuckley/Setup-MSBuild@v1
+
+    - name: Restore NuGet packages
+      run:  msbuild ./UltimateStreamManager.sln -t:restore
+
+    - name: Install NuGet client
+      uses: warrenbuckley/Setup-Nuget@v1
+
+    - name: Build in Release    
+      run: |
+        $version = (git describe --tags (git rev-list --tags --max-count=1))
+        $stampVersion = (git describe)
+        msbuild ./UltimateStreamManager.sln -t:build -property:Configuration=Release -p:Platform=x86 -p:AllowedReferenceRelatedFileExtensions=none -p:Version=$version -p:VersionStamp="$stampVersion"
+    
+    - name: Publish artifacts
+      uses: actions/upload-artifact@v1
+      with:
+        name: binaries
+        path: UltimateStreamMgr/bin/x86/Release
+
+    - name: Install NuGet client
+      uses: warrenbuckley/Setup-Nuget@v1
+
+    - name: Generate NuGet package
+      working-directory:  ./UltimateStreamMgr
+      run: |
+        $version = (git describe --tags (git rev-list --tags --max-count=1))
+        nuget pack UltimateStreamMgr.nuspec -Version $version
+
+    - name: Add private GitHub registry to NuGet
+      run: nuget sources add -name "GPR" -Source https://nuget.pkg.github.com/Tibec/index.json -Username Tibec -Password ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Push generated package to GitHub registry
+      working-directory:  ./UltimateStreamMgr.Launcher
+      run: nuget push *.nupkg -Source "GPR" -SkipDuplicate
