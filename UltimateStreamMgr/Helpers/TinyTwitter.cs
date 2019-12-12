@@ -188,25 +188,31 @@ namespace UltimateStreamMgr.Helpers
 
                 WriteRequestBody(request);
 
-                // It looks like a bug in HttpWebRequest. It throws random TimeoutExceptions
-                // after some requests. Abort the request seems to work. More info: 
-                // http://stackoverflow.com/questions/2252762/getrequeststream-throws-timeout-exception-randomly
-
-                var response = request.GetResponse();
-
-                string content;
-
-                using (var stream = response.GetResponseStream())
+                try
                 {
-                    using (var reader = new StreamReader(stream))
+                    // It looks like a bug in HttpWebRequest. It throws random TimeoutExceptions
+                    // after some requests. Abort the request seems to work. More info: 
+                    // http://stackoverflow.com/questions/2252762/getrequeststream-throws-timeout-exception-randomly
+
+                    var response = request.GetResponse();
+
+                    string content;
+
+                    using (var stream = response.GetResponseStream())
                     {
-                        content = reader.ReadToEnd();
+                        using (var reader = new StreamReader(stream))
+                        {
+                            content = reader.ReadToEnd();
+                        }
                     }
+
+                    request.Abort();
+                    return content;
                 }
-
-                request.Abort();
-
-                return content;
+                catch (Exception)
+                {
+                    return string.Empty;
+                }
             }
 
             private void WriteRequestBody(HttpWebRequest request)
