@@ -114,6 +114,10 @@ namespace UltimateStreamMgr.Model
 
         public WindowSettings Window { get; set; } = new WindowSettings();
 
+        public string SelectedGame { get; set; } = "";
+
+        public bool DarkThemeEnabled { get; set; } = false;
+
         #region Events
 
         private void OnOutputSettingsChanged()

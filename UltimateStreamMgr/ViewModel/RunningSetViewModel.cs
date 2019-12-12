@@ -91,11 +91,16 @@ namespace UltimateStreamMgr.ViewModel
                     }
                 }
 
+                string presetCategory = categories.First();
+
+                if (!string.IsNullOrEmpty(Configuration.Instance.SelectedGame) && categories.Contains(Configuration.Instance.SelectedGame))
+                    presetCategory = Configuration.Instance.SelectedGame;
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     CharacterList = characters;
                     CharacterCategories = categories;
-                    SelectedCharacterCategory = categories.First(); 
+                    SelectedCharacterCategory = presetCategory;
                 });
             }
             catch (Exception) { }
@@ -243,7 +248,11 @@ namespace UltimateStreamMgr.ViewModel
         public string SelectedCharacterCategory
         {
             get => _selectedCharacterCategory;
-            set => Set("SelectedCharacterCategory", ref _selectedCharacterCategory, value);
+            set
+            {
+                Set("SelectedCharacterCategory", ref _selectedCharacterCategory, value);
+                Configuration.Instance.SelectedGame = value;
+            } 
         }
 
         private ObservableCollection<string> _characterCategories;

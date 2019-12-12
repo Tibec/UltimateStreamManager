@@ -65,10 +65,6 @@
       <Project>{9319e2e0-7408-4d33-8b32-819f20399a1e}</Project>
       <Name>UltimateStreamMgr.Api</Name>
     </ProjectReference>
-    <ProjectReference Include="..\UltimateStreamMgr.Launcher\UltimateStreamMgr.Launcher.csproj">
-      <Project>{7fb199ad-97fa-4173-b290-a290d1815d8e}</Project>
-      <Name>UltimateStreamMgr.Launcher</Name>
-    </ProjectReference>
     <ProjectReference Include="..\UltimateStreamMgr.StreamDeck\UltimateStreamMgr.StreamDeck.csproj">
       <Project>{98553b28-2b56-4687-b713-eb16a020eec5}</Project>
       <Name>UltimateStreamMgr.StreamDeck</Name>

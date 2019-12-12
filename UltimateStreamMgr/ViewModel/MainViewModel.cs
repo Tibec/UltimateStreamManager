@@ -37,7 +37,7 @@ namespace UltimateStreamMgr.ViewModel
 
             streamDeckLink = new StreamDeckLink(Windows.First(v=>v is RunningSetViewModel) as RunningSetViewModel);
 
-
+            EnableDarkTheme = Configuration.Instance.DarkThemeEnabled;
             /*
                 if (!string.IsNullOrEmpty(Configuration.Instance.Window.DockDisposition))
                 {
@@ -92,6 +92,8 @@ namespace UltimateStreamMgr.ViewModel
                     ThemeManager.ChangeAppTheme(Application.Current, "BaseDark");
                 else
                     ThemeManager.ChangeAppTheme(Application.Current, "BaseLight");
+
+                Configuration.Instance.DarkThemeEnabled = value;
             }
         }
 
