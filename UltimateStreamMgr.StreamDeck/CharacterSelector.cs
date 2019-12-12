@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,6 +27,8 @@ namespace UltimateStreamMgr.StreamDeck
         private static bool characterReady = false;
 
         private static int _targetCharacter = 1;
+
+        private static string _executionFolder = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public static void Initialize(int targetCharacter)
         {
@@ -105,11 +109,11 @@ namespace UltimateStreamMgr.StreamDeck
                     switch (coordinates.Column)
                     {
                         case 0: // Return button
-                            button.SetImage(@"C:\Users\Benjamin\Pictures\padchance2.png");
+                            button.SetImage(Path.Combine(_executionFolder, @"Images\back.png"));
                             button.OnClick = () => { button.Connection.SwitchProfileAsync(""); };
                             break;
                         case 2: // Prev button
-                            button.SetImage(@"D:\share\Pictures\paluchibi.png");
+                            button.SetImage(Path.Combine(_executionFolder, @"Images\previous.png"));
                             if (page > minPage)
                                 button.OnClick = () => { ChangeGridPage(page - 1); };
                             else
@@ -119,7 +123,7 @@ namespace UltimateStreamMgr.StreamDeck
                             button.Connection.SetTitleAsync($"{page + 1}/{Math.Ceiling(characters.Count / 10f)}");
                             break;
                         case 4: // Next button
-                            button.SetImage(@"D:\share\Pictures\lachance.png");
+                            button.SetImage(Path.Combine(_executionFolder, @"Images\next.png"));
                             if (page < maxPage)
                                 button.OnClick = () => { ChangeGridPage(page + 1); };
                             else
@@ -173,11 +177,11 @@ namespace UltimateStreamMgr.StreamDeck
                     switch (coordinates.Column)
                     {
                         case 0: // Return button
-                            button.SetImage(@"C:\Users\Benjamin\Pictures\padchance2.png");
+                            button.SetImage(Path.Combine(_executionFolder, @"Images\back.png"));
                             button.OnClick = () => { ChangeGridPage(sourcePage); };
                             break;
                         case 2: // Prev button
-                            button.SetImage(@"D:\share\Pictures\paluchibi.png");
+                            button.SetImage(Path.Combine(_executionFolder, @"Images\previous.png"));
                             if (altPage > minPage)
                                 button.OnClick = () => { LoadAltGrid(pickedCharacter, sourcePage, altPage - 1); };
                             else
@@ -187,7 +191,7 @@ namespace UltimateStreamMgr.StreamDeck
                             button.Connection.SetTitleAsync($"{altPage + 1}/{Math.Ceiling(pickedCharacter.Alts.Count/10f)}");
                             break;
                         case 4: // Next button
-                            button.SetImage(@"D:\share\Pictures\lachance.png");
+                            button.SetImage(Path.Combine(_executionFolder, @"Images\next.png"));
                             if (altPage < maxPage)
                                 button.OnClick = () => { LoadAltGrid(pickedCharacter, sourcePage, altPage + 1); };
                             else
