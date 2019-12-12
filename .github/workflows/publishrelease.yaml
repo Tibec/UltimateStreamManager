@@ -2,8 +2,8 @@ name: CI-PublishRelease
 
 on:
     push:
-        branches: 
-        - refs/tags/*
+        tags: 
+        - '*'
 
 jobs:
   build:
