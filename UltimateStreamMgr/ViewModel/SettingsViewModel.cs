@@ -14,8 +14,8 @@ namespace UltimateStreamMgr.ViewModel
     {
         public SettingsViewModel()
         {
-            SaveCommand = new RelayCommand(() => Save());
-            CancelCommand = new RelayCommand(() => Cancel());
+            SaveCommand = new RelayCommand(Save);
+            CancelCommand = new RelayCommand(Cancel);
             MessengerInstance.Register<int>(this, OnTabChangeRequest);
         }
 

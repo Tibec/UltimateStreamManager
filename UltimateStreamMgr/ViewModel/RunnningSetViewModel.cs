@@ -29,10 +29,10 @@ namespace UltimateStreamMgr.ViewModel
             _timer = new Timer(500);
             _timer.Elapsed += DoLiveUpdate;
 
-            ResetCommand = new RelayCommand(() => Reset());
-            ReportCommand = new RelayCommand(() => Report());
-            UpdateCommand = new RelayCommand(() => Update());
-            SwapPlayerCommand = new RelayCommand(() => SwapPlayer());
+            ResetCommand = new RelayCommand(Reset);
+            ReportCommand = new RelayCommand(Report);
+            UpdateCommand = new RelayCommand(Update);
+            SwapPlayerCommand = new RelayCommand(SwapPlayer);
 
             MessengerInstance.Register<Set>(this, StartPendingSet);
 
