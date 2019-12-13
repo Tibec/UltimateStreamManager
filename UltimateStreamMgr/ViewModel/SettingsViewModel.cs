@@ -28,7 +28,7 @@ namespace UltimateStreamMgr.ViewModel
         private void Save()
         {
             MessengerInstance.Send(new NotificationMessage("Save"));
-            Configuration.Instance.Save("config.xml");
+            Configuration.Instance.Save();
             MessengerInstance.Send(new NotificationMessage("CloseSettings"));
         }
 

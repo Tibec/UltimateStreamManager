@@ -12,7 +12,7 @@ namespace UltimateStreamMgr.Helpers
     {
         public static string RunDirectory()
         {
-            return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            return Directory.GetCurrentDirectory();
         } 
     }
 }

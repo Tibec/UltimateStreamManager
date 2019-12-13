@@ -113,7 +113,7 @@ namespace UltimateStreamMgr.ViewModel
             Configuration.Instance.Window.DockDisposition = DockContent;
             Configuration.Instance.Window.AppHeight = (int)System.Windows.Application.Current.MainWindow.ActualHeight;
             Configuration.Instance.Window.AppWidth = (int)System.Windows.Application.Current.MainWindow.Width;
-            Configuration.Instance.Save("config.xml");
+            Configuration.Instance.Save();
         }
     }
 

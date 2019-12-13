@@ -33,6 +33,8 @@ namespace UltimateStreamMgr.Model
         }
         #endregion
 
+        private string _saveFile;
+
         #region Save/Load
         public void Load(string loadFile)
         {
@@ -46,17 +48,23 @@ namespace UltimateStreamMgr.Model
             {
                _instance = xs.Deserialize(rd) as Configuration;
             }
+
+            _saveFile = loadFile;
         }
 
-        public void Save(string saveFile)
+        public void Save(string saveFile = null)
         {
+            if (string.IsNullOrEmpty(saveFile))
+                saveFile = _saveFile;
+
             XmlSerializer xs = new XmlSerializer(typeof(Configuration),
                 Assembly.GetExecutingAssembly().GetTypes().Where(
                     (t) => t.IsSubclassOf(typeof(BracketSettings))
                     || t.IsSubclassOf(typeof(StreamSettings))
                     || t.IsSubclassOf(typeof(SocialSettings))
                 ).ToArray());
-             using (StreamWriter wr = new StreamWriter(saveFile))
+
+            using (StreamWriter wr = new StreamWriter(saveFile))
             {
                 xs.Serialize(wr, this);
             }

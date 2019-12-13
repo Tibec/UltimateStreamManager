@@ -22,7 +22,7 @@ namespace UltimateStreamMgr.Model
         private static ObservableCollection<Team> _teams;
         private static List<Country> _countries;
 
-        private static readonly string _defaultPath = Path.Combine(Helpers.Utils.RunDirectory(), "./Players.db");
+        private static readonly string _defaultPath = Path.Combine(Helpers.Utils.RunDirectory(), "Players.db");
 
         public static void Init(string path = null)
         {
@@ -32,7 +32,7 @@ namespace UltimateStreamMgr.Model
             bool schemaMustBeCreated = false;
             if (!File.Exists(path))
             {
-                SQLiteConnection.CreateFile("Players.db");
+                SQLiteConnection.CreateFile(path);
                 schemaMustBeCreated = true;
             }
 

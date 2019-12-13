@@ -40,12 +40,16 @@ namespace UltimateStreamMgr
                 try
                 {
                     string configPath = Path.Combine(Helpers.Utils.RunDirectory(), "config.xml");
+                    LogManager.GetCurrentClassLogger().Info("Loading configuration file from : "+configPath);
                     if (File.Exists(configPath))
                     {
                         Configuration.Instance.Load(configPath);
+                        LogManager.GetCurrentClassLogger().Info("Configuration loaded succesfully");
                     }
                     else
+                    {
                         firstLaunch = true;
+                    }
                 }
                 catch {
                     LogManager.GetCurrentClassLogger().Error("Couldn't read a valid configuration file. A new one will be created");
