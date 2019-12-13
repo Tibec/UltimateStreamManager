@@ -33,7 +33,7 @@ namespace UltimateStreamMgr.Model
         }
         #endregion
 
-        private string _saveFile;
+        private static string _saveFile;
 
         #region Save/Load
         public void Load(string loadFile)

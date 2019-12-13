@@ -14,6 +14,7 @@ using System.Windows.Threading;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Reflection;
+using System.Windows.Data;
 
 namespace UltimateStreamMgr.ViewModel
 {
@@ -101,6 +102,9 @@ namespace UltimateStreamMgr.ViewModel
                     CharacterList = characters;
                     CharacterCategories = categories;
                     SelectedCharacterCategory = presetCategory;
+                    CharacterListView = CollectionViewSource.GetDefaultView(CharacterList);
+                    CharacterListView.Filter = FilterCharacter;
+
                 });
             }
             catch (Exception) { }
@@ -159,6 +163,17 @@ namespace UltimateStreamMgr.ViewModel
             Update();
         }
 
+        private bool FilterCharacter(object item)
+        {
+            if (item is Character character)
+            {
+                return character.Category == SelectedCharacterCategory;
+            }
+
+            return false;
+        }
+
+
         private bool _liveUpdate = false;
         public bool LiveUpdate
         {
@@ -171,6 +186,13 @@ namespace UltimateStreamMgr.ViewModel
         {
             get => _characterList;
             set => Set("CharacterList", ref _characterList, value);
+        }
+
+        private ICollectionView _characterListView;
+        public ICollectionView CharacterListView
+        {
+            get => _characterListView;
+            set => Set("CharacterListView", ref _characterListView, value);
         }
 
         private ObservableCollection<Character> _teamList;
@@ -252,6 +274,7 @@ namespace UltimateStreamMgr.ViewModel
             {
                 Set("SelectedCharacterCategory", ref _selectedCharacterCategory, value);
                 Configuration.Instance.SelectedGame = value;
+                CharacterListView?.Refresh();
             } 
         }
 
