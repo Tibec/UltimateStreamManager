@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Xml.Serialization;
+using UltimateStreamMgr.Helpers;
 
 namespace UltimateStreamMgr.Model
 {
@@ -83,8 +84,35 @@ namespace UltimateStreamMgr.Model
                             string outFile = Path.Combine(Configuration.Instance.Output.Folder, "Player"+i+".Character"+imgExt );
                             File.Copy(opponent.Character.FilePath, outFile, true);
                         }
+                        else // Remove possible old image
+                        {
+                            var oldFiles = Directory.EnumerateFiles(Configuration.Instance.Output.Folder)
+                                .Where(oldFile => oldFile.Contains("Player" + i + ".Character."));
+                            foreach (var oldFile in oldFiles)
+                            {
+                                string fileExt = Path.GetExtension(oldFile);
+                                byte[] flagData = Utils.ExtractResource($"UltimateStreamMgr.Resources.empty.png");
+                                string outFile = Path.Combine(Configuration.Instance.Output.Folder, "Player" + i + ".Character." + fileExt);
+                                File.WriteAllBytes(outFile, flagData);
+                            }
+                        }
+                        // copy country flag image if set
+                        if (opponent?.LinkedPlayer?.Country != null && !string.IsNullOrEmpty(opponent?.LinkedPlayer?.Country.ShortName))
+                        {
+                            byte[] flagData = Utils.ExtractResource($"UltimateStreamMgr.Resources.flags.{opponent.LinkedPlayer.Country.ShortName}.png");
+                            string outFile = Path.Combine(Configuration.Instance.Output.Folder, "Player" + i + ".Country.png");
+                            File.WriteAllBytes(outFile, flagData);
+                        }
+                        else // Remove possible old image by replacing it by empty image
+                        {
+                            byte[] flagData = Utils.ExtractResource($"UltimateStreamMgr.Resources.empty.png");
+                            string outFile = Path.Combine(Configuration.Instance.Output.Folder, "Player" + i + ".Country.png");
+                            File.WriteAllBytes(outFile, flagData);
+                        }
                         ++i;
                     }
+
+
                     
                 }
                 else if(Configuration.Instance.Output.OutputFormat == OutputFormat.Template)
