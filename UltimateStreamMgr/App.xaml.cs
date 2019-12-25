@@ -37,13 +37,14 @@ namespace UltimateStreamMgr
 
                 //AppDomain.CurrentDomain.AppendPrivatePath(@"dependencies");
 
+                string configPath = Path.Combine(Helpers.Utils.RunDirectory(), "config.xml");
+                Configuration.Instance.Initialize(configPath);
                 try
                 {
-                    string configPath = Path.Combine(Helpers.Utils.RunDirectory(), "config.xml");
                     LogManager.GetCurrentClassLogger().Info("Loading configuration file from : "+configPath);
                     if (File.Exists(configPath))
                     {
-                        Configuration.Instance.Load(configPath);
+                        Configuration.Instance.Load();
                         LogManager.GetCurrentClassLogger().Info("Configuration loaded succesfully");
                     }
                     else

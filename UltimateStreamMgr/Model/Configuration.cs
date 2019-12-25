@@ -36,7 +36,13 @@ namespace UltimateStreamMgr.Model
         private static string _saveFile;
 
         #region Save/Load
-        public void Load(string loadFile)
+
+        public void Initialize(string configPath)
+        {
+            _saveFile = configPath;
+        }
+
+        public void Load()
         {
             XmlSerializer xs = new XmlSerializer(typeof(Configuration), 
                 Assembly.GetExecutingAssembly().GetTypes().Where(
@@ -44,12 +50,10 @@ namespace UltimateStreamMgr.Model
                     || t.IsSubclassOf(typeof(StreamSettings))
                     || t.IsSubclassOf(typeof(SocialSettings))
                     ).ToArray()) ;
-            using (StreamReader rd = new StreamReader(loadFile))
+            using (StreamReader rd = new StreamReader(_saveFile))
             {
                _instance = xs.Deserialize(rd) as Configuration;
             }
-
-            _saveFile = loadFile;
         }
 
         public void Save(string saveFile = null)
