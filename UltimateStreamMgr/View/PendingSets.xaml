@@ -47,14 +47,13 @@
                             P0={Binding BracketInfo.PendingSets, Mode=TwoWay, FallbackValue=null}, 
                             P1={Binding BracketInfo.IsInitialized, Mode=TwoWay, FallbackValue=false}}" 
             Text="Aucun set en attente." HorizontalAlignment="Center" VerticalAlignment="Center" />
-
-        <ListBox  
-                 Visibility="{qc:MultiBinding '($P0.Count > 0 || $P0 == null) &amp;&amp; $P1  &amp;&amp; $P2 ? Visibility.Visible : Visibility.Collapsed', 
-                                P0={Binding BracketInfo.PendingSets, Mode=TwoWay, FallbackValue=null},
-                                P2={Binding BracketInfo.IsConfigured, Mode=TwoWay, FallbackValue=false},
-                                P1={Binding BracketInfo.IsInitialized, Mode=TwoWay, FallbackValue=false}}"
-                 ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                 ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding BracketInfo.PendingSets, Mode=TwoWay}">
+        <ListBox 
+             ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+             ScrollViewer.VerticalScrollBarVisibility="Auto" ItemsSource="{Binding BracketInfo.PendingSets, Mode=TwoWay}"
+             Visibility="{qc:MultiBinding '($P0.Count > 0 || $P0 == null) &amp;&amp; $P1  &amp;&amp; $P2 ? Visibility.Visible : Visibility.Collapsed', 
+                P0={Binding BracketInfo.PendingSets, Mode=TwoWay, FallbackValue=null},
+                P2={Binding BracketInfo.IsConfigured, Mode=TwoWay, FallbackValue=false},
+                P1={Binding BracketInfo.IsInitialized, Mode=TwoWay, FallbackValue=false}}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid ClipToBounds="True">
@@ -107,6 +106,8 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
+
+        <Button Grid.Row="1" Content="Force Refresh" Command="{Binding ForceRefreshCommand}" IsEnabled="{Binding ManualRefreshAllowed}" />
 
         <!--<CheckBox Grid.Row="1" Content="Display everything" IsChecked="{Binding DisplayAllSets}" />-->
     </Grid>

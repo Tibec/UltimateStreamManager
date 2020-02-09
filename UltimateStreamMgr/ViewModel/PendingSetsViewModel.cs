@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +21,29 @@ namespace UltimateStreamMgr.ViewModel
 
             BracketInfo = BracketData.Instance;
 
-            StartSetCommand = new RelayCommand<Set>((s) => StartSet(s));
+            StartSetCommand = new RelayCommand<Set>(StartSet);
+            ForceRefreshCommand = new RelayCommand(ForceRefresh);
+
+            BracketInfo.PropertyChanged += UpdateReference;
+
             Log.Info("Module initialized");
         }
+
+        private void UpdateReference(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "RefreshInProgress")
+            {
+                ManualRefreshAllowed = !BracketInfo.RefreshInProgress;
+            }
+        }
+
+        private bool manualRefreshAllowed = false;
+        public bool ManualRefreshAllowed
+        {
+            get { return manualRefreshAllowed; }
+            set { Set("ManualRefreshAllowed", ref manualRefreshAllowed, value); }
+        }
+
 
         private BracketData _bracketInfo;
         public BracketData BracketInfo
@@ -34,7 +55,14 @@ namespace UltimateStreamMgr.ViewModel
         public RelayCommand<Set> StartSetCommand { get; set; }
         private void StartSet(Set set)
         {
+            Log.Info("Requesting to change actual for the following [{0}, {1} vs {2}]", set.RoundName, set.Opponent1.Name, set.Opponent2.Name);
             MessengerInstance.Send(set);
+        }
+
+        public RelayCommand ForceRefreshCommand { get; set; }
+        private void ForceRefresh()
+        {
+            Task.Run(()=>BracketInfo.ForceRefreshPendingSets());
         }
     }
 }

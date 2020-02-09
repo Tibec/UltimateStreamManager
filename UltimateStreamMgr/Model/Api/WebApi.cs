@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using NLog;
 
 namespace UltimateStreamMgr.Model.Api
 {
@@ -17,10 +18,12 @@ namespace UltimateStreamMgr.Model.Api
         protected DateTime lastRequestDate;
         protected string lastRequestContent;
         public string ApiName { get; protected set; } = "Anonymous API";
+        protected Logger Log { get; private set; }
+
 
         public WebApi()
         {
-
+            Log = LogManager.GetLogger(this.GetType().ToString());
         }
 
         public void AsynchRequest(string url, Delegate reportProgress)
@@ -30,6 +33,8 @@ namespace UltimateStreamMgr.Model.Api
 
         virtual public string Request(string requestUri, HttpMethod method = null)
         {
+            Log.Info("Requesting {0}", requestUri);
+
             int maxTries = 3;
 
             if (method == null)
@@ -56,6 +61,7 @@ namespace UltimateStreamMgr.Model.Api
                         task.Result.Content.ToString();
                         response.EnsureSuccessStatusCode();*/
                         string result = response.Content.ReadAsStringAsync().Result;
+                        Log.Trace(result);
                         return result;
                     }
                     catch (Exception)

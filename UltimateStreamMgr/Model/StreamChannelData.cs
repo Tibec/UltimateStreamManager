@@ -31,7 +31,7 @@ namespace UltimateStreamMgr.Model
 
         private void Initialize()
         {
-            _refreshChannelInfo = new Timer(1000);
+            _refreshChannelInfo = new Timer(5000);
             _refreshChannelInfo.Elapsed += RefreshChannelInfo;
             _refreshChannelInfo.AutoReset = false;
 
