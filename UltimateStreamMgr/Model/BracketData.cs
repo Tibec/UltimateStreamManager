@@ -37,14 +37,15 @@ namespace UltimateStreamMgr.Model
             RefreshInProgress = true;
 
             Log.Info("Refreshing pending sets ...");
-            Log.Info("Loading player list ...");
-            Players = new ObservableCollection<Player>(_apiLink.GetAllEntrants());
             Log.Info("Loading pending set list ...");
             PendingSets = new ObservableCollection<Set>(_apiLink.GetAllPendingSets());
 
             // TODO: Investigate why i made this thing .. :>
             // Doesnt seems to be used anywhere.
-            PendingSetsForStream = new ObservableCollection<Set>(_apiLink.GetAllPendingSets(true));
+            // Log.Info("Loading player list ...");
+            // Players = new ObservableCollection<Player>(_apiLink.GetAllEntrants());
+            // PendingSetsForStream = new ObservableCollection<Set>(_apiLink.GetAllPendingSets(true));
+
             Output.Data.Top8List = _apiLink.GetAvailablesTop8();
 
             if (!IsInitialized)

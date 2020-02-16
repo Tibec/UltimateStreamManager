@@ -293,87 +293,108 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
         public override List<Top8> GetAvailablesTop8()
         {
             List<Top8> top8list = new List<Top8>();
-            string result = Request("tournament/" + _settings.TournamentName + "?expand[]=event&expand[]=phase&expand[]=phase&expand[]=groups");
-
-            if (string.IsNullOrEmpty(result))
-                return top8list;
-
-            dynamic data = JsonConvert.DeserializeObject(result);
-
-            foreach (dynamic evt in (data.entities as JObject).GetValue("event"))
+            try
             {
-                Top8 top8 = new Top8 {Name = evt.name};
-                int finalPhaseId = 0, finalGroupId = 0, phaseCountForThisEvent = 0;
-                foreach(var phase in data.entities.phase)
-                {
-                    if (phase.eventId == evt.id)
-                        ++phaseCountForThisEvent;
-                }
-                foreach (var phase in data.entities.phase)
-                {
-                    if (phase.phaseOrder == phaseCountForThisEvent && phase.eventId == evt.id)
-                        finalPhaseId = phase.id;
-                }
-                foreach(var group in data.entities.groups)
-                {
-                    if (group.phaseId == finalPhaseId)
-                        if (group.groupTypeId == 2)
-                            finalGroupId = group.id;
-                }
-
-                if (finalPhaseId == 0 || finalGroupId == 0)
-                    continue;
-
-                string result2 = Request("phase_group/" + finalGroupId + "?expand[]=sets&expand[]=entrants");
+                string result = Request("tournament/" + _settings.TournamentName +
+                                        "?expand[]=event&expand[]=phase&expand[]=phase&expand[]=groups");
 
                 if (string.IsNullOrEmpty(result))
-                    continue;
+                    return top8list;
 
-                dynamic setdata = JsonConvert.DeserializeObject(result2);
-                if (setdata.entities.sets==null)
-                    continue;
-                foreach (var set in setdata.entities.sets)
+                dynamic data = JsonConvert.DeserializeObject(result);
+
+                foreach (dynamic evt in (data.entities as JObject).GetValue("event"))
                 {
-                    if (set.wPlacement == 1 && set.lPlacement == 2 
-                        && set.entrant2PrereqCondition == "winner") // GF1
+                    Top8 top8 = new Top8 {Name = evt.name};
+                    int finalPhaseId = 0, finalGroupId = 0, phaseCountForThisEvent = 0;
+                    foreach (var phase in data.entities.phase)
                     {
-                        top8.GrandFinal = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
+                        if (phase.eventId == evt.id)
+                            ++phaseCountForThisEvent;
                     }
-                    else if (set.wPlacement == 3 && set.lPlacement == 5) // Winner semi
+
+                    foreach (var phase in data.entities.phase)
                     {
-                        if (top8.WinnerSemi1 == null)
-                            top8.WinnerSemi1 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
-                        else
-                            top8.WinnerSemi2 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
+                        if (phase.phaseOrder == phaseCountForThisEvent && phase.eventId == evt.id)
+                            finalPhaseId = phase.id;
                     }
-                    else if (set.wPlacement == 2 && set.lPlacement == 3 && set.round > 0) // WF
+
+                    foreach (var group in data.entities.groups)
                     {
-                        top8.WinnerFinal = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
+                        if (group.phaseId == finalPhaseId)
+                            if (group.groupTypeId == 2)
+                                finalGroupId = group.id;
                     }
-                    else if (set.wPlacement == 5 && set.lPlacement == 7) // Loser Top 8
+
+                    if (finalPhaseId == 0 || finalGroupId == 0)
+                        continue;
+
+                    string result2 = Request("phase_group/" + finalGroupId + "?expand[]=sets&expand[]=entrants");
+
+                    if (string.IsNullOrEmpty(result))
+                        continue;
+
+                    dynamic setdata = JsonConvert.DeserializeObject(result2);
+                    if (setdata.entities.sets == null)
+                        continue;
+                    foreach (var set in setdata.entities.sets)
                     {
-                        if (top8.Loser7th1 == null)
-                            top8.Loser7th1 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
-                        else
-                            top8.Loser7th2 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
+                        if (set.wPlacement == 1 && set.lPlacement == 2
+                                                && set.entrant2PrereqCondition == "winner") // GF1
+                        {
+                            top8.GrandFinal = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                setdata.entities.groups);
+                        }
+                        else if (set.wPlacement == 3 && set.lPlacement == 5) // Winner semi
+                        {
+                            if (top8.WinnerSemi1 == null)
+                                top8.WinnerSemi1 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                    setdata.entities.groups);
+                            else
+                                top8.WinnerSemi2 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                    setdata.entities.groups);
+                        }
+                        else if (set.wPlacement == 2 && set.lPlacement == 3 && set.round > 0) // WF
+                        {
+                            top8.WinnerFinal = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                setdata.entities.groups);
+                        }
+                        else if (set.wPlacement == 5 && set.lPlacement == 7) // Loser Top 8
+                        {
+                            if (top8.Loser7th1 == null)
+                                top8.Loser7th1 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                    setdata.entities.groups);
+                            else
+                                top8.Loser7th2 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                    setdata.entities.groups);
+                        }
+                        else if (set.wPlacement == 4 && set.lPlacement == 5) // Loser Quarter
+                        {
+                            if (top8.LoserQuarter1 == null)
+                                top8.LoserQuarter1 = ParseSetData(set, setdata.entities.player,
+                                    setdata.entities.entrants, setdata.entities.groups);
+                            else
+                                top8.LoserQuarter2 = ParseSetData(set, setdata.entities.player,
+                                    setdata.entities.entrants, setdata.entities.groups);
+                        }
+                        else if (set.wPlacement == 3 && set.lPlacement == 4) // Loser Semi
+                        {
+                            top8.LoserSemi = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                setdata.entities.groups);
+                        }
+                        else if (set.wPlacement == 2 && set.lPlacement == 3 && set.round < 0) // Loser Final
+                        {
+                            top8.LoserFinal = ParseSetData(set, setdata.entities.player, setdata.entities.entrants,
+                                setdata.entities.groups);
+                        }
                     }
-                    else if (set.wPlacement == 4 && set.lPlacement == 5) // Loser Quarter
-                    {
-                        if (top8.LoserQuarter1 == null)
-                            top8.LoserQuarter1 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
-                        else
-                            top8.LoserQuarter2 = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
-                    }
-                    else if (set.wPlacement == 3 && set.lPlacement == 4) // Loser Semi
-                    {
-                        top8.LoserSemi = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
-                    }
-                    else if (set.wPlacement == 2 && set.lPlacement == 3 && set.round < 0) // Loser Final
-                    {
-                        top8.LoserFinal = ParseSetData(set, setdata.entities.player, setdata.entities.entrants, setdata.entities.groups);
-                    }
+
+                    top8list.Add(top8);
                 }
-                top8list.Add(top8);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e, "An error happened when trying to fetch top 8 brackets");
             }
 
             return top8list;
