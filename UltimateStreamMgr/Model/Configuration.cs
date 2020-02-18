@@ -7,6 +7,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Serialization;
+using NLog;
 using UltimateStreamMgr.Model.Api;
 using UltimateStreamMgr.Model.Api.StreamApis;
 using UltimateStreamMgr.ViewModel;
@@ -15,10 +16,13 @@ namespace UltimateStreamMgr.Model
 {
     public class Configuration : ISerializable
     {
+        private Logger Log { get; set; }
+
+
         #region Singleton implementation 
         private Configuration()
         {
-
+            Log = LogManager.GetLogger(this.GetType().ToString());
         }
 
         static Configuration _instance;
@@ -44,15 +48,56 @@ namespace UltimateStreamMgr.Model
 
         public void Load()
         {
-            XmlSerializer xs = new XmlSerializer(typeof(Configuration), 
-                Assembly.GetExecutingAssembly().GetTypes().Where(
-                    (t) => t.IsSubclassOf(typeof(BracketSettings) )
-                    || t.IsSubclassOf(typeof(StreamSettings))
-                    || t.IsSubclassOf(typeof(SocialSettings))
-                    ).ToArray()) ;
-            using (StreamReader rd = new StreamReader(_saveFile))
+            try
             {
-               _instance = xs.Deserialize(rd) as Configuration;
+                DoLoad(_saveFile);
+            }
+            catch(Exception e) // If an error happened, let's see if there is backup elsewhere
+            {
+                Log.Warn(e, "An error happened while trying to read the config file. Looking for a backup");
+
+                if (File.Exists(_saveFile + ".tmp"))
+                {
+                    Log.Warn("Found a tmp config file. Trying to load..");
+                    try
+                    {
+                        DoLoad(_saveFile + ".tmp");
+                        return;
+                    }
+                    catch (Exception subException)
+                    {
+                        Log.Warn(subException, "The temporary config file failed to load. Looking for another backup.");
+                    }
+                }
+
+                if (File.Exists(_saveFile + ".old"))
+                {
+                    Log.Warn("Found an old config file. Trying to load..");
+                    try
+                    {
+                        DoLoad(_saveFile + ".old");
+                    }
+                    catch (Exception subException)
+                    {
+                        Log.Warn(subException, "The old config file failed to load. A new config file while be created.");
+                    }
+                }
+
+            }
+
+        }
+
+        private void DoLoad(string filename)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(Configuration),
+                Assembly.GetExecutingAssembly().GetTypes().Where(
+                    (t) => t.IsSubclassOf(typeof(BracketSettings))
+                           || t.IsSubclassOf(typeof(StreamSettings))
+                           || t.IsSubclassOf(typeof(SocialSettings))
+                ).ToArray());
+            using (StreamReader rd = new StreamReader(filename))
+            {
+                _instance = xs.Deserialize(rd) as Configuration;
             }
         }
 
@@ -68,10 +113,21 @@ namespace UltimateStreamMgr.Model
                     || t.IsSubclassOf(typeof(SocialSettings))
                 ).ToArray());
 
-            using (StreamWriter wr = new StreamWriter(saveFile))
+            string tempSaveFile = saveFile + ".tmp";
+
+            if (File.Exists(tempSaveFile))
+            {
+                Log.Warn("There was a leftover of an old save. Deleting ...");
+                File.Delete(tempSaveFile);
+            }
+
+            using (StreamWriter wr = new StreamWriter(tempSaveFile))
             {
                 xs.Serialize(wr, this);
             }
+            
+            File.Replace(tempSaveFile, saveFile, saveFile+".old");
+            File.Delete(saveFile+".old");
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
