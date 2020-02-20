@@ -18,11 +18,19 @@ namespace UltimateStreamMgr.Model
     {
         private Logger Log { get; set; }
 
+        private readonly XmlSerializer serializer;
 
         #region Singleton implementation 
         private Configuration()
         {
             Log = LogManager.GetLogger(this.GetType().ToString());
+            serializer = new XmlSerializer(typeof(Configuration),
+                Assembly.GetExecutingAssembly().GetTypes().Where(
+                    (t) => t.IsSubclassOf(typeof(BracketSettings))
+                           || t.IsSubclassOf(typeof(StreamSettings))
+                           || t.IsSubclassOf(typeof(SocialSettings))
+                ).ToArray());
+
         }
 
         static Configuration _instance;
@@ -89,15 +97,9 @@ namespace UltimateStreamMgr.Model
 
         private void DoLoad(string filename)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(Configuration),
-                Assembly.GetExecutingAssembly().GetTypes().Where(
-                    (t) => t.IsSubclassOf(typeof(BracketSettings))
-                           || t.IsSubclassOf(typeof(StreamSettings))
-                           || t.IsSubclassOf(typeof(SocialSettings))
-                ).ToArray());
             using (StreamReader rd = new StreamReader(filename))
             {
-                _instance = xs.Deserialize(rd) as Configuration;
+                _instance = serializer.Deserialize(rd) as Configuration;
             }
         }
 
@@ -105,13 +107,6 @@ namespace UltimateStreamMgr.Model
         {
             if (string.IsNullOrEmpty(saveFile))
                 saveFile = _saveFile;
-
-            XmlSerializer xs = new XmlSerializer(typeof(Configuration),
-                Assembly.GetExecutingAssembly().GetTypes().Where(
-                    (t) => t.IsSubclassOf(typeof(BracketSettings))
-                    || t.IsSubclassOf(typeof(StreamSettings))
-                    || t.IsSubclassOf(typeof(SocialSettings))
-                ).ToArray());
 
             string tempSaveFile = saveFile + ".tmp";
 
@@ -123,7 +118,7 @@ namespace UltimateStreamMgr.Model
 
             using (StreamWriter wr = new StreamWriter(tempSaveFile))
             {
-                xs.Serialize(wr, this);
+                serializer.Serialize(wr, this);
             }
             
             File.Replace(tempSaveFile, saveFile, saveFile+".old");
