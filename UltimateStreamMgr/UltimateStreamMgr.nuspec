@@ -6,7 +6,8 @@
 	<version>1.0.0</version>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A tool to manage a stream scoreboard.</description>
-  </metadata>
+ 	<repository type="git" url="https://github.com/Tibec/UltimateStreamManager"/>
+ </metadata>
   <files>
     <file src="bin\x86\Release\locales\*.pak" target="locales" />
     <file src="bin\x86\Release\*.dll" target="" />
