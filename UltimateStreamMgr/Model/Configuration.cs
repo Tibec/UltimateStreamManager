@@ -78,19 +78,6 @@ namespace UltimateStreamMgr.Model
                     }
                 }
 
-                if (File.Exists(_saveFile + ".old"))
-                {
-                    Log.Warn("Found an old config file. Trying to load..");
-                    try
-                    {
-                        DoLoad(_saveFile + ".old");
-                    }
-                    catch (Exception subException)
-                    {
-                        Log.Warn(subException, "The old config file failed to load. A new config file while be created.");
-                    }
-                }
-
             }
 
         }
@@ -121,8 +108,8 @@ namespace UltimateStreamMgr.Model
                 serializer.Serialize(wr, this);
             }
             
-            File.Replace(tempSaveFile, saveFile, saveFile+".old");
-            File.Delete(saveFile+".old");
+            File.Copy(tempSaveFile, saveFile, true);
+            File.Delete(tempSaveFile);
         }
 
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
