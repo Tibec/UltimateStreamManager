@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="UltimateStreamMgr.View.Settings.Bracket.SmashggSettingsControl"
+﻿<UserControl x:Class="UltimateStreamMgr.View.Settings.Bracket.SmashggGQLSettingsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -7,7 +7,7 @@
              mc:Ignorable="d" IsEnabledChanged="UserControl_IsVisibleChanged"
              d:DesignHeight="138.201" d:DesignWidth="459.513">
     <UserControl.DataContext>
-        <vm:SmashggSettingsViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
+        <vm:SmashggGQLSettingsViewModel xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel" />
     </UserControl.DataContext>
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="b2v" />
@@ -24,9 +24,11 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Margin="5" Foreground="Red" TextWrapping="Wrap" FontStyle="Italic" Text="L'ancienne API ne permet plus de récupérer les twitter et twitch associés aux joueurs" Grid.ColumnSpan="3" />
-        <TextBlock Margin="5" Text="Nom du tournoi : " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1"/>
-        <TextBox Margin="5" Text="{Binding TournamentName}" Grid.Row="1"  Grid.Column="1"/>
+        <TextBlock Margin="5" Text="Token API : " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="0" />
+        <TextBox Margin="5" Text="{Binding ApiKey}" Grid.Column="1" Grid.Row="0"/>
+
+        <TextBlock Margin="5" Text="Nom du tournoi : " HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" />
+        <TextBox Margin="5" Text="{Binding TournamentName}" Grid.Column="1" Grid.Row="1"/>
 
         <TextBlock Grid.Row="2" Grid.ColumnSpan="3" TextWrapping="Wrap"
                    FontStyle="Italic">

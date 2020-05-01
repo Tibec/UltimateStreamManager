@@ -3,10 +3,10 @@
     <id>UltimateStreamManager</id>
     <title>UltimateStreamManager</title>
     <authors>Benjamin ROELANDT</authors>
-	<version>1.0.0</version>
+	  <version>1.0.0</version>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A tool to manage a stream scoreboard.</description>
- 	<repository type="git" url="https://github.com/Tibec/UltimateStreamManager"/>
+  	<repository type="git" url="https://github.com/Tibec/UltimateStreamManager"/>
  </metadata>
   <files>
     <file src="bin\x86\Release\locales\*.pak" target="locales" />

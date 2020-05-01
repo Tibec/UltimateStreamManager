@@ -14,7 +14,7 @@ using NLog.Fluent;
 
 namespace UltimateStreamMgr.Model
 {
-    static class PlayerDatabase
+    public static class PlayerDatabase
     {
         static SQLiteConnection _conn;
 

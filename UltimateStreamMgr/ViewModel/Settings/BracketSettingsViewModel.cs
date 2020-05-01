@@ -36,7 +36,7 @@ namespace UltimateStreamMgr.ViewModel
                 BracketApi a = Activator.CreateInstance(type, s) as BracketApi;
                 ApiList.Add(a.ApiName);
 
-                if (type == Configuration.Instance.Stream?.GetType())
+                if (type == Configuration.Instance.Bracket?.Api)
                     SelectedApi = ApiList.Count - 1;
             }
         }

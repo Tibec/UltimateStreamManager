@@ -69,7 +69,22 @@
     <Compile Include="Helpers\TinyTwitter.cs" />
     <Compile Include="Helpers\Utils.cs" />
     <Compile Include="Model\Api\BracketApi.cs" />
+    <Compile Include="Model\Api\BracketApis\Challonge.cs" />
     <Compile Include="Model\Api\BracketApis\Smashgg.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggGraphQL.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Address.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Entrant.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Event.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Events.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\ExternalAccounts.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Participant.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Participants.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\RequestResult.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Set.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Stream.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\StreamQueue.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\Tournament.cs" />
+    <Compile Include="Model\Api\BracketApis\SmashggModel\User.cs" />
     <Compile Include="Model\Api\SocialApi.cs" />
     <Compile Include="Model\Api\SocialApis\Twitter.cs" />
     <Compile Include="Model\Api\StreamApi.cs" />
@@ -102,6 +117,7 @@
     <Compile Include="ViewModel\CustomKeysViewModel.cs" />
     <Compile Include="ViewModel\DockWindowViewModel.cs" />
     <Compile Include="ViewModel\LayoutUpdateStrategy.cs" />
+    <Compile Include="ViewModel\Settings\SmashggGQLSettingsViewModel.cs" />
     <Compile Include="ViewModel\SocialModuleViewModel.cs" />
     <Compile Include="ViewModel\Settings\OverviewSettingsViewModel.cs" />
     <Compile Include="ViewModel\Settings\ReplaySettingsViewModel.cs" />
@@ -143,6 +159,9 @@
     </Compile>
     <Compile Include="View\Replay.xaml.cs">
       <DependentUpon>Replay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Settings\Bracket\SmashggGQLSettingsControl.xaml.cs">
+      <DependentUpon>SmashggGQLSettingsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Settings\OutputSettings.xaml.cs">
       <DependentUpon>OutputSettings.xaml</DependentUpon>
@@ -221,6 +240,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Replay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Settings\Bracket\SmashggGQLSettingsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -397,6 +420,9 @@
     </PackageReference>
     <PackageReference Include="Extended.Wpf.Toolkit">
       <Version>3.6.0</Version>
+    </PackageReference>
+    <PackageReference Include="GraphQL">
+      <Version>2.4.0</Version>
     </PackageReference>
     <PackageReference Include="MahApps.Metro">
       <Version>1.6.5</Version>
@@ -703,6 +729,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\empty.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

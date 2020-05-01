@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using NLog;
 
 namespace UltimateStreamMgr.Model.Api
@@ -26,12 +24,7 @@ namespace UltimateStreamMgr.Model.Api
             Log = LogManager.GetLogger(this.GetType().ToString());
         }
 
-        public void AsynchRequest(string url, Delegate reportProgress)
-        {
-            JsonSerializer serializer = new JsonSerializer();
-        }
-
-        virtual public string Request(string requestUri, HttpMethod method = null)
+        public virtual string Request(string requestUri, HttpMethod method = null, string content = "")
         {
             Log.Info("Requesting {0}", requestUri);
 
@@ -39,15 +32,16 @@ namespace UltimateStreamMgr.Model.Api
 
             if (method == null)
                 method = HttpMethod.Get;
-            // TODO : tester si la date de la derniere requete + delay < date actuelle, 
-            // si oui continuer la requete
-            // sinon retourner l'ancien contenu
-            //
+
 
             using (var client = new HttpClient(new HttpClientHandler { AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate }))
             {
                 client.BaseAddress = new Uri(_baseUrl);
                 HttpRequestMessage request = new HttpRequestMessage(method, requestUri);
+
+                if (!string.IsNullOrEmpty(content))
+                    request.Content = new  StringContent(content, Encoding.UTF8, "application/json");
+                
                 foreach (var header in _headers)
                     request.Headers.Add(header.Key, header.Value);
 
@@ -56,6 +50,7 @@ namespace UltimateStreamMgr.Model.Api
                     try
                     {
                         Task<HttpResponseMessage> task = client.SendAsync(request);
+                        
                         task.Wait();
                         HttpResponseMessage response = task.Result;/*
                         task.Result.Content.ToString();

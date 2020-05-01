@@ -6,6 +6,7 @@ using System.Net.Http;
 using UltimateStreamMgr.Model.Api.StreamApis;
 using UltimateStreamMgr.Model.Api.BracketApis;
 using UltimateStreamMgr.Model.Api.SocialApis;
+using UltimateStreamMgr.View.PlayerDatabase;
 
 namespace UltimateStreamMgr.Test
 {
@@ -64,8 +65,16 @@ namespace UltimateStreamMgr.Test
         public void TestTwitter()
         {
             Twitter api = new Twitter(null);
-           // api.PublishMessage("Ceci est un message con posté depuis une application génial ! Et il contient un lien !!!! https://smash.gg/tournament/gre-1/events");
+            // api.PublishMessage("Ceci est un message con posté depuis une application génial ! Et il contient un lien !!!! https://smash.gg/tournament/gre-1/events");
             var a = api.GetMessagesByHashtag("hashtagdecon");
+        }
+
+        [TestMethod]
+        public void SmashGGGraphQLTestEntrant()
+        {
+            PlayerDatabase.Init();
+            SmashggGraphQL api = new SmashggGraphQL(new SmashGgSettings{TournamentName = "jackpot-14"});
+            api.GetAllEntrants();
         }
     }
 }

@@ -24,15 +24,6 @@
             </Grid.ColumnDefinitions>
             <TextBlock Margin="5" Text="Plateforme : " HorizontalAlignment="Right" VerticalAlignment="Center" />
             <ComboBox Margin="5" x:Name="apiSelector" SelectedValue="{Binding SelectedApiName}" SelectedIndex="{Binding SelectedApi}" ItemsSource="{Binding ApiList}" Grid.Column="1"/>
-
-            <TextBlock Margin="5" Grid.Row="1" Text="Fonctions supportes : " HorizontalAlignment="Right" />
-        </Grid>
-        <Grid Margin="30,0">
-            <WrapPanel>
-                <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Lecture des sets en attente" />
-                <CheckBox IsHitTestVisible="False" IsChecked="True" Margin="5" Content="Mise a jour des info" />
-                <CheckBox IsHitTestVisible="False" IsChecked="False" Margin="5" Content="Report des resultats" />
-            </WrapPanel>
         </Grid>
         <Separator />
         <!-- Insert here each api control -->
@@ -40,5 +31,9 @@
             Mode=TwoWay,
             Path=DataContext.SelectedApiName, 
             Converter={qc:QuickConverter '$P == \'smash.gg\''}, ElementName=module}" />
+        <local:SmashggGQLSettingsControl IsEnabled="{Binding
+            Mode=TwoWay,
+            Path=DataContext.SelectedApiName, 
+            Converter={qc:QuickConverter '$P == \'smash.gg (GraphQL)\''}, ElementName=module}" />
     </StackPanel>
 </UserControl>
