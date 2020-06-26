@@ -33,7 +33,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
         {
             var query = @"{ ""query"" : ""query {
                   tournament(slug: \""" + _settings.TournamentName + @"\"") {
-                    participants(query: {}) {
+                    participants(query: { perPage:500}) {
                       nodes {
                          ...PlayerInfo
                       }
@@ -128,7 +128,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             RequestResult data = JsonConvert.DeserializeObject<RequestResult>(json);
 
             List<Set> sets = new List<Set>();
-            if (data.Data == null)
+            if (data.Data?.Tournament?.StreamQueue == null)
                 return sets;
             foreach (var stream in data.Data.Tournament.StreamQueue)
             {
