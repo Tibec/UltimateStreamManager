@@ -31,24 +31,49 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
 
         public override List<Player> GetAllEntrants()
         {
-            var query = @"{ ""query"" : ""query {
-                  tournament(slug: \""" + _settings.TournamentName + @"\"") {
-                    participants(query: { perPage:500}) {
-                      nodes {
-                         ...PlayerInfo
-                      }
-                    }
-                  }
-                }" + playerInfoFragment + "\" } ";
-
-            string json = Request("", HttpMethod.Post, query.Replace("\r\n", "").Replace("\t", ""));
-            RequestResult data = JsonConvert.DeserializeObject<RequestResult>(json);
-
             List<Player> players = new List<Player>();
-            foreach (var participant in data.Data.Tournament.Participants.List)
+            bool allPlayersRetrieved = false;
+            int queryPage = 1;
+
+            do
             {
-                players.Add(ParticipantToPlayer(participant, false));
-            }
+                var query = @"
+                { ""query"" : ""query 
+                  {
+                      tournament(slug: \""" + _settings.TournamentName + @"\"") {
+                        participants(query: { perPage:100, page: "+queryPage+@" }) {
+                          nodes {
+                             ...PlayerInfo
+                          }
+                        }
+                      }
+                  }" + playerInfoFragment + "\" } ";
+                
+                string json = Request("", HttpMethod.Post, query.Replace("\r\n", "").Replace("\t", ""));
+                RequestResult data = JsonConvert.DeserializeObject<RequestResult>(json);
+                if (data.Error == null)
+                {
+                    if (data.Data.Tournament.Participants.List.Count > 0)
+                    {
+                        foreach (var participant in data.Data.Tournament.Participants.List)
+                        {
+                            players.Add(ParticipantToPlayer(participant, false));
+                        }
+                    }
+                    else
+                    {
+                        allPlayersRetrieved = true;
+                    }
+
+                }
+                else
+                {
+                    Log.Error("SmashGG error: " + data.Error.Message);
+                }
+                ++queryPage;
+
+            } while (!allPlayersRetrieved);
+
             return players;
         }
 

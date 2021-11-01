@@ -5,6 +5,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Windows.Media;
+using Newtonsoft.Json.Linq;
 
 namespace UltimateStreamMgr.Model.Api.StreamApis
 {
@@ -60,7 +61,7 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
         public bool ChannelExist(string name)
         {
             string response = Request("users?login="+name);
-            if (string.IsNullOrEmpty(response))
+            if (string.IsNullOrEmpty(response) || ResponseContainError(response))
                 return false;
             dynamic a = JsonConvert.DeserializeObject(response);
 
@@ -70,7 +71,7 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
         private int GetChannelId(string channelName)
         {
             string response = Request("users?login=" + channelName);
-            if (string.IsNullOrEmpty(response))
+            if (string.IsNullOrEmpty(response) || ResponseContainError(response))
                 return -1;
             dynamic a = JsonConvert.DeserializeObject(response);
 
@@ -130,6 +131,14 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
             else // both ain't null
                 uri = "?channel[status]=" + Uri.EscapeDataString(title) + "&channel[game]=" + Uri.EscapeDataString(game.Name);
             Request("channels/" + _settings.ChannelId + uri, HttpMethod.Put);
+        }
+
+        private bool ResponseContainError(string response)
+        {
+            JObject data = (JObject)JsonConvert.DeserializeObject(response);
+            if (data.ContainsKey("error"))
+                return true;
+            return false;
         }
     }
 
