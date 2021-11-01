@@ -139,15 +139,15 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
                          fullRoundText,
                          slots(includeByes:true) {
                            entrant {
-                             participants {
-                               gamerTag
+                             participants{
+                               ...PlayerInfo
                              }
                            }
                          }
                        }
                      }
                    }
-                }" + /* playerInfoFragment + */ "\" } ";
+                }" + playerInfoFragment + "\" } ";
 
             string json = Request("", HttpMethod.Post, query.Replace("\r\n", "").Replace("\t",""));
             RequestResult data = JsonConvert.DeserializeObject<RequestResult>(json);

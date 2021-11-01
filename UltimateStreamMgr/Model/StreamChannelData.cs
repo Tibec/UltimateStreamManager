@@ -65,10 +65,13 @@ namespace UltimateStreamMgr.Model
             {
                 if (_apiLink != null)
                 {
-                    ChannelInfo = _apiLink.GetChannelInfo();
-                    ViewersEvolution.Add(ChannelInfo.Viewers);
-                    if (ChannelInfo.Viewers > ViewersPeak)
-                        ViewersPeak = ChannelInfo.Viewers;
+                    if (IsConfigured)
+                    {
+                        ChannelInfo = _apiLink.GetChannelInfo();
+                        ViewersEvolution.Add(ChannelInfo.Viewers);
+                        if (ChannelInfo.Viewers > ViewersPeak)
+                            ViewersPeak = ChannelInfo.Viewers;
+                    }
                 }
                 if (!IsInitialized)
                 {

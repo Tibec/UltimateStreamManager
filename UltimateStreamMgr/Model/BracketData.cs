@@ -63,7 +63,6 @@ namespace UltimateStreamMgr.Model
         {
             try
             {
-                _refreshInfo.Stop();
                 IsInitialized = false;
                 _apiLink = Activator.CreateInstance(Configuration.Instance.Bracket.Api, Configuration.Instance.Bracket) as BracketApi;
                 Log.Trace("API Link succesfully created");
