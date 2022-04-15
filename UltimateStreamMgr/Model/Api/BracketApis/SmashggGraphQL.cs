@@ -166,14 +166,14 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
                         continue;
 
                     pendingSet.isDouble = set.Players?[0].Entrant.Participant.Count == 2;
-
-                    pendingSet.Opponent1 = ParticipantToPlayer(set.Players[0].Entrant.Participant[0]);
-                    pendingSet.Opponent2 = ParticipantToPlayer(set.Players[1].Entrant.Participant[0]);
+                    
+                    pendingSet.Opponent1 = ParticipantToPlayer(set.Players[0]?.Entrant?.Participant[0]);
+                    pendingSet.Opponent2 = ParticipantToPlayer(set.Players[1]?.Entrant?.Participant[0]);
 
                     if (pendingSet.isDouble)
                     {
-                        pendingSet.Opponent3 = ParticipantToPlayer(set.Players[0].Entrant.Participant[1]);
-                        pendingSet.Opponent4 = ParticipantToPlayer(set.Players[1].Entrant.Participant[1]);
+                        pendingSet.Opponent3 = ParticipantToPlayer(set.Players[0]?.Entrant?.Participant[1]);
+                        pendingSet.Opponent4 = ParticipantToPlayer(set.Players[1]?.Entrant?.Participant[1]);
                     }
 
                     sets.Add(pendingSet);
@@ -186,7 +186,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
         {
             Player p = null;
 
-            if (useDatabaseAsReference && participant.User != null)
+            if (useDatabaseAsReference && participant?.User != null)
                 p = PlayerDatabase.GetBySmashggId(participant.User.Id);
 
             if (p == null)
