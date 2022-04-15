@@ -17,8 +17,6 @@ jobs:
       
     - name: Setup MSBuild.exe
       uses: microsoft/setup-msbuild@v1.1
-      with:
-        vs-version: '[16.4,16.5)'
 
     - name: Restore NuGet packages
       run:  msbuild ./UltimateStreamManager.sln -t:restore
