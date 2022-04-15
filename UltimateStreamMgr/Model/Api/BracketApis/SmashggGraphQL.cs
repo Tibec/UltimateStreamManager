@@ -165,7 +165,7 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
                     if (set.Players == null || set.Players.Count == 0)
                         continue;
 
-                    pendingSet.isDouble = set.Players?[0].Entrant.Participant.Count == 2;
+                    pendingSet.isDouble = set.Players?[0].Entrant?.Participant?.Count == 2;
                     
                     pendingSet.Opponent1 = ParticipantToPlayer(set.Players[0]?.Entrant?.Participant?[0]);
                     pendingSet.Opponent2 = ParticipantToPlayer(set.Players[1]?.Entrant?.Participant?[0]);
