@@ -193,6 +193,12 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
             {
                 p = new Player();
 
+                if (participant == null)
+                {
+                    return p;
+
+                }
+
                 // Name
                 p.Name = participant.GamerTag;
 
