@@ -162,18 +162,25 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
                     Set pendingSet = new Set();
 
                     pendingSet.RoundName = set.RoundName;
-                    if (set.Players == null || set.Players.Count == 0)
-                        continue;
 
                     pendingSet.isDouble = set.Players?[0].Entrant?.Participant?.Count == 2;
-                    
-                    pendingSet.Opponent1 = ParticipantToPlayer(set.Players[0]?.Entrant?.Participant?[0]);
-                    pendingSet.Opponent2 = ParticipantToPlayer(set.Players[1]?.Entrant?.Participant?[0]);
 
-                    if (pendingSet.isDouble)
+                    if (set.Players[0]?.Entrant != null)
                     {
-                        pendingSet.Opponent3 = ParticipantToPlayer(set.Players[0]?.Entrant?.Participant?[1]);
-                        pendingSet.Opponent4 = ParticipantToPlayer(set.Players[1]?.Entrant?.Participant?[1]);
+                        pendingSet.Opponent1 = ParticipantToPlayer(set.Players[0].Entrant.Participant[0]);
+                        if (pendingSet.isDouble)
+                        {
+                            pendingSet.Opponent3 = ParticipantToPlayer(set.Players[0].Entrant.Participant[1]);
+                        }
+                    }
+
+                    if (set.Players[1]?.Entrant != null)
+                    {
+                        pendingSet.Opponent2 = ParticipantToPlayer(set.Players[1].Entrant.Participant[0]);
+                        if (pendingSet.isDouble)
+                        {
+                            pendingSet.Opponent4 = ParticipantToPlayer(set.Players[1].Entrant.Participant[1]);
+                        }
                     }
 
                     sets.Add(pendingSet);
@@ -184,20 +191,19 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
 
         private Player ParticipantToPlayer(Participant participant, bool useDatabaseAsReference = true)
         {
+            if (participant == null)
+            {
+                return new Player();
+            }
+
             Player p = null;
 
-            if (useDatabaseAsReference && participant?.User != null)
+            if (useDatabaseAsReference && participant.User != null)
                 p = PlayerDatabase.GetBySmashggId(participant.User.Id);
 
             if (p == null)
             {
                 p = new Player();
-
-                if (participant == null)
-                {
-                    return p;
-
-                }
 
                 // Name
                 p.Name = participant.GamerTag;

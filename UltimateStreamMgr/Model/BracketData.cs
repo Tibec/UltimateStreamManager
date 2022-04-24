@@ -38,13 +38,19 @@ namespace UltimateStreamMgr.Model
 
             Log.Info("Refreshing pending sets ...");
             Log.Info("Loading pending set list ...");
-            PendingSets = new ObservableCollection<Set>(_apiLink.GetAllPendingSets());
+            try
+            {
+                PendingSets = new ObservableCollection<Set>(_apiLink.GetAllPendingSets());
 
-            Output.Data.Top8List = _apiLink.GetAvailablesTop8();
+                Output.Data.Top8List = _apiLink.GetAvailablesTop8();
 
-            if (!IsInitialized)
-                IsInitialized = true;
-
+                if (!IsInitialized)
+                    IsInitialized = true;
+            }
+            catch(Exception err)
+            {
+                Log.Error(err, "An error happened while trying to refresh bracket data:");
+            }
             Log.Info("Refresh completed!");
 
             RefreshInProgress = false;
