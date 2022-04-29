@@ -59,7 +59,7 @@
                     Width="100"
                     Content="Sauvegarder"
                     Controls:ControlsHelper.ContentCharacterCasing="Normal"
-                    Style="{DynamicResource AccentedSquareButtonStyle}" />
+                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}" />
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

@@ -6,7 +6,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:local="clr-namespace:UltimateStreamMgr.View.Settings"
         xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
-        GlowBrush="{DynamicResource AccentColorBrush}"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
         mc:Ignorable="d"
         Title="Settings" Height="388.8" Width="644.935">
     <Controls:MetroWindow.DataContext>
@@ -20,29 +20,29 @@
                     Width="100"
                     Content="Sauvegarder"
                     Controls:ControlsHelper.ContentCharacterCasing="Normal"
-                    Style="{DynamicResource AccentedSquareButtonStyle}" />
+                    Style="{DynamicResource MahApps.Styles.Button.Square.Accent}" />
             <Button 
                     Command="{Binding CancelCommand}"
                     Margin="5"
                     Width="100"
                     Content="Annuler"
                     Controls:ControlsHelper.ContentCharacterCasing="Normal"
-                    Style="{DynamicResource SquareButtonStyle}" />
+                    Style="{DynamicResource MahApps.Styles.Button.Square}" />
 
         </WrapPanel>
         <Separator DockPanel.Dock="Bottom" />
         <TabControl TabStripPlacement="Left" Controls:TabControlHelper.Underlined="TabPanel" SelectedIndex="{Binding ActiveTab, Mode=TwoWay}">
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18"  Header="Vue d'ensemble"> 
+            <TabItem Controls:HeaderedControlHelper.HeaderFontSize="18"  Header="Vue d'ensemble"> 
                 <TabItem.Content>
                     <local:OverviewSettings />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Chaine de streaming">
+            <TabItem Controls:HeaderedControlHelper.HeaderFontSize="18" Header="Chaine de streaming">
                 <TabItem.Content>
                     <local:StreamSettingsControl />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Gestion de bracket">
+            <TabItem Controls:HeaderedControlHelper.HeaderFontSize="18" Header="Gestion de bracket">
                 <TabItem.Content>
                     <local:BracketSettingsControl />
                 </TabItem.Content>
@@ -54,18 +54,18 @@
                 </TabItem.Content>
             </TabItem>
             -->
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Format de sortie">
+            <TabItem Controls:HeaderedControlHelper.HeaderFontSize="18" Header="Format de sortie">
                 <TabItem.Content>
                     <local:OutputSettings />
                 </TabItem.Content>
             </TabItem>
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Réseaux sociaux">
+            <TabItem Controls:HeaderedControlHelper.HeaderFontSize="18" Header="Réseaux sociaux">
                 <TabItem.Content>
                     <local:SocialSettingsControl />
                 </TabItem.Content>
             </TabItem>
 
-            <TabItem Controls:ControlsHelper.HeaderFontSize="18" Header="Avancé">
+            <TabItem Controls:HeaderedControlHelper.HeaderFontSize="18" Header="Avancé">
                 <TabItem.Content>
                     <Grid></Grid>
                 </TabItem.Content>

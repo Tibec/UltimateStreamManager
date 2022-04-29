@@ -10,7 +10,7 @@
         xmlns:theme="clr-namespace:AvalonMetroAccent;assembly=AvalonMetroAccent"
         mc:Ignorable="d" Background="WhiteSmoke"
         xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
-        GlowBrush="{DynamicResource AccentColorBrush}"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
         Title="Ultimate Stream Manager" Height="650" Width="800">
     <!--
         DataContext is set in code behind for reasons.

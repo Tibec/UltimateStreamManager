@@ -45,7 +45,7 @@
                                 DockPanel.Dock="Right" 
                                 Command="{Binding Data.DeleteKeyCommand, Source={StaticResource proxy}}"
                                 CommandParameter="{Binding }"
-                                Style="{DynamicResource MetroCircleButtonStyle}">
+                                Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                     <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
                                 </Button>
                             </DataTemplate>

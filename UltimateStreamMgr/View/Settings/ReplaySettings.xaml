@@ -31,10 +31,9 @@
             <Controls:ToggleSwitch 
                 Margin="5"
                 Grid.Column="1"
-                OffLabel="Désactivé"
-                OnLabel="Activé"
-                IsChecked="{Binding ReplayEnabled}"
-                Style="{StaticResource MahApps.Metro.Styles.ToggleSwitch.Win10}" />
+                OffContent="Désactivé"
+                OnContent="Activé"
+                IsOn="{Binding ReplayEnabled}" />
         
             <TextBlock Margin="5" Grid.Row="1" Text="Dossier de sortie des replay" HorizontalAlignment="Right" VerticalAlignment="Center" />
             <TextBox Margin="5" Text="{Binding InputFolder}" Grid.Column="1" Grid.Row="1" />

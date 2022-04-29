@@ -19,10 +19,10 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor1" 
-                     Color="{DynamicResource WhiteColor}"  options:Freeze="True"/>
+                     Color="{DynamicResource MahApps.Colors.ThemeBackground}"  options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor2" 
-                     Color="{DynamicResource BlackColor}" options:Freeze="True"/>
+                     Color="{DynamicResource MahApps.Colors.ThemeForeground}" options:Freeze="True"/>
     <!--Active title (blue)-->
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor3" 
                      Color="#41B1E1"  options:Freeze="True"/>
@@ -31,15 +31,15 @@
                      Color="#5EA1C0"  options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor5" 
-                     Color="{DynamicResource Gray1}" options:Freeze="True"/>
+                     Color="{DynamicResource MahApps.Colors.Gray1}" options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor6" 
-                     Color="{DynamicResource Gray3}" options:Freeze="True"/>
+                     Color="{DynamicResource MahApps.Colors.Gray3}" options:Freeze="True"/>
 
     <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor7" 
-                     Color="{DynamicResource Gray8}" options:Freeze="True"/>
+                     Color="{DynamicResource MahApps.Colors.Gray8}" options:Freeze="True"/>
 
 <SolidColorBrush x:Key="AvalonDock_ThemeMetro_BaseColor8" 
-                     Color="{DynamicResource Gray2}" options:Freeze="True"/>
+                     Color="{DynamicResource MahApps.Colors.Gray2}" options:Freeze="True"/>
 
 </ResourceDictionary>

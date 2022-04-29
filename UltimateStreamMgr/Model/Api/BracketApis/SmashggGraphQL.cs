@@ -10,7 +10,6 @@ namespace UltimateStreamMgr.Model.Api.BracketApis
     public class SmashggGraphQL : BracketApi
     {
         private SmashGgGQLSettings _settings;
-        private int _tournamentId;
 
         public SmashggGraphQL(BracketSettings settings) : base(settings)
         {

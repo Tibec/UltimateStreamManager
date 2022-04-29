@@ -13,6 +13,7 @@ using System.Windows;
 using MahApps.Metro;
 using UltimateStreamMgr.Model;
 using UltimateStreamMgr.StreamDeck;
+using ControlzEx.Theming;
 
 namespace UltimateStreamMgr.ViewModel
 {
@@ -89,9 +90,9 @@ namespace UltimateStreamMgr.ViewModel
             {
                 Set("DarkThemeEnabled", ref _enableDarkTheme, value);
                 if (value)
-                    ThemeManager.ChangeAppTheme(Application.Current, "BaseDark");
+                    ThemeManager.Current.ChangeTheme(Application.Current, "Dark.Blue");
                 else
-                    ThemeManager.ChangeAppTheme(Application.Current, "BaseLight");
+                    ThemeManager.Current.ChangeTheme(Application.Current, "Light.Blue");
 
                 Configuration.Instance.DarkThemeEnabled = value;
             }

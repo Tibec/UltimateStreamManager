@@ -7,7 +7,7 @@
         xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
         xmlns:local="clr-namespace:UltimateStreamMgr.View.PlayerDatabase"
         xmlns:vm="clr-namespace:UltimateStreamMgr.ViewModel"
-        GlowBrush="{DynamicResource AccentColorBrush}"
+        GlowBrush="{DynamicResource MahApps.Brushes.Accent}"
         mc:Ignorable="d" x:Name="managePlayer"
         Title="Gestion des joueurs" Height="348" Width="444">
     <Controls:MetroWindow.DataContext>
@@ -49,14 +49,14 @@
                                             DockPanel.Dock="Right" 
                                             Command="{Binding DataContext.DeletePlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding }"
-                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                            Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                         <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
                                     </Button>
                                     <Button Height="30" Width="30" 
                                             DockPanel.Dock="Right" 
                                             Command="{Binding DataContext.EditPlayerCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding }"
-                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                            Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                         <iconPacks:PackIconModern Height="10" Width="10" Kind="Edit"/>
                                     </Button>
                                     <TextBlock VerticalAlignment="Center" Text="{Binding Name}"/>
@@ -71,17 +71,17 @@
                             ToolTip="Synchronisé avec le bracket" 
                             Height="40" Width="40" 
                             Command="{Binding BracketSynchroCommand}"
-                            Style="{DynamicResource MetroCircleButtonStyle}">
+                            Style="{DynamicResource MahApps.Styles.Button.Circle}">
                             <iconPacks:PackIconModern Kind="Refresh"/>
                         </Button>
                         <Button
                             ToolTip="Vider la base de joueurs"
                             Command="{Binding DeleteAllPlayerCommand}"
-                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}">
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MahApps.Styles.Button.Circle}">
                             <iconPacks:PackIconEntypo Kind="Trash"/>
                         </Button>
                         <Button 
-                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}"
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MahApps.Styles.Button.Circle}"
                             ToolTip="Ajouter un joueur"
                             Command="{Binding AddPlayerCommand}">
                             <iconPacks:PackIconModern Kind="Add"/>
@@ -108,14 +108,14 @@
                                             DockPanel.Dock="Right" 
                                             Command="{Binding DataContext.DeleteTeamCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding }"
-                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                            Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                         <iconPacks:PackIconModern Height="10" Width="10" Kind="Close"/>
                                     </Button>
                                     <Button Height="30" Width="30" 
                                             DockPanel.Dock="Right" 
                                             Command="{Binding DataContext.EditTeamCommand, RelativeSource={RelativeSource AncestorType=ListBox}}"
                                             CommandParameter="{Binding }"
-                                            Style="{DynamicResource MetroCircleButtonStyle}">
+                                            Style="{DynamicResource MahApps.Styles.Button.Circle}">
                                         <iconPacks:PackIconModern Height="10" Width="10" Kind="Edit"/>
                                     </Button>
                                     <TextBlock VerticalAlignment="Center" Text="{Binding ShortName}"/>
@@ -129,12 +129,12 @@
                         <Button
                             ToolTip="Supprimer toute les teams"
                             Command="{Binding DeleteAllTeamCommand}"
-                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}">
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MahApps.Styles.Button.Circle}">
                             <iconPacks:PackIconEntypo Kind="Trash"/>
                         </Button>
                         <Button 
                             Visibility="Hidden"
-                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MetroCircleButtonStyle}"
+                            Height="40" Width="40" DockPanel.Dock="Right" Style="{DynamicResource MahApps.Styles.Button.Circle}"
                             ToolTip="Ajouter une team"
                             Command="{Binding AddPlayerCommand}">
                             <iconPacks:PackIconModern Kind="Add"/>
