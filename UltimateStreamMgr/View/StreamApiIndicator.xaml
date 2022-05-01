@@ -90,7 +90,7 @@
                     Margin="5" VerticalAlignment="Bottom" 
                     HorizontalAlignment="Right" Height="40" Width="100">
                 <Button Height="40" Width="40" 
-                        Style="{DynamicResource MetroCircleButtonStyle}" 
+                        Style="{DynamicResource MahApps.Styles.Button.Circle}" 
                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         ToolTip="Editer le statut de la chaine"
                         Command="{Binding OpenSettingsCommand}"
@@ -98,7 +98,7 @@
                     <iconPacks:PackIconModern Kind="Edit" Foreground="White"/>
                 </Button>
                 <Button Height="40" Width="40" 
-                        Style="{DynamicResource MetroCircleButtonStyle}"
+                        Style="{DynamicResource MahApps.Styles.Button.Circle}"
                         ToolTip="Ouvrir le chat"
                         VerticalAlignment="Bottom" HorizontalAlignment="Right"
                         Command="{Binding OpenChatCommand}">

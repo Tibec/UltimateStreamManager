@@ -29,16 +29,16 @@
                 <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Margin="5" Text="Nom de la chaine : " HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <TextBox Text="{Binding ChannelName}" Margin="5" Grid.Column="1"/>
-            <Button Grid.Column="3" Command="{Binding CheckChannelCommand}" Margin="5" Content="Verifier" />
 
-            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" 
+            <TextBlock Grid.Row="0" Margin="5" Text="Token d'accès : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Grid.Row="0" Grid.Column="1" Margin="5" x:Name="token" Text="{Binding OAuthToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True"/>
+            <Button Grid.Row="0" Grid.Column="3" Click="Button_Click" Margin="5" Content="Obtenir" />
+
+            <TextBlock Grid.Row="1" Margin="5" Text="Nom de la chaine : " HorizontalAlignment="Right" VerticalAlignment="Center" />
+            <TextBox Grid.Row="1" Text="{Binding ChannelName}" Margin="5" Grid.Column="1"/>
+            <Button Grid.Row="1" Grid.Column="3" Command="{Binding CheckChannelCommand}" Margin="5" Content="Vérifier" IsEnabled="{Binding CheckButtonEnabled}" ToolTipService.ShowOnDisabled="True" ToolTip="Cliquez d'abord sur le bouton 'Obtenir' pour vérifier le nom de chaine" />
+            <TextBlock Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" TextWrapping="Wrap" 
                        Text="Saisissez uniquement le nom de la chaine. &#x0a;Exemple : masuperchaine" FontStyle="Italic" />
-
-            <TextBlock Grid.Row="2" Margin="5" Text="Token d'accès : " HorizontalAlignment="Right" VerticalAlignment="Center" />
-            <TextBox x:Name="token" Text="{Binding OAuthToken, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" Grid.Row="2" Margin="5" Grid.Column="1"/>
-            <Button Grid.Row="2" Grid.Column="3" Click="Button_Click" Margin="5" Content="Obtenir" />
 
         </Grid>
     </Grid>

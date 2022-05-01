@@ -89,6 +89,10 @@
     <Compile Include="Model\Api\SocialApis\Twitter.cs" />
     <Compile Include="Model\Api\StreamApi.cs" />
     <Compile Include="Model\Api\StreamApis\Twitch.cs" />
+    <Compile Include="Model\Api\StreamApis\TwitchModel\GetChannelResponse.cs" />
+    <Compile Include="Model\Api\StreamApis\TwitchModel\GetStreamResponse.cs" />
+    <Compile Include="Model\Api\StreamApis\TwitchModel\TwitchApiResponse.cs" />
+    <Compile Include="Model\Api\StreamApis\TwitchModel\UpdateChannelParameters.cs" />
     <Compile Include="Model\Bracket.cs" />
     <Compile Include="Model\BracketData.cs" />
     <Compile Include="Model\Caster.cs" />

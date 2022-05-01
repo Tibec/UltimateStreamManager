@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using System.Windows.Media;
 using Newtonsoft.Json.Linq;
+using UltimateStreamMgr.Model.Api.StreamApis.TwitchModel;
 
 namespace UltimateStreamMgr.Model.Api.StreamApis
 {
@@ -34,7 +35,7 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
             _headers.Add("Client-ID", "ca48u330owoiyhvnmmwl7rkai3i6vqs");
             _headers.Add("Accept", "application/vnd.twitchtv.v5+json");
 
-            _baseUrl = "https://api.twitch.tv/kraken/";
+            _baseUrl = "https://api.twitch.tv/helix/";
 
             _allowedActions[StreamCapabilities.UpdateChannel] = true;
             _allowedActions[StreamCapabilities.DisplayChat] = true;
@@ -42,7 +43,7 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
 
         public void SetAuthorizationKey(string key)
         {
-            _headers["Authorization"] =  "OAuth " + key;
+            _headers["Authorization"] =  "Bearer " + key;
         }
 
         static public string GetAuthentificationUrl()
@@ -65,7 +66,7 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
                 return false;
             dynamic a = JsonConvert.DeserializeObject(response);
 
-            return !(a._total == 0);
+            return a?.data?.Count == 1;
         }
 
         private int GetChannelId(string channelName)
@@ -75,7 +76,16 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
                 return -1;
             dynamic a = JsonConvert.DeserializeObject(response);
 
-            return a.users[0]._id;
+            return a.data[0].id;
+        }
+        private string GetGameId(Game game)
+        {
+            string response = Request("games?name=" + game.Name);
+            if (string.IsNullOrEmpty(response) || ResponseContainError(response))
+                return "";
+            dynamic a = JsonConvert.DeserializeObject(response);
+
+            return a.data[0].id;
         }
 
         public override bool IsCorrectlySetup()
@@ -94,19 +104,24 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
             {
                 _settings.ChannelId = GetChannelId(_settings.ChannelName);
             }
-            string rawStreamData = Request("streams/" + _settings.ChannelId);
-            string rawChannelData = Request("channels/" + _settings.ChannelId);
-            if (string.IsNullOrEmpty(rawStreamData) || string.IsNullOrEmpty(rawChannelData))
+            string rawStreamData = Request("streams?user_id=" + _settings.ChannelId);
+            string rawChannelData = Request("channels?broadcaster_id=" + _settings.ChannelId);
+            if (string.IsNullOrEmpty(rawStreamData))
                 return info;
 
-            dynamic streamData = JsonConvert.DeserializeObject(rawStreamData);
-            dynamic channelData = JsonConvert.DeserializeObject(rawChannelData);
-            info.Game = new Game { Name = channelData.game };
-            info.Name = channelData.name;
-            info.Title = channelData.status;
-            info.Status = streamData.stream == null ? ChannelStatus.Offline : ChannelStatus.Online;
+            TwitchApiResponse<GetStreamResponse> stream = JsonConvert.DeserializeObject<TwitchApiResponse<GetStreamResponse>>(rawStreamData);
+            TwitchApiResponse<GetChannelResponse> channel = JsonConvert.DeserializeObject<TwitchApiResponse<GetChannelResponse>>(rawChannelData);
+            if (channel.Data?.Length == 0)
+            {
+                return info;
+            }
+
+            info.Game = new Game { Name = channel.Data[0].GameName };
+            info.Name = channel.Data[0].BroadcasterName;
+            info.Title = channel.Data[0].Title;
+            info.Status = stream.Data.Length == 0 ? ChannelStatus.Offline : ChannelStatus.Online;
             if(info.Status == ChannelStatus.Online)
-                info.Viewers = streamData.stream.viewers;
+                info.Viewers = stream.Data[0].ViewerCounter;
             return info;
         }
 
@@ -121,16 +136,14 @@ namespace UltimateStreamMgr.Model.Api.StreamApis
             {
                 _settings.ChannelId = GetChannelId(_settings.ChannelName);
             }
-            string uri = "";
-            if (string.IsNullOrEmpty(title) && game == null)
-                return;
-            else if (game == null && !string.IsNullOrEmpty(title))
-                uri = "?channel[status]=" + Uri.EscapeDataString(title);
-            else if (game == null && !string.IsNullOrEmpty(title))
-                uri = "?channel[game]=" + Uri.EscapeDataString(game.Name);
-            else // both ain't null
-                uri = "?channel[status]=" + Uri.EscapeDataString(title) + "&channel[game]=" + Uri.EscapeDataString(game.Name);
-            Request("channels/" + _settings.ChannelId + uri, HttpMethod.Put);
+
+            var parameters = new UpdateChannelParameters
+            {
+                Title = string.IsNullOrEmpty(title) ? null : title,
+                GameId = GetGameId(game)
+            };
+            
+            Request("channels/?broadcaster_id=" + _settings.ChannelId, new HttpMethod("PATCH"), JsonConvert.SerializeObject(parameters));
         }
 
         private bool ResponseContainError(string response)

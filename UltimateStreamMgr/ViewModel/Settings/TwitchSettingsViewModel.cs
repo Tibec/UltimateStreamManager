@@ -37,27 +37,38 @@ namespace UltimateStreamMgr.ViewModel
         public bool Enabled
         {
             get { return _enabled; }
-            set { Set("Enabled", ref _enabled, value); }
+            set { Set(ref _enabled, value); }
+        }
+
+        private bool _checkButtonEnabled;
+        public bool CheckButtonEnabled
+        {
+            get { return _checkButtonEnabled; }
+            set { Set(ref _checkButtonEnabled, value); }
         }
 
         private string _channelName;
         public string ChannelName
         {
             get { return _channelName; }
-            set { Set("ChannelName", ref _channelName, value); }
+            set { Set(ref _channelName, value); }
         }
 
         private string _oauthToken;
         public string OAuthToken
         {
             get { return _oauthToken; }
-            set { Set("OAuthToken", ref _oauthToken, value); }
+            set 
+            { 
+                Set(ref _oauthToken, value); 
+                CheckButtonEnabled = !string.IsNullOrEmpty(OAuthToken); 
+            }
         }
 
         public RelayCommand CheckChannelCommand { get; set; }
         private void CheckChannel()
         {
-            bool result = (new Twitch(new TwitchSettings())).ChannelExist(ChannelName);
+            bool result = (new Twitch(new TwitchSettings { OAuthToken = OAuthToken })).ChannelExist(ChannelName);
             if (result)
                 _dialogCoordinator.ShowMessageAsync(this, "Succès", "La chaine indiqué est valide !");
             else
