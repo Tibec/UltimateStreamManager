@@ -9,14 +9,14 @@
   	<repository type="git" url="https://github.com/Tibec/UltimateStreamManager"/>
  </metadata>
   <files>
-    <file src="bin\x86\Release\locales\*.pak" target="locales" />
-    <file src="bin\x86\Release\*.dll" target="" />
-    <file src="bin\x86\Release\x86\*.dll" target="" />
-    <file src="bin\x86\Release\*.pak" target="" />
-    <file src="bin\x86\Release\*.bin" target="" />
-    <file src="bin\x86\Release\*.dat" target="" />
-    <file src="bin\x86\Release\*.exe" target="" />
-    <file src="bin\x86\Release\NLog.config" target="" />    
+    <file src="bin\Release\locales\*.pak" target="locales" />
+	<file src="bin\Release\*.dll" target="" />
+	<file src="bin\Release\x86\*.dll" target="" />
+    <file src="bin\Release\*.pak" target="" />
+    <file src="bin\Release\*.bin" target="" />
+    <file src="bin\Release\*.dat" target="" />
+    <file src="bin\Release\*.exe" target="" />
+    <file src="bin\Release\NLog.config" target="" />    
   </files>
 </package>
 
