@@ -55,7 +55,7 @@ namespace UltimateStreamMgr.ViewModel
         public RelayCommand<Set> StartSetCommand { get; set; }
         private void StartSet(Set set)
         {
-            Log.Info("Requesting to change actual for the following [{0}, {1} vs {2}]", set.RoundName, set.Opponent1.Name, set.Opponent2.Name);
+            Log.Info("Requesting to change actual for the following [{0}, {1} vs {2}]", set.RoundName, set.Opponent1?.Name, set.Opponent2?.Name);
             MessengerInstance.Send(set);
         }
 
